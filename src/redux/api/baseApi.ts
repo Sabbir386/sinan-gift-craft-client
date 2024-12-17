@@ -12,7 +12,7 @@ import { logOut, setUser } from "../features/auth/authSlice";
 import { toast } from "sonner";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://cashooz-server.vercel.app/api/v1",
+  baseUrl: "https://sinan-server.vercel.app/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -41,7 +41,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     // console.log("Sending refresh token");
     // return { data: [] };
     const res = await fetch(
-      "https://cashooz-server.vercel.app/api/v1/auth/refresh-token",
+      "https://sinan-server.vercel.app/api/v1/auth/refresh-token",
       {
         method: "POST",
         credentials: "include",

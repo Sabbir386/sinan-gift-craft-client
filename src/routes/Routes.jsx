@@ -4,7 +4,6 @@ import AdminDashboard from "../pages/AdminDashboard";
 import RootLayout from "../layouts/RootLayout";
 import CreateOffer from "../pages/CreateOffer";
 import Authentication from "../pages/Authentication";
-import Login from "../auth/Login";
 import Register from "../auth/Register";
 import OfferList from "../pages/OfferList";
 import CreateAdmin from "../pages/CreateAdmin";
@@ -50,6 +49,7 @@ import Cart from "../pages/Landing/Cart/Cart";
 import Checkout from "../pages/Landing/Checkout/Checkout";
 import MyAccount from "../pages/Landing/MyAccount/MyAccount";
 import Categories from "../pages/Landing/Categories/Categories";
+import Login from "../pages/Landing/Login/Login";
 
 export const router = createBrowserRouter([
   {
@@ -80,16 +80,20 @@ export const router = createBrowserRouter([
         path: "/my-account",
         element: <MyAccount></MyAccount>,
       },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
     ]
   },
-  {
-    path: "/login",
-    element: (
-      <ProtectedRoutes>
-        <Login></Login>
-      </ProtectedRoutes>
-    ),
-  },
+  // {
+  //   path: "/login",
+  //   element: (
+  //     <ProtectedRoutes>
+  //       <Login></Login>
+  //     </ProtectedRoutes>
+  //   ),
+  // },
   {
     path: "/auth/forgot-password",
     

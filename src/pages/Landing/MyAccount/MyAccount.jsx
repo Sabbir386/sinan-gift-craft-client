@@ -1,7 +1,28 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
+import { useAppDispatch } from "../../../redux/features/hooks";
+import { useNavigate } from "react-router-dom";
+import { logOut } from "../../../redux/features/auth/authSlice";
 
 const MyAccount = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+  const setLogout = () => {
+      Swal.fire({
+        title: "Are you sure you want to log out?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, log out!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(logOut());
+          navigate("/login");
+        }
+      });
+    };
   const orders = [
     {
       id: "#123",
@@ -93,7 +114,9 @@ const MyAccount = () => {
     address: <p>Manage your shipping and billing address here.</p>,
     accountDetails: <p>Edit your account details here.</p>,
     wishlist: <p>Your wishlist items will be displayed here.</p>,
-    logout: <p>You have logged out.</p>,
+    logout: <p onClick={setLogout}>You have logged out..Click Here</p>,
+  
+    
   };
   return (
     <div className="flex flex-col md:flex-row py-5  gap-4 px-6 mx-auto w-full max-w-7xl">

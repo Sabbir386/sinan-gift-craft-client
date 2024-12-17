@@ -148,7 +148,7 @@ const LandingLayout = () => {
                 <Link to={'/cart'} className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300">
                   <CiShoppingCart className="text-xs" />
                 </Link>
-                <Link to={'/my-account'} className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300">
+                <Link to={'/login'} className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300">
                   <FaUser className="text-xs" />
                 </Link>
               </div>
