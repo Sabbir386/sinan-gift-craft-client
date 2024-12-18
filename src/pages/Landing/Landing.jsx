@@ -19,6 +19,8 @@ import { Autoplay, Navigation, Thumbs } from "swiper/modules";
 import { IoIosArrowBack, IoIosArrowForward, IoMdClose } from "react-icons/io";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const Landing = () => {
   const [open, setOpen] = useState(false);
@@ -30,6 +32,30 @@ const Landing = () => {
   const nextButtonRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const sizes = ["S", "M", "L"];
+
+  // cart added functionality
+  const [cartQuantity, setCartQuantity] = useState(1);
+  const dispatch = useDispatch();
+  const cartTotalQuantity = useSelector((state) => state.cart.totalQuantity);
+
+  const handleQuantityChange = (action) => {
+    setCartQuantity((prevQuantity) =>
+      action === "increase" ? prevQuantity + 1 : Math.max(prevQuantity - 1, 1)
+    );
+  };
+
+  const handleAddToCart = () => {
+    dispatch(addItem({ ...product, quantity: cartQuantity }));
+    console.log("okey");
+    Swal.fire({
+      icon: "success",
+      title: "Added to Cart!",
+      text: `You have added ${cartQuantity} "${product.name}" to your cart.`,
+      timer: 2000,
+      showConfirmButton: false,
+    });
+  };
+
   const sliderItems = [
     {
       id: 1,
@@ -486,7 +512,13 @@ const Landing = () => {
                   <FaEye />
                 </p>
               </div>
-              <Link to={"/product/1"} className="absolute bottom-2 w-full">
+              <Link
+                to={{
+                  pathname: "/product/1",
+                }}
+                state={{ product }}
+                className="absolute bottom-2 w-full"
+              >
                 <h4 className="text-headingColor font-medium text-base">
                   {product.title}
                 </h4>
@@ -640,7 +672,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
-    
+
       {/* modal  */}
       {isModalOpen && (
         <div className="p-4 fixed top-0 left-0 z-50 bg-black bg-opacity-75 w-full h-screen flex items-center justify-center">
@@ -757,33 +789,47 @@ const Landing = () => {
               {/* Quantity Selector */}
               <div className="mt-4 flex items-center">
                 <button
-                  onClick={() => handleQuantityChange(-1)}
+                  onClick={() => handleQuantityChange("decrease")}
                   className="text-lg px-4 py-2 border rounded-l-lg"
                 >
                   -
                 </button>
                 <input
                   type="text"
-                  value={quantity}
+                  value={cartQuantity}
                   readOnly
                   className="w-12 text-center border-t border-b py-2"
                 />
                 <button
-                  onClick={() => handleQuantityChange(1)}
+                  onClick={() => handleQuantityChange("increase")}
                   className="text-lg px-4 py-2 border rounded-r-lg"
                 >
                   +
                 </button>
               </div>
 
-              {/* Buttons */}
+              {/* Action Buttons */}
               <div className="mt-6 flex space-x-4">
-                <Link to={'/cart'} className="w-full text-center py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700">
+                <button
+                  onClick={handleAddToCart}
+                  className="w-full text-center py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
+                >
                   Add To Cart
-                </Link>
-                <Link to={'/cart'} className="w-full text-center py-3 bg-black text-white rounded-lg hover:bg-gray-700">
+                </button>
+                <Link
+                  to="/cart"
+                  className="w-full text-center py-3 bg-black text-white rounded-lg hover:bg-gray-700"
+                >
                   Buy It Now
                 </Link>
+              </div>
+
+              {/* Cart Summary */}
+              <div className="mt-6">
+                <p className="text-gray-700">
+                  Total Items in Cart:{" "}
+                  <span className="font-bold">{cartTotalQuantity}</span>
+                </p>
               </div>
 
               {/* Additional Information */}

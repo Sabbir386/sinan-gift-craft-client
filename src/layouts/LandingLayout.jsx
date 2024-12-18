@@ -14,6 +14,7 @@ import Sinan from "../assets/img/sinan.png";
 import { CiShoppingCart } from "react-icons/ci";
 import DashboardFooter from "./sidebar/DashboardFooter";
 import ScrollToTop from "./ScrollToTop";
+import { useSelector } from "react-redux";
 
 const LandingLayout = () => {
   const [open, setOpen] = useState(false);
@@ -28,7 +29,8 @@ const LandingLayout = () => {
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true); // Tracks if we are typing or erasing
-
+//cardt quantity 
+const cartTotalQuantity = useSelector((state) => state.cart.totalQuantity);
   const menuArray = [
     { name: "men", path: "/category/1" },
     { name: "women", path: "/category/1" },
@@ -142,13 +144,27 @@ const LandingLayout = () => {
                 </form>
               </div>
               <div className="flex justify-end items-cente gap-3">
-                <Link to={'/cart'} className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300">
+                <Link
+                  to={"/cart"}
+                  className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300"
+                >
                   <FaHeart className="text-xs" />
                 </Link>
-                <Link to={'/cart'} className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300">
+                <Link
+                  to="/cart"
+                  className="relative border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300"
+                >
                   <CiShoppingCart className="text-xs" />
+                  {cartTotalQuantity > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                      {cartTotalQuantity}
+                    </span>
+                  )}
                 </Link>
-                <Link to={'/login'} className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300">
+                <Link
+                  to={"/login"}
+                  className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300"
+                >
                   <FaUser className="text-xs" />
                 </Link>
               </div>
@@ -178,7 +194,7 @@ const LandingLayout = () => {
         <Outlet></Outlet>
         {/* page sections */}
         {/* footer section  */}
-          <DashboardFooter></DashboardFooter>
+        <DashboardFooter></DashboardFooter>
         {/* footer section  */}
       </div>
 

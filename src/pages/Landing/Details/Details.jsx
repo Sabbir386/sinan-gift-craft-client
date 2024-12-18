@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../../redux/features/cart/cartSlice";
+import Swal from "sweetalert2";
 
 const Details = () => {
+  const location = useLocation();
+  const { product } = location.state || {};
+  console.log(product);
   const [activeTab, setActiveTab] = useState(0);
   const [size, setSize] = useState("S");
   const [color, setColor] = useState("#000000");
@@ -12,6 +18,31 @@ const Details = () => {
   const [quantity, setQuantity] = useState(1);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const sizes = ["S", "M", "L"];
+  // cart added functionality
+  const [cartQuantity, setCartQuantity] = useState(1);
+
+  const dispatch = useDispatch();
+  const cartTotalQuantity = useSelector((state) => state.cart.totalQuantity);
+
+  const handleQuantityChange = (action) => {
+    setCartQuantity((prevQuantity) =>
+      action === "increase" ? prevQuantity + 1 : Math.max(prevQuantity - 1, 1)
+    );
+  };
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ ...product, quantity: cartQuantity }));
+    console.log("okey");
+    Swal.fire({
+      icon: "success",
+      title: "Added to Cart!",
+      //  text: `You have added ${cartQuantity}  to your cart.`,
+      text: `You have added ${cartQuantity} "${product.title}" to your cart.`,
+      timer: 2000,
+      showConfirmButton: false,
+    });
+  };
+
   const colors = [
     "#000000", // Black
     "#0000FF", // Blue
@@ -22,9 +53,6 @@ const Details = () => {
     "#FFC0CB", // Pink
   ];
 
-  const handleQuantityChange = (change) => {
-    setQuantity((prev) => (prev + change > 0 ? prev + change : 1));
-  };
   const images = [
     "https://i.ibb.co.com/n8ts3g7/image-179.png",
     "https://i.ibb.co.com/7rM0q9f/image-180.png",
@@ -215,42 +243,51 @@ const Details = () => {
           </div>
 
           {/* Quantity Selector */}
+          {/* Quantity Selector */}
           <div className="mt-4 flex items-center">
             <button
-              onClick={() => handleQuantityChange(-1)}
+              onClick={() => handleQuantityChange("decrease")}
               className="text-lg px-4 py-2 border rounded-l-lg"
             >
               -
             </button>
             <input
               type="text"
-              value={quantity}
+              value={cartQuantity}
               readOnly
               className="w-12 text-center border-t border-b py-2"
             />
             <button
-              onClick={() => handleQuantityChange(1)}
+              onClick={() => handleQuantityChange("increase")}
               className="text-lg px-4 py-2 border rounded-r-lg"
             >
               +
             </button>
           </div>
 
-          {/* Buttons */}
+          {/* Action Buttons */}
           <div className="mt-6 flex space-x-4">
-            <Link
-              to={"/cart"}
-              className="block  text-center w-full py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
+            <button
+              onClick={handleAddToCart}
+              className="w-full text-center py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
             >
               Add To Cart
-            </Link>
+            </button>
             <Link
-              to={"/cart"}
-              className="block  text-center w-full py-3 bg-black text-white rounded-lg hover:bg-gray-700"
+              to="/cart"
+              className="w-full text-center py-3 bg-black text-white rounded-lg hover:bg-gray-700"
             >
               Buy It Now
             </Link>
           </div>
+
+          {/* Cart Summary */}
+          {/* <div className="mt-6">
+            <p className="text-gray-700">
+              Total Items in Cart:{" "}
+              <span className="font-bold">{cartTotalQuantity}</span>
+            </p>
+          </div> */}
 
           {/* Additional Information */}
           <div className="mt-6 text-sm text-gray-600">
