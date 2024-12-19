@@ -29,8 +29,8 @@ const LandingLayout = () => {
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true); // Tracks if we are typing or erasing
-//cardt quantity 
-const cartTotalQuantity = useSelector((state) => state.cart.totalQuantity);
+  //cardt quantity
+  const cartTotalQuantity = useSelector((state) => state.cart.totalQuantity);
   const menuArray = [
     { name: "men", path: "/category/1" },
     { name: "women", path: "/category/1" },
@@ -107,7 +107,7 @@ const cartTotalQuantity = useSelector((state) => state.cart.totalQuantity);
       {/* main container */}
       <div className="mx-auto bg-white">
         {/* header section  */}
-        <div className="">
+        <div className="fixed w-full top-0 z-[99999]">
           {/* naver section  */}
           <header className="z-[999] bg-white w-full left-0 top-0">
             <div className="flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-center py-5 px-6">
@@ -191,7 +191,9 @@ const cartTotalQuantity = useSelector((state) => state.cart.totalQuantity);
         </div>
         {/* header section  */}
         {/* page sections */}
-        <Outlet></Outlet>
+        <div className="mt-36">
+          <Outlet></Outlet>
+        </div>
         {/* page sections */}
         {/* footer section  */}
         <DashboardFooter></DashboardFooter>

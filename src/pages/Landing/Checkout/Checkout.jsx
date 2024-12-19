@@ -1,7 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Checkout = () => {
+  const products = useSelector((state) => state.cart.items);
+  const subtotal = useSelector((state) => state.cart.totalPrice);
+  // console.log(products)
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 mx-auto w-full max-w-7xl">
       {/* left section  */}
@@ -158,128 +162,88 @@ const Checkout = () => {
       </div>
       {/* right section  */}
       <div className="p-4 w-full mx-auto">
-        <h2 className="text-xl font-bold mb-4">Your order</h2>
-        <div className="space-y-4">
-          {/* Product Items */}
-          <div className="flex justify-between items-center">
+      <h2 className="text-xl font-bold mb-4">Your order</h2>
+      <div className="space-y-4">
+        {/* Product Items */}
+        {products.map((product, index) => (
+          <div key={index} className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
               <img
-                src="https://i.ibb.co.com/frMddxX/image-178.png" // Replace with actual image URL
-                alt="Ribbed modal T-shirt"
+                src={product.image} // Replace with actual image property
+                alt={product.name} // Replace with actual name property
                 className="w-12 h-12 rounded"
               />
               <div>
-                <p className="text-sm font-medium">Ribbed modal T-shirt</p>
-                <p className="text-sm text-gray-500">Brown / M</p>
+                <p className="text-sm font-medium">{product.title}</p>
+                <p className="text-sm text-gray-500">{product.quantity}</p>
               </div>
             </div>
-            <p className="text-sm font-medium">$25.00</p>
+            <p className="text-sm font-medium">${product.price}</p>
           </div>
+        ))}
+      </div>
 
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <img
-                src="https://i.ibb.co.com/n8ts3g7/image-179.png" // Replace with actual image URL
-                alt="Vanilla White"
-                className="w-12 h-12 rounded"
-              />
-              <div>
-                <p className="text-sm font-medium">Vanilla White</p>
-                <p className="text-sm text-gray-500"></p>
-              </div>
-            </div>
-            <p className="text-sm font-medium">$35.00</p>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <img
-                src="https://i.ibb.co.com/7rM0q9f/image-180.png" // Replace with actual image URL
-                alt="Cotton jersey top"
-                className="w-12 h-12 rounded"
-              />
-              <div>
-                <p className="text-sm font-medium">Cotton jersey top</p>
-                <p className="text-sm text-gray-500">Beige / S</p>
-              </div>
-            </div>
-            <p className="text-sm font-medium">$8.00</p>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <img
-                src="https://i.ibb.co.com/nsvL20H/product-one.png" // Replace with actual image URL
-                alt="Ribbed Tank Top"
-                className="w-12 h-12 rounded"
-              />
-              <div>
-                <p className="text-sm font-medium">Ribbed Tank Top</p>
-                <p className="text-sm text-gray-500">Orange / S</p>
-              </div>
-            </div>
-            <p className="text-sm font-medium">$54.00</p>
-          </div>
+      {/* Total and Discount */}
+      <div className="border-t mt-4 pt-4">
+        <div className="flex justify-between items-center">
+          <p className="text-sm font-medium">Total</p>
+          <p className="text-lg font-bold">
+            $
+            {subtotal}
+          </p>
         </div>
-
-        {/* Total and Discount */}
-        <div className="border-t mt-4 pt-4">
-          <div className="flex justify-between items-center">
-            <p className="text-sm font-medium">Total</p>
-            <p className="text-lg font-bold">$122.00</p>
-          </div>
-          <div className="mt-4 flex">
-            <input
-              type="text"
-              placeholder="Discount code"
-              className="flex-1 px-4 py-2 border rounded-l text-sm focus:outline-none"
-            />
-            <button className="px-4 py-2 bg-black text-white text-sm rounded-r">
-              Apply
-            </button>
-          </div>
-        </div>
-
-        {/* Payment Options */}
-        <div className="border-t mt-4 pt-4">
-          <div className="flex items-center mb-2">
-            <input
-              type="radio"
-              id="direct-bank"
-              name="payment"
-              className="mr-2"
-              checked
-              readOnly
-            />
-            <label htmlFor="direct-bank" className="text-sm">
-              Direct bank transfer
-            </label>
-          </div>
-          <div className="flex items-center">
-            <input type="radio" id="cash" name="payment" className="mr-2" />
-            <label htmlFor="cash" className="text-sm">
-              Cash on delivery
-            </label>
-          </div>
-        </div>
-
-        {/* Terms & Place Order */}
-        <div className="border-t mt-4 pt-4 space-y-4">
-          <div className="flex items-start space-x-2">
-            <input type="checkbox" id="terms" className="mt-1" />
-            <label htmlFor="terms" className="text-sm">
-              I have read and agree to the website{" "}
-              <a href="#" className="text-blue-500 underline">
-                terms and conditions
-              </a>
-              .
-            </label>
-          </div>
-          <Link to={'/my-account'} className="w-full block text-center bg-black text-white py-2 text-sm rounded">
-            Place order
-          </Link>
+        <div className="mt-4 flex">
+          <input
+            type="text"
+            placeholder="Discount code"
+            className="flex-1 px-4 py-2 border rounded-l text-sm focus:outline-none"
+          />
+          <button className="px-4 py-2 bg-black text-white text-sm rounded-r">
+            Apply
+          </button>
         </div>
       </div>
+
+      {/* Payment Options */}
+      <div className="border-t mt-4 pt-4">
+        <div className="flex items-center mb-2">
+          <input
+            type="radio"
+            id="direct-bank"
+            name="payment"
+            className="mr-2"
+            checked
+            readOnly
+          />
+          <label htmlFor="direct-bank" className="text-sm">
+            Direct bank transfer
+          </label>
+        </div>
+        <div className="flex items-center">
+          <input type="radio" id="cash" name="payment" className="mr-2" />
+          <label htmlFor="cash" className="text-sm">
+            Cash on delivery
+          </label>
+        </div>
+      </div>
+
+      {/* Terms & Place Order */}
+      <div className="border-t mt-4 pt-4 space-y-4">
+        <div className="flex items-start space-x-2">
+          <input type="checkbox" id="terms" className="mt-1" />
+          <label htmlFor="terms" className="text-sm">
+            I have read and agree to the website{" "}
+            <a href="#" className="text-blue-500 underline">
+              terms and conditions
+            </a>
+            .
+          </label>
+        </div>
+        <Link to="/my-account" className="w-full block text-center bg-black text-white py-2 text-sm rounded">
+          Place order
+        </Link>
+      </div>
+    </div>
     </div>
   );
 };
