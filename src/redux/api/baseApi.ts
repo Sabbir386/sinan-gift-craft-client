@@ -85,6 +85,7 @@ export const baseApi = createApi({
     'leaderboard',
     'SurveyWall',
     'Withdrawal',
+    'order',
 
 
   ],

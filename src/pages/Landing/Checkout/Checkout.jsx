@@ -5,7 +5,47 @@ import { Link } from "react-router-dom";
 const Checkout = () => {
   const products = useSelector((state) => state.cart.items);
   const subtotal = useSelector((state) => state.cart.totalPrice);
-  // console.log(products)
+  console.log('products',products)
+
+  // checkOut functinality 
+  // const [createOrder, { isLoading, isSuccess, isError }] = useCreateOrderMutation();
+
+  // const handleCreateOrder = async () => {
+  //   const orderData = {
+  //     userInfo: {
+  //       firstName: "John",
+  //       lastName: "Doe",
+  //       city: "New York",
+  //       country: "USA",
+  //       address: "123 Elm Street",
+  //       email: "john.doe@example.com",
+  //       phone: "1234567890",
+  //     },
+  //     items: [
+  //       { productId: "64ab2f3e1234567890abcdef", quantity: 2, price: 50.99 },
+  //       { productId: "64ab2f3e1234567890abcdee", quantity: 1, price: 30.5 },
+  //     ],
+  //     totalAmount: 132.48,
+  //     status: "Pending",
+  //   };
+
+  //   try {
+  //     const response = await createOrder(orderData).unwrap();
+  //     console.log("Order created:", response);
+  //   } catch (error) {
+  //     console.error("Failed to create order:", error);
+  //   }
+  // };
+
+  // return (
+  //   <div>
+  //     <button onClick={handleCreateOrder} disabled={isLoading}>
+  //       {isLoading ? "Creating Order..." : "Create Order"}
+  //     </button>
+  //     {isSuccess && <p>Order created successfully!</p>}
+  //     {isError && <p>Failed to create order. Please try again.</p>}
+  //   </div>
+  // );
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 mx-auto w-full max-w-7xl">
       {/* left section  */}
@@ -169,8 +209,8 @@ const Checkout = () => {
           <div key={index} className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
               <img
-                src={product.image} // Replace with actual image property
-                alt={product.name} // Replace with actual name property
+                src={product.image} 
+                alt={product.name} 
                 className="w-12 h-12 rounded"
               />
               <div>
@@ -178,7 +218,7 @@ const Checkout = () => {
                 <p className="text-sm text-gray-500">{product.quantity}</p>
               </div>
             </div>
-            <p className="text-sm font-medium">${product.price}</p>
+            <p className="text-sm font-medium">${product.price.toFixed(2)}</p>
           </div>
         ))}
       </div>
@@ -188,8 +228,7 @@ const Checkout = () => {
         <div className="flex justify-between items-center">
           <p className="text-sm font-medium">Total</p>
           <p className="text-lg font-bold">
-            $
-            {subtotal}
+            ${subtotal.toFixed(2)}
           </p>
         </div>
         <div className="mt-4 flex">
