@@ -3,9 +3,32 @@ import Swal from "sweetalert2";
 import { useAppDispatch } from "../../../redux/features/hooks";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../../../redux/features/auth/authSlice";
+import { useViewOrdersQuery } from "../OrderApi/orderApi";
+import Modal from "react-modal";
 
+// Modal styles (optional)
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    maxWidth: "500px",
+    width: "100%",
+    borderRadius: "10px",
+    backgroundColor: "#f3f4f6", // Change to your desired color
+    padding: "20px",
+  },
+};
+
+
+Modal.setAppElement("#root"); // Required for accessibility
 const MyAccount = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const navigate = useNavigate();
     const dispatch = useAppDispatch();
   const setLogout = () => {
@@ -23,26 +46,29 @@ const MyAccount = () => {
         }
       });
     };
-  const orders = [
-    {
-      id: "#123",
-      date: "August 1, 2024",
-      status: "On hold",
-      total: "$200.0 for 1 items",
-    },
-    {
-      id: "#345",
-      date: "August 2, 2024",
-      status: "On hold",
-      total: "$300.0 for 1 items",
-    },
-    {
-      id: "#567",
-      date: "August 3, 2024",
-      status: "On hold",
-      total: "$400.0 for 1 items",
-    },
-  ];
+    const { data: ordersData, isLoading, isError, error } = useViewOrdersQuery();
+
+    if (isLoading) {
+      return <div>Loading orders...</div>;
+    }
+  
+    if (isError) {
+      return <div>Error loading orders: {error?.data?.message || error.message}</div>;
+    }
+  
+    const orders = ordersData?.data || []; // Assuming `data` contains the orders list
+
+    console.log(orders)
+    const handleViewOrder = (order) => {
+      setSelectedOrder(order);
+      setIsModalOpen(true);
+    };
+  
+    const closeModal = () => {
+      setIsModalOpen(false);
+      setSelectedOrder(null);
+    };
+  
   // Define content for each tab
   const tabContent = {
     dashboard: (
@@ -66,10 +92,11 @@ const MyAccount = () => {
       </div>
     ),
     orders: (
+      <div>
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-300">
           <thead>
-            <tr className="bg-gray-100 ">
+            <tr className="bg-gray-100">
               <th className="border-b-[1px] border-gray-300 px-4 py-5 text-base text-left">
                 Order
               </th>
@@ -90,18 +117,23 @@ const MyAccount = () => {
           <tbody>
             {orders.map((order, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="border-b-[1px] text-sm border-gray-300 px-4 py-2">{order.id}</td>
                 <td className="border-b-[1px] text-sm border-gray-300 px-4 py-2">
-                  {order.date}
+                  {order.orderId || "N/A"}
                 </td>
                 <td className="border-b-[1px] text-sm border-gray-300 px-4 py-2">
-                  {order.status}
+                  {new Date(order.createdAt).toLocaleDateString() || "N/A"}
                 </td>
                 <td className="border-b-[1px] text-sm border-gray-300 px-4 py-2">
-                  {order.total}
+                  {order.status || "N/A"}
                 </td>
                 <td className="border-b-[1px] text-sm border-gray-300 px-4 py-2">
-                  <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+                  ${order?.totalAmount || "0.00"} - ({order.items?.length || 0} items)
+                </td>
+                <td className="border-b-[1px] text-sm border-gray-300 px-4 py-2">
+                  <button
+                    className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+                    onClick={() => handleViewOrder(order)}
+                  >
                     View
                   </button>
                 </td>
@@ -110,6 +142,49 @@ const MyAccount = () => {
           </tbody>
         </table>
       </div>
+
+      {selectedOrder && (
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Order Details"
+        >
+          <h2 className="text-xl font-bold mb-4">Order Details</h2>
+          <p>
+            <strong>Order ID:</strong> {selectedOrder.orderId}
+          </p>
+          <p >
+            <strong className="text-blue-500">Status:</strong> {selectedOrder.status}
+          </p>
+          <p>
+            <strong>Total Amount:</strong> ${selectedOrder.totalAmount}
+          </p>
+          <p>
+            <strong>User Info:</strong>{" "}
+            {`${selectedOrder.userInfo.firstName} ${selectedOrder.userInfo.lastName}, ${selectedOrder.userInfo.address}, ${selectedOrder.userInfo.city}, ${selectedOrder.userInfo.country}`}
+          </p>
+          <h3 className="mt-4 font-semibold">Items:</h3>
+          <ul className="list-disc ml-5">
+            {selectedOrder.items.map((item, idx) => (
+              <li key={idx}>
+                <p>
+                  <strong>Product ID:</strong> {item.productId},{" "}
+                  <strong>Price:</strong> ${item.price}, <strong>Quantity:</strong>{" "}
+                  {item.quantity}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <button
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            onClick={closeModal}
+          >
+            Close
+          </button>
+        </Modal>
+      )}
+    </div>
     ),
     address: <p>Manage your shipping and billing address here.</p>,
     accountDetails: <p>Edit your account details here.</p>,

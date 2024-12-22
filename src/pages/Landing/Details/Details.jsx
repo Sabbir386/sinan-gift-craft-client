@@ -37,7 +37,7 @@ const Details = () => {
       icon: "success",
       title: "Added to Cart!",
       //  text: `You have added ${cartQuantity}  to your cart.`,
-      text: `You have added ${cartQuantity} "${product.title}" to your cart.`,
+      text: `You have added ${cartQuantity} "${product?.title}" to your cart.`,
       timer: 2000,
       showConfirmButton: false,
     });

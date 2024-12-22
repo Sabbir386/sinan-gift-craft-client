@@ -1,85 +1,94 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Link } from "react-router-dom";
+import { useCreateOrderMutation } from "../OrderApi/orderApi";
+import { clearCart } from "../../../redux/features/cart/cartSlice";
 
 const Checkout = () => {
+  const dispatch = useDispatch();
   const products = useSelector((state) => state.cart.items);
   const subtotal = useSelector((state) => state.cart.totalPrice);
-  console.log('products',products)
+  console.log(products)
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    city: "",
+    country: "",
+    address: "",
+    email: "",
+    phone: "",
+  });
 
-  // checkOut functinality 
-  // const [createOrder, { isLoading, isSuccess, isError }] = useCreateOrderMutation();
+  const [createOrder, { isLoading, isSuccess, isError }] = useCreateOrderMutation();
 
-  // const handleCreateOrder = async () => {
-  //   const orderData = {
-  //     userInfo: {
-  //       firstName: "John",
-  //       lastName: "Doe",
-  //       city: "New York",
-  //       country: "USA",
-  //       address: "123 Elm Street",
-  //       email: "john.doe@example.com",
-  //       phone: "1234567890",
-  //     },
-  //     items: [
-  //       { productId: "64ab2f3e1234567890abcdef", quantity: 2, price: 50.99 },
-  //       { productId: "64ab2f3e1234567890abcdee", quantity: 1, price: 30.5 },
-  //     ],
-  //     totalAmount: 132.48,
-  //     status: "Pending",
-  //   };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  const handleClearCart = () => {
+    dispatch(clearCart()); // Assumes `clearCart` is an action in your Redux store
+  };
+  const handleCreateOrder = async () => {
+    const orderData = {
+      userInfo: formData,
+      items: products.map((product) => ({
+        productId:(product.id).toString(),
+        quantity: product.quantity,
+        price: product.price,
+      })),
+      totalAmount: subtotal,
+      status: "Pending",
+    };
 
-  //   try {
-  //     const response = await createOrder(orderData).unwrap();
-  //     console.log("Order created:", response);
-  //   } catch (error) {
-  //     console.error("Failed to create order:", error);
-  //   }
-  // };
+    try {
+      const response = await createOrder(orderData).unwrap();
+      console.log("Order created:", response);
+    
+      if (response.statusCode === 201) {
+        console.log("Order created successfully:", response.message);
+        
+        // Clear the cart after successful order creation
+        handleClearCart();
+      }
+    } catch (error) {
+      console.error("Failed to create order:", error);
+    }
+    
+  };
 
-  // return (
-  //   <div>
-  //     <button onClick={handleCreateOrder} disabled={isLoading}>
-  //       {isLoading ? "Creating Order..." : "Create Order"}
-  //     </button>
-  //     {isSuccess && <p>Order created successfully!</p>}
-  //     {isError && <p>Failed to create order. Please try again.</p>}
-  //   </div>
-  // );
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 mx-auto w-full max-w-7xl">
-      {/* left section  */}
+      {/* Left Section */}
       <div className="p-4 w-full mx-auto">
         <h2 className="text-xl font-bold mb-6">Billing details</h2>
         <form className="space-y-6">
           {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label
-                htmlFor="first-name"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
                 First Name<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                id="first-name"
-                name="first-name"
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleInputChange}
                 className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
                 required
               />
             </div>
             <div>
-              <label
-                htmlFor="last-name"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
                 Last Name<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                id="last-name"
-                name="last-name"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
                 className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
                 required
               />
@@ -88,35 +97,36 @@ const Checkout = () => {
 
           {/* Country/Region */}
           <div>
-            <label
-              htmlFor="country"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="country" className="block text-sm font-medium text-gray-700">
               Country/Region<span className="text-red-500">*</span>
             </label>
             <select
               id="country"
               name="country"
+              value={formData.country}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
               required
             >
               <option value="">---</option>
-              {/* Add country options here */}
+              <option value="USA">USA</option>
+              <option value="Canada">Canada</option>
+              <option value="UK">UK</option>
+              {/* Add more country options */}
             </select>
           </div>
 
           {/* Town/City */}
           <div>
-            <label
-              htmlFor="city"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="city" className="block text-sm font-medium text-gray-700">
               Town/City<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               id="city"
               name="city"
+              value={formData.city}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
               required
             />
@@ -124,16 +134,15 @@ const Checkout = () => {
 
           {/* Address */}
           <div>
-            <label
-              htmlFor="address"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
               Address<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               id="address"
               name="address"
+              value={formData.address}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
               required
             />
@@ -141,16 +150,15 @@ const Checkout = () => {
 
           {/* Phone Number */}
           <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
               Phone Number<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               id="phone"
               name="phone"
+              value={formData.phone}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
               required
             />
@@ -158,131 +166,63 @@ const Checkout = () => {
 
           {/* Email */}
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email<span className="text-red-500">*</span>
             </label>
             <input
               type="email"
               id="email"
               name="email"
+              value={formData.email}
+              onChange={handleInputChange}
               className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
               required
             />
           </div>
-
-          {/* Order Notes */}
-          <div>
-            <label
-              htmlFor="notes"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Order notes (optional)
-            </label>
-            <textarea
-              id="notes"
-              name="notes"
-              rows="4"
-              className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
-            ></textarea>
-          </div>
-
-          {/* Submit Button */}
-          {/* <div>
-            <button
-              type="submit"
-              className="w-full bg-black text-white py-2 text-sm font-medium rounded hover:bg-gray-800"
-            >
-              Submit
-            </button>
-          </div> */}
         </form>
       </div>
-      {/* right section  */}
+
+      {/* Right Section */}
       <div className="p-4 w-full mx-auto">
-      <h2 className="text-xl font-bold mb-4">Your order</h2>
-      <div className="space-y-4">
-        {/* Product Items */}
-        {products.map((product, index) => (
-          <div key={index} className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <img
-                src={product.image} 
-                alt={product.name} 
-                className="w-12 h-12 rounded"
-              />
-              <div>
-                <p className="text-sm font-medium">{product.title}</p>
-                <p className="text-sm text-gray-500">{product.quantity}</p>
+        <h2 className="text-xl font-bold mb-4">Your order</h2>
+        <div className="space-y-4">
+          {products.map((product, index) => (
+            <div key={index} className="flex justify-between items-center">
+              <div className="flex items-center space-x-3">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-12 h-12 rounded"
+                />
+                <div>
+                  <p className="text-sm font-medium">{product.title}</p>
+                  <p className="text-sm text-gray-500">Qty: {product.quantity}</p>
+                </div>
               </div>
+              <p className="text-sm font-medium">${product.price.toFixed(2)}</p>
             </div>
-            <p className="text-sm font-medium">${product.price.toFixed(2)}</p>
+          ))}
+        </div>
+
+        <div className="border-t mt-4 pt-4">
+          <div className="flex justify-between items-center">
+            <p className="text-sm font-medium">Total</p>
+            <p className="text-lg font-bold">${subtotal.toFixed(2)}</p>
           </div>
-        ))}
-      </div>
-
-      {/* Total and Discount */}
-      <div className="border-t mt-4 pt-4">
-        <div className="flex justify-between items-center">
-          <p className="text-sm font-medium">Total</p>
-          <p className="text-lg font-bold">
-            ${subtotal.toFixed(2)}
-          </p>
         </div>
-        <div className="mt-4 flex">
-          <input
-            type="text"
-            placeholder="Discount code"
-            className="flex-1 px-4 py-2 border rounded-l text-sm focus:outline-none"
-          />
-          <button className="px-4 py-2 bg-black text-white text-sm rounded-r">
-            Apply
+
+        <div className="border-t mt-4 pt-4 space-y-4">
+          <button
+            onClick={handleCreateOrder}
+            disabled={isLoading}
+            className="w-full bg-black text-white py-2 text-sm font-medium rounded hover:bg-gray-800"
+          >
+            {isLoading ? "Placing Order..." : "Place Order"}
           </button>
+          {isSuccess && <p className="text-green-500">Order created successfully!</p>}
+          {isError && <p className="text-red-500">Failed to create order. Please try again.</p>}
         </div>
       </div>
-
-      {/* Payment Options */}
-      <div className="border-t mt-4 pt-4">
-        <div className="flex items-center mb-2">
-          <input
-            type="radio"
-            id="direct-bank"
-            name="payment"
-            className="mr-2"
-            checked
-            readOnly
-          />
-          <label htmlFor="direct-bank" className="text-sm">
-            Direct bank transfer
-          </label>
-        </div>
-        <div className="flex items-center">
-          <input type="radio" id="cash" name="payment" className="mr-2" />
-          <label htmlFor="cash" className="text-sm">
-            Cash on delivery
-          </label>
-        </div>
-      </div>
-
-      {/* Terms & Place Order */}
-      <div className="border-t mt-4 pt-4 space-y-4">
-        <div className="flex items-start space-x-2">
-          <input type="checkbox" id="terms" className="mt-1" />
-          <label htmlFor="terms" className="text-sm">
-            I have read and agree to the website{" "}
-            <a href="#" className="text-blue-500 underline">
-              terms and conditions
-            </a>
-            .
-          </label>
-        </div>
-        <Link to="/my-account" className="w-full block text-center bg-black text-white py-2 text-sm rounded">
-          Place order
-        </Link>
-      </div>
-    </div>
     </div>
   );
 };
