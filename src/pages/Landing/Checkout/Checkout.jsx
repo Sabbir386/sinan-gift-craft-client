@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useCreateOrderMutation } from "../OrderApi/orderApi";
 import { clearCart } from "../../../redux/features/cart/cartSlice";
+import { useRegistrationMutation } from "../../../redux/features/auth/authApi";
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cart.items);
   const subtotal = useSelector((state) => state.cart.totalPrice);
+  const [registration] = useRegistrationMutation();
   console.log(products)
   const [formData, setFormData] = useState({
     firstName: "",
@@ -40,11 +42,43 @@ const Checkout = () => {
       totalAmount: subtotal,
       status: "Pending",
     };
-
+    const normalUser = {
+      password: "user12345",
+      normalUser: {
+        name: formData?.firstName,
+        email: formData?.email,
+        // ip: ip,
+        // country: country,
+        designation: "Client",
+        username: "sharukh Khan",
+        gender: "male",
+        dateOfBirth: "1985-07-15",
+        contactNo: "9876543210",
+        emergencyContactNo: "1234567890",
+        bloodGroup: "A+",
+        presentAddress: "456 Elm Street, Cityville, Country",
+        permanentAddress: "789 Maple Avenue, Townsville, Country",
+        profileImg: "profile_picture.jpg",
+        isDeleted: false,
+      },
+    };
     try {
+      // console.log(object)
+      const user = await registration(normalUser);
       const response = await createOrder(orderData).unwrap();
       console.log("Order created:", response);
-    
+      console.log(user);
+      if (user?.error?.status == 409) {
+        // Handle specific error messages
+        const errorMessage =
+          user?.error?.data?.errorSources[0]?.message || "Conflict error.";
+        toast.error(errorMessage, {
+          id: toastId,
+          duration: 2000,
+        });
+        console.error("Error:", errorMessage);
+        return; // Exit the function here to avoid further processing
+      }
       if (response.statusCode === 201) {
         console.log("Order created successfully:", response.message);
         
