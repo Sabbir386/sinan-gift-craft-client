@@ -5,13 +5,14 @@ import { Link } from "react-router-dom";
 import { useCreateOrderMutation } from "../OrderApi/orderApi";
 import { clearCart } from "../../../redux/features/cart/cartSlice";
 import { useRegistrationMutation } from "../../../redux/features/auth/authApi";
+import Swal from "sweetalert2";
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cart.items);
   const subtotal = useSelector((state) => state.cart.totalPrice);
   const [registration] = useRegistrationMutation();
-  console.log(products)
+  console.log(products);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -22,7 +23,8 @@ const Checkout = () => {
     phone: "",
   });
 
-  const [createOrder, { isLoading, isSuccess, isError }] = useCreateOrderMutation();
+  const [createOrder, { isLoading, isSuccess, isError }] =
+    useCreateOrderMutation();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +37,7 @@ const Checkout = () => {
     const orderData = {
       userInfo: formData,
       items: products.map((product) => ({
-        productId:(product.id).toString(),
+        productId: product.id.toString(),
         quantity: product.quantity,
         price: product.price,
       })),
@@ -63,32 +65,65 @@ const Checkout = () => {
       },
     };
     try {
-      // console.log(object)
+      // Show a loading modal while processing the order
+      Swal.fire({
+        title: "Signing in...",
+        text: "Please wait a moment while we take your order...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading(); // Show loading spinner
+        },
+      });
+
       const user = await registration(normalUser);
       const response = await createOrder(orderData).unwrap();
-      console.log("Order created:", response);
-      console.log(user);
+
       if (user?.error?.status == 409) {
         // Handle specific error messages
         const errorMessage =
           user?.error?.data?.errorSources[0]?.message || "Conflict error.";
-        toast.error(errorMessage, {
-          id: toastId,
-          duration: 2000,
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMessage,
         });
         console.error("Error:", errorMessage);
         return; // Exit the function here to avoid further processing
       }
+
       if (response.statusCode === 201) {
         console.log("Order created successfully:", response.message);
-        
+
         // Clear the cart after successful order creation
         handleClearCart();
+
+        // Show success message with the login URL
+        Swal.fire({
+          icon: "success",
+          title: "Order Created Successfully!",
+          html: `
+            <p>Your order has been created successfully.</p>
+            <p>You can log in to your account to track your order status:</p>
+            <a href="https://sinangiftcorner.web.app/login" target="_blank" style="color: #007BFF; font-weight: bold;">
+            <p>To manage your order and track its progress, you need to log in to your SINAN SHOP account using the credentials provided below:</p>
+            <p><strong>Email:</strong> ${formData?.email}</p>
+            <p><strong>Password:</strong> user12345</p>
+              View My Order
+            </a>
+          `,
+          confirmButtonText: "Close",
+        });
       }
     } catch (error) {
       console.error("Failed to create order:", error);
+
+      // Show error message
+      Swal.fire({
+        icon: "error",
+        title: "Order Creation Failed",
+        text: "An error occurred while creating your order. Please try again later.",
+      });
     }
-    
   };
 
   return (
@@ -100,7 +135,10 @@ const Checkout = () => {
           {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700"
+              >
                 First Name<span className="text-red-500">*</span>
               </label>
               <input
@@ -114,7 +152,10 @@ const Checkout = () => {
               />
             </div>
             <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Last Name<span className="text-red-500">*</span>
               </label>
               <input
@@ -131,7 +172,10 @@ const Checkout = () => {
 
           {/* Country/Region */}
           <div>
-            <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="country"
+              className="block text-sm font-medium text-gray-700"
+            >
               Country/Region<span className="text-red-500">*</span>
             </label>
             <select
@@ -152,7 +196,10 @@ const Checkout = () => {
 
           {/* Town/City */}
           <div>
-            <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="city"
+              className="block text-sm font-medium text-gray-700"
+            >
               Town/City<span className="text-red-500">*</span>
             </label>
             <input
@@ -168,7 +215,10 @@ const Checkout = () => {
 
           {/* Address */}
           <div>
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="address"
+              className="block text-sm font-medium text-gray-700"
+            >
               Address<span className="text-red-500">*</span>
             </label>
             <input
@@ -184,7 +234,10 @@ const Checkout = () => {
 
           {/* Phone Number */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700"
+            >
               Phone Number<span className="text-red-500">*</span>
             </label>
             <input
@@ -200,7 +253,10 @@ const Checkout = () => {
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email<span className="text-red-500">*</span>
             </label>
             <input
@@ -230,7 +286,9 @@ const Checkout = () => {
                 />
                 <div>
                   <p className="text-sm font-medium">{product.title}</p>
-                  <p className="text-sm text-gray-500">Qty: {product.quantity}</p>
+                  <p className="text-sm text-gray-500">
+                    Qty: {product.quantity}
+                  </p>
                 </div>
               </div>
               <p className="text-sm font-medium">${product.price.toFixed(2)}</p>
@@ -253,8 +311,14 @@ const Checkout = () => {
           >
             {isLoading ? "Placing Order..." : "Place Order"}
           </button>
-          {isSuccess && <p className="text-green-500">Order created successfully!</p>}
-          {isError && <p className="text-red-500">Failed to create order. Please try again.</p>}
+          {isSuccess && (
+            <p className="text-green-500">Order created successfully!</p>
+          )}
+          {isError && (
+            <p className="text-red-500">
+              Failed to create order. Please try again.
+            </p>
+          )}
         </div>
       </div>
     </div>
