@@ -41,7 +41,8 @@ export default function Login() {
 
       dispatch(setUser({ user, token: res.data.accessToken })); // Save user to Redux
       toast.success("Logged in", { id: toastId, duration: 2000 });
-      navigate("/my-account"); // Redirect to dashboard
+      navigate("/my-account"); 
+      // navigate("/dashboard"); 
     } catch (error) {
       const errorMessage = error?.data?.message || "Something went wrong";
       toast.error(errorMessage, { id: toastId, duration: 2000 });

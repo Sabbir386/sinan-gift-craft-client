@@ -9,7 +9,7 @@ const Cart = () => {
   // Get cart items and subtotal from Redux store
   const products = useSelector((state) => state.cart.items);
   const subtotal = useSelector((state) => state.cart.totalPrice);
-  
+  console.log(products)
   const [giftWrap, setGiftWrap] = useState(false);
   const shippingThreshold = 75.0; // Free shipping threshold
   const amountToFreeShipping = Math.max(shippingThreshold - subtotal, 0);

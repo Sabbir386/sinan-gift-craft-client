@@ -21,10 +21,14 @@ import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { useGetAllCategoriesWithProductsQuery } from "./Product/productApi";
 
 const Landing = () => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: categoriesWithProducts, isLoading } = useGetAllCategoriesWithProductsQuery();
+  console.log('categoriesWithProducts',categoriesWithProducts);
+
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -475,78 +479,96 @@ const Landing = () => {
       </div>
       {/* Trending Products  */}
       <div className="px-6 py-5">
-        <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-800">Amazing Deals</h2>
-          <Link
-            to="/"
-            className="flex items-center gap-1 text-sm font-normal text-headingColor hover:text-secondaryColor duration-300"
+  {categoriesWithProducts?.data?.map((category, categoryIndex) => (
+    <div key={categoryIndex} className="mb-10">
+      {/* Category Title */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-gray-800">
+          {category.categoryName}
+        </h2>
+        <Link
+          to="/"
+          className="flex items-center gap-1 text-sm font-normal text-headingColor hover:text-secondaryColor duration-300"
+        >
+          <span>View All</span> <FaArrowRight />
+        </Link>
+      </div>
+
+      {/* Products Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-7 py-4">
+        {category.products.map((product, productIndex) => (
+          <div
+            key={`${categoryIndex}-${productIndex}`}
+            className="rounded-xl relative h-[420px] md:h-[510px] group overflow-hidden"
           >
-            <span>View All</span> <FaArrowRight />
-          </Link>
-        </div>
+            {/* Product Image */}
+            <div className="absolute top-0 left-0 z-10 object-cover rounded-xl w-full h-[320px] md:h-[420px] duration-300 overflow-hidden">
+              <img
+                src={product.images[0]} // Display the first image
+                alt={product.name}
+                className="w-full h-full group-hover:scale-125 duration-500"
+              />
+            </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-7 py-4">
-          {trendingProducts.map((product, index) => (
+            {/* Favorite Icon */}
+            <div className="absolute -right-8 group-hover:right-4 top-4 rounded-full w-7 h-7 text-secondaryColor z-10 bg-white hover:bg-secondaryColor hover:text-white duration-300 flex justify-center items-center">
+              <p className="text-center text-sm opacity-50 group-hover:opacity-100 cursor-pointer">
+                <FaHeart />
+              </p>
+            </div>
+
+            {/* Eye Icon */}
             <div
-              key={index}
-              className="rounded-xl relative h-[420px] md:h-[510px] group overflow-hidden"
+              className="absolute -right-8 group-hover:right-4 top-12 rounded-full w-7 h-7 text-secondaryColor z-10 bg-white hover:bg-secondaryColor hover:text-white duration-300 flex justify-center items-center cursor-pointer"
+              onClick={toggleModal}
             >
-              <div className="absolute top-0 left-0 z-10 object-cover rounded-xl w-full h-[320px] md:h-[420px] duration-300 overflow-hidden">
-                <img
-                  src={product.image}
-                  alt=""
-                  className="w-full h-full group-hover:scale-125 duration-500"
-                />
-              </div>
+              <p className="text-center text-sm opacity-50 group-hover:opacity-100">
+                <FaEye />
+              </p>
+            </div>
 
-              <div className="absolute  -right-8 group-hover:right-4 top-4 rounded-full w-7 h-7 text-secondaryColor  z-10  bg-white hover:bg-secondaryColor hover:text-white duration-300 flex justify-center items-center">
-                <p className="text-center text-sm opacity-50 group-hover:opacity-100 cursor-pointer">
-                  <FaHeart />
-                </p>
-              </div>
-              <div
-                className="absolute -right-8 group-hover:right-4 top-12 rounded-full w-7 h-7 text-secondaryColor  z-10  bg-white hover:bg-secondaryColor hover:text-white duration-300 flex justify-center items-center cursor-pointer"
-                onClick={toggleModal}
-              >
-                <p className="text-center text-sm opacity-50 group-hover:opacity-100">
-                  <FaEye />
-                </p>
-              </div>
-              <Link
-                to={{
-                  pathname: "/product/1",
-                }}
-                state={{ product }}
-                className="absolute bottom-2 w-full"
-              >
-                <h4 className="text-headingColor font-medium text-base">
-                  {product.title}
-                </h4>
-                <div className="flex gap-1 justify-start items-center text-yellow-400">
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <div>
-                    (<span>{product.rating}</span>)
-                  </div>
+            {/* Product Details */}
+            <Link
+              to={{
+                pathname: `/product/${product._id}`,
+              }}
+              state={{ product }}
+              className="absolute bottom-2 w-full"
+            >
+              <h4 className="text-headingColor font-medium text-base">
+                {product.name}
+              </h4>
+              <div className="flex gap-1 justify-start items-center text-yellow-400">
+                <FaStar />
+                <FaStar />
+                <FaStar />
+                <FaStar />
+                <FaStar />
+                <div>
+                  (<span>{product.rating || 0}</span>)
                 </div>
-                <div className="flex gap-3 justify-start items-center">
-                  <h3 className="font-extrabold text-lg ">
-                    ${product.discountedPrice}
-                  </h3>
+              </div>
+              <div className="flex gap-3 justify-start items-center">
+                <h3 className="font-extrabold text-lg ">
+                  ${product.salePrice || product.price}
+                </h3>
+                {product.salePrice && (
                   <h5 className="line-through text-sm text-gray-500">
                     ${product.price}
                   </h5>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
+                )}
+              </div>
+            </Link>
+          </div>
+        ))}
       </div>
+    </div>
+  ))}
+</div>
+
       {/* new arrival two  */}
       <div className="px-6 flex flex-col md:flex-row justify-between items-center gap-5">
+        {/* <h1>543543543254235</h1> */}
         <div className="w-full lg:w-4/6 bg-gradient-to-r from-primaryColor to-secondaryColor animate-floatingBackground py-12 px-12 rounded-md flex flex-col md:flex-row items-center gap-4">
           <img
             src="https://i.ibb.co.com/Vt993n6/new-arrival-one.png"

@@ -8,17 +8,11 @@ import Swal from "sweetalert2";
 const Details = () => {
   const location = useLocation();
   const { product } = location.state || {};
-  console.log(product);
+  console.log(product)
   const [activeTab, setActiveTab] = useState(0);
-  const [size, setSize] = useState("S");
-  const [color, setColor] = useState("#000000");
+  const [size, setSize] = useState(product?.sizes[0] || "M");
+  const [color, setColor] = useState(product?.colours[0] || "#000000");
   const [imageIndex, setImageIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const [quantity, setQuantity] = useState(1);
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const sizes = ["S", "M", "L"];
-  // cart added functionality
   const [cartQuantity, setCartQuantity] = useState(1);
 
   const dispatch = useDispatch();
@@ -32,143 +26,44 @@ const Details = () => {
 
   const handleAddToCart = () => {
     dispatch(addToCart({ ...product, quantity: cartQuantity }));
-    console.log("okey");
     Swal.fire({
       icon: "success",
       title: "Added to Cart!",
-      //  text: `You have added ${cartQuantity}  to your cart.`,
-      text: `You have added ${cartQuantity} "${product?.title}" to your cart.`,
+      text: `You have added ${cartQuantity} "${product?.name}" to your cart.`,
       timer: 2000,
       showConfirmButton: false,
     });
   };
 
-  const colors = [
-    "#000000", // Black
-    "#0000FF", // Blue
-    "#FF0000", // Red
-    "#008000", // Green
-    "#FFFF00", // Yellow
-    "#FFFFFF", // White
-    "#FFC0CB", // Pink
-  ];
-
-  const images = [
-    "https://i.ibb.co.com/n8ts3g7/image-179.png",
-    "https://i.ibb.co.com/7rM0q9f/image-180.png",
-    "https://i.ibb.co.com/p4gjJJp/product-two.png",
-    "https://i.ibb.co.com/nsvL20H/product-one.png",
-  ];
   // Animation variants for the slide-in effect
   const imageVariants = {
-    enter: { opacity: 0, x: 100 }, // Starts off-screen
-    center: { opacity: 1, x: 0 }, // Center position
-    exit: { opacity: 0, x: -100 }, // Slides out
+    enter: { opacity: 0, x: 100 },
+    center: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -100 },
   };
-  const DescriptionLayout = () => (
-    <div>
-      <h2 className="text-xl font-bold">Product Description</h2>
-      <p className="mt-2 text-gray-700">
-        This is a high-quality product made from the finest materials. It offers
-        durability and comfort for all your needs.
-      </p>
-    </div>
-  );
-
-  const AdditionalInfoLayout = () => (
-    <div>
-      <h2 className="text-xl font-bold">Additional Information</h2>
-      <ul className="mt-2 text-gray-700 list-inside list-disc">
-        <li>Size: Available in S, M, L, XL</li>
-        <li>Material: 100% Cotton</li>
-        <li>Color: Available in Black, White, and Navy</li>
-      </ul>
-    </div>
-  );
-
-  const ReviewsLayout = () => (
-    <div>
-      <h2 className="text-xl font-bold">Customer Reviews</h2>
-      <div className="mt-4 space-y-4">
-        <div className="p-4 border border-gray-200 rounded-lg">
-          <p className="font-semibold">John Doe</p>
-          <p className="text-gray-600">
-            "Amazing product! Exceeded my expectations."
-          </p>
-        </div>
-        <div className="p-4 border border-gray-200 rounded-lg">
-          <p className="font-semibold">Jane Smith</p>
-          <p className="text-gray-600">
-            "Very comfortable, great value for money."
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-
-  const SuppliedDeliveryLayout = () => (
-    <div>
-      <h2 className="text-xl font-bold">Shipping and Delivery</h2>
-      <p className="mt-2 text-gray-700">
-        We offer free standard shipping on all orders over $50. Delivery time
-        ranges from 3 to 7 business days.
-      </p>
-    </div>
-  );
-
-  const DetailsCareLayout = () => (
-    <div>
-      <h2 className="text-xl font-bold">Details & Care</h2>
-      <ul className="mt-2 text-gray-700 list-inside list-disc">
-        <li>Machine wash cold with like colors</li>
-        <li>Do not bleach</li>
-        <li>Tumble dry low</li>
-        <li>Iron on low heat if necessary</li>
-      </ul>
-    </div>
-  );
-
-  const tabs = [
-    { label: "Description", content: <DescriptionLayout /> },
-    { label: "Additional Information", content: <AdditionalInfoLayout /> },
-    { label: "Reviews", content: <ReviewsLayout /> },
-    { label: "SUPPLIED & DELIVERY", content: <SuppliedDeliveryLayout /> },
-    { label: "Details & care", content: <DetailsCareLayout /> },
-  ];
 
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full md:w-3/4 h-4/5 overflow-y-auto md:h-auto mx-auto bg-white p-7 rounded-xl relative">
         {/* Left Section: Image Gallery */}
         <div className="flex flex-col items-center space-y-4">
-          {/* Large Image Container */}
           <div className="relative overflow-hidden rounded-lg w-4/6 h-84">
-            {" "}
-            {/* Ensure a fixed height */}
             <AnimatePresence mode="wait">
-              {" "}
-              {/* Smoothly handle the transition */}
               <motion.img
-                key={imageIndex} // Ensures Framer Motion tracks image changes
-                src={images[imageIndex]}
-                alt="Product Image"
+                key={imageIndex}
+                src={product?.images[imageIndex]}
+                alt={`Product Image ${imageIndex}`}
                 variants={imageVariants}
                 initial="enter"
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="w-full h-full object-cover rounded-lg"
-                whileHover={{
-                  scale: 1.1,
-                  transition: { duration: 0.3 }, // Defines the hover-specific transition
-                }}
               />
             </AnimatePresence>
           </div>
-
-          {/* Thumbnail Container */}
           <div className="flex overflow-x-auto space-x-4 mt-4">
-            {images.map((image, index) => (
+            {product?.images.map((image, index) => (
               <img
                 key={index}
                 src={image}
@@ -184,21 +79,17 @@ const Details = () => {
 
         {/* Right Section: Product Info */}
         <div>
-          <h2 className="text-3xl font-semibold mb-4">
-            Boho Floral Maxi Dress
-          </h2>
-          <p className="text-xl font-semibold text-gray-800">$25.00</p>
-          <p className="text-gray-600 mt-2">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took...
+          <h2 className="text-3xl font-semibold mb-4">{product?.name}</h2>
+          <p className="text-xl font-semibold text-gray-800">
+            ${product?.salePrice || product?.price}
           </p>
+          <p className="text-gray-600 mt-2">{product?.description}</p>
 
           {/* Size Selection */}
           <div className="mt-4">
             <span className="font-medium">Size: </span>
             <div className="flex flex-wrap space-x-2 mt-2">
-              {sizes.map((s) => (
+              {product?.sizes.map((s) => (
                 <button
                   key={s}
                   onClick={() => setSize(s)}
@@ -218,7 +109,7 @@ const Details = () => {
           <div className="mt-6">
             <p className="text-lg font-medium">Color</p>
             <div className="flex flex-wrap space-x-4 mt-2">
-              {colors.map((c, index) => (
+              {product?.colours.map((c, index) => (
                 <button
                   key={index}
                   className={`p-2 rounded-full ${
@@ -228,21 +119,16 @@ const Details = () => {
                 >
                   <div
                     className="w-8 h-8 rounded-full border"
-                    style={{ backgroundColor: c }}
+                    style={{
+                      backgroundColor: c.toLowerCase(),
+                      borderColor: c === "White" ? "#ccc" : "transparent",
+                    }}
                   ></div>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Size Guide Link */}
-          <div className="mt-2">
-            <button className="text-sm text-blue-500 hover:underline">
-              Size Guide
-            </button>
-          </div>
-
-          {/* Quantity Selector */}
           {/* Quantity Selector */}
           <div className="mt-4 flex items-center">
             <button
@@ -281,48 +167,15 @@ const Details = () => {
             </Link>
           </div>
 
-          {/* Cart Summary */}
-          {/* <div className="mt-6">
-            <p className="text-gray-700">
-              Total Items in Cart:{" "}
-              <span className="font-bold">{cartTotalQuantity}</span>
-            </p>
-          </div> */}
-
           {/* Additional Information */}
           <div className="mt-6 text-sm text-gray-600">
             <p>
-              Vendor: <span className="font-semibold">Bohemian Bliss</span>
+              SKU: <span className="font-semibold">{product?.sku}</span>
             </p>
             <p>
-              Type: <span className="font-semibold">Dress</span>
+              Quantity Available:{" "}
+              <span className="font-semibold">{product?.quantity}</span>
             </p>
-            <p>
-              Sku: <span className="font-semibold">null</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="w-full max-w-4xl mx-auto px-4 py-8">
-        <div className="tabs">
-          <div className="flex flex-wrap border-b border-gray-200">
-            {tabs.map((tab, index) => (
-              <button
-                key={index}
-                className={`py-2 px-4 text-lg font-semibold ${
-                  activeTab === index
-                    ? "border-b-2 border-red-500 text-red-500"
-                    : "text-gray-500"
-                }`}
-                onClick={() => setActiveTab(index)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-6">
-            {tabs[activeTab] && tabs[activeTab].content}
           </div>
         </div>
       </div>

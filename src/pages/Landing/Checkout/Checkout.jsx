@@ -11,6 +11,7 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cart.items);
   const subtotal = useSelector((state) => state.cart.totalPrice);
+  console.log(products)
   const [registration] = useRegistrationMutation();
   console.log(products);
   const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ const Checkout = () => {
     const orderData = {
       userInfo: formData,
       items: products.map((product) => ({
-        productId: product.id.toString(),
+        productId: product.id,
         quantity: product.quantity,
         price: product.price,
       })),
@@ -78,18 +79,7 @@ const Checkout = () => {
       const user = await registration(normalUser);
       const response = await createOrder(orderData).unwrap();
 
-      if (user?.error?.status == 409) {
-        // Handle specific error messages
-        const errorMessage =
-          user?.error?.data?.errorSources[0]?.message || "Conflict error.";
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: errorMessage,
-        });
-        console.error("Error:", errorMessage);
-        return; // Exit the function here to avoid further processing
-      }
+     
 
       if (response.statusCode === 201) {
         console.log("Order created successfully:", response.message);
@@ -113,6 +103,18 @@ const Checkout = () => {
           `,
           confirmButtonText: "Close",
         });
+      }
+      if (user?.error?.status == 409) {
+        // Handle specific error messages
+        const errorMessage =
+          user?.error?.data?.errorSources[0]?.message || "Conflict error.";
+        Swal.fire({
+          icon: "success",
+          title: "Succeffully Take Your Order",
+          text: isSuccess,
+        });
+        console.error("Error:", errorMessage);
+        return; // Exit the function here to avoid further processing
       }
     } catch (error) {
       console.error("Failed to create order:", error);
@@ -280,7 +282,7 @@ const Checkout = () => {
             <div key={index} className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
                 <img
-                  src={product.image}
+                  src={product?.images[0]}
                   alt={product.name}
                   className="w-12 h-12 rounded"
                 />
