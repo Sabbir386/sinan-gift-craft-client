@@ -207,7 +207,7 @@ const MyAccount = () => {
     address: <p>Manage your shipping and billing address here.</p>,
     accountDetails: <p>Edit your account details here.</p>,
     wishlist: <p>Your wishlist items will be displayed here.</p>,
-    logout: <p onClick={setLogout}>You have logged out..Click Here</p>,
+    logout: <p>You have logged out.. <button className="cursor-pointer px-3 py-2 rounded-md bg-red-600 text-white" onClick={setLogout}>Logout</button></p>,
   };
   return (
     <div className="flex flex-col md:flex-row py-5  gap-4 px-6 mx-auto w-full max-w-7xl">

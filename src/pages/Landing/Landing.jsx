@@ -255,7 +255,7 @@ const Landing = () => {
           >
             {sliderItems.map((item, index) => (
               <SwiperSlide key={item.id}>
-                <div className="rounded-lg w-full relative h-[600px] overflow-hidden">
+                <div className="rounded-lg w-full relative h-[300px] md:h-[600px] overflow-hidden">
                   <motion.img
                     src={item.backgroundImage}
                     alt=""
@@ -345,7 +345,7 @@ const Landing = () => {
             modules={[Autoplay]}
           >
             <SwiperSlide>
-              <div className="rounded-lg w-full relative h-[600px] overflow-hidden group">
+              <div className="rounded-lg w-full relative h-[300px] md:h-[600px] overflow-hidden group">
                 <img
                   src={"https://i.ibb.co.com/XXC60c1/banner-right.png"}
                   alt=""
@@ -367,7 +367,7 @@ const Landing = () => {
               </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="rounded-lg w-full relative h-[600px] overflow-hidden group">
+              <div className="rounded-lg w-full relative h-[300px] md:h-[600px] overflow-hidden group">
                 <img
                   src={"https://i.ibb.co.com/frMddxX/image-178.png"}
                   alt=""
@@ -389,7 +389,7 @@ const Landing = () => {
               </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="rounded-lg w-full relative h-[600px] overflow-hidden group">
+              <div className="rounded-lg w-full relative h-[300px] md:h-[600px] overflow-hidden group">
                 <img
                   src={"https://i.ibb.co.com/XXC60c1/banner-right.png"}
                   alt=""
@@ -425,19 +425,19 @@ const Landing = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-7 py-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-7 py-4">
           {categoriesItem.map((category, index) => (
             <Link
               key={index}
               to={"/"}
-              className="rounded-lg relative h-[320px] md:h-[420px] group"
+              className="rounded-lg relative h-[180px] md:h-[420px] group"
             >
               <img
                 src={category.image}
                 alt=""
                 className="absolute top-0 left-0 z-10 object-cover rounded-lg w-full h-full group-hover:blur-[2px] duration-300"
               />
-              <div className="absolute bottom-10 rounded-full left-1/2 -translate-x-1/2 z-10 px-5 py-3 bg-white hover:bg-secondaryColor hover:text-white duration-300 group-hover:bottom-1/2 group-hover:translate-y-1/2">
+              <div className="w-5/6 md:w-auto absolute bottom-10 rounded-full left-1/2 -translate-x-1/2 z-10 px-2 md:px-5 py-3 bg-white hover:bg-secondaryColor hover:text-white duration-300 group-hover:bottom-1/2 group-hover:translate-y-1/2">
                 <p className="text-center text-sm ">{category.title}</p>
               </div>
             </Link>
@@ -446,12 +446,12 @@ const Landing = () => {
       </div>
       {/* new arrival */}
       <div className="px-6">
-        <div className="flex flex-col items-center md:flex-row gap-10 bg-gradient-to-r from-primaryColor to-secondaryColor animate-floatingBackground py-20 px-12 rounded-md">
+        <div className="flex flex-col items-center md:flex-row gap-10 bg-gradient-to-r from-primaryColor to-secondaryColor animate-floatingBackground py-10 md:py-20 px-12 rounded-md">
           <div className="flex justify-between items-baseline gap-7 relative">
             <img
               src={"https://i.ibb.co.com/Vt993n6/new-arrival-one.png"}
               alt=""
-              className="w-full h-72 md:h-96  rounded-xl object-cover hover:scale-110 duration-300"
+              className="w-full h-56 md:h-96  rounded-xl object-cover hover:scale-110 duration-300"
             />
             <img
               src={"https://i.ibb.co.com/TRVdXNz/new-arrival-two.png"}
@@ -460,7 +460,7 @@ const Landing = () => {
             />
           </div>
           <div className=" md:px-52">
-            <h2 className="text-5xl font-bold text-headingColor">
+            <h2 className="text-3xl md:text-5xl font-bold text-headingColor">
               New Arrival <br /> Collection 24
             </h2>
             <p className="text-sm">
@@ -596,7 +596,7 @@ const Landing = () => {
           <img
             src="https://i.ibb.co.com/0qmGPNx/image-186.png"
             alt=""
-            className="rounded-xl w-full h-88 object-cover hover:scale-105 duration-500"
+            className="rounded-xl w-full h-60 md:h-88 object-cover hover:scale-105 duration-500"
           />
         </div>
       </div>

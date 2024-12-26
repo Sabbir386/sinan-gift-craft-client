@@ -110,13 +110,17 @@ const LandingLayout = () => {
         <div className="fixed w-full top-0 z-[99999]">
           {/* naver section  */}
           <header className="z-[999] bg-white w-full left-0 top-0">
-            <div className="flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-center py-5 px-6">
+            <div className="flex flex-row gap-4 md:gap-0 justify-between items-center py-5 px-6">
               <div>
                 <Link to="/">
-                  <img src={Sinan} alt="" className="w-full object-cover" />
+                  <img
+                    src={Sinan}
+                    alt=""
+                    className="w-[100px] md:w-full object-cover"
+                  />
                 </Link>
               </div>
-              <div>
+              <div className="hidden md:block">
                 <form action="" className="flex border-[1px] rounded-full">
                   <select
                     name=""
@@ -143,7 +147,7 @@ const LandingLayout = () => {
                   </button>
                 </form>
               </div>
-              <div className="flex justify-end items-cente gap-3">
+              <div className="flex justify-center md:justify-end items-center gap-3 -translate-x-4 md:translate-x-0">
                 <Link
                   to={"/cart"}
                   className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300"
@@ -168,8 +172,31 @@ const LandingLayout = () => {
                   <FaUser className="text-xs" />
                 </Link>
               </div>
+              <div className="block md:hidden">
+                <button
+                  onClick={() => setOpen(!open)}
+                  className="relative w-10 h-10 flex items-center justify-center"
+                >
+                  {/* Top bar */}
+                  <span
+                    className={`absolute w-6 h-[1px] bg-black transform transition-transform duration-300 ${
+                      open ? "rotate-45 translate-y-0" : "-translate-y-1.5"
+                    }`}
+                  ></span>
+                  {/* Bottom bar */}
+                  <span
+                    className={`absolute w-6 h-[1px] bg-black transform transition-transform duration-300 ${
+                      open ? "-rotate-45 -translate-y-0" : "translate-y-1.5"
+                    }`}
+                  ></span>
+                </button>
+              </div>
             </div>
-            <div className="py-5 px-2 flex flex-wrap flex-row gap-4 justify-center items-center bg-primaryColor">
+            <div
+              className={`py-5 px-2 w-full flex flex-wrap flex-row gap-4 justify-center items-center bg-primaryColor ${
+                open ? "absolute right-0" : "absolute -right-[100%]"
+              } md:relative md:right-0 transition-all duration-500`}
+            >
               {menuArray.map((item, index) => (
                 <Link
                   key={index}

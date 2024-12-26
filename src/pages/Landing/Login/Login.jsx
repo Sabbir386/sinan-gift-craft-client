@@ -7,7 +7,6 @@ import { verifyToken } from "../../../utils/verifyToken";
 import { setUser } from "../../../redux/features/auth/authSlice";
 import { toast } from "sonner";
 
-
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -41,8 +40,8 @@ export default function Login() {
 
       dispatch(setUser({ user, token: res.data.accessToken })); // Save user to Redux
       toast.success("Logged in", { id: toastId, duration: 2000 });
-      navigate("/my-account"); 
-      // navigate("/dashboard"); 
+      console.log(user)
+      navigate(user.role === 'superAdmin' ? "/dashboard" : "/my-account");
     } catch (error) {
       const errorMessage = error?.data?.message || "Something went wrong";
       toast.error(errorMessage, { id: toastId, duration: 2000 });
@@ -74,99 +73,102 @@ export default function Login() {
 
         {/* Input Fields */}
         <form onSubmit={loginUser} className="space-y-4">
-      <div>
-        <label htmlFor="email" className="sr-only">
-          E-Mail Address
-        </label>
-        <input
-          id="email"
-          type="email"
-          placeholder="Enter your email..."
-          value={data.email}
-          onChange={(e) => setData({ ...data, email: e.target.value })}
-          className="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      {/* Password Field with Show/Hide Toggle */}
-      <div className="relative">
-        <label htmlFor="password" className="sr-only">
-          Password
-        </label>
-        <input
-          id="password"
-          type={showPassword ? "text" : "password"} // Toggle between text and password types
-          placeholder="Password"
-          value={data.password}
-          onChange={(e) => setData({ ...data, password: e.target.value })}
-          className="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <div
-          className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-          onClick={togglePasswordVisibility}
-        >
-          {showPassword ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          <div>
+            <label htmlFor="email" className="sr-only">
+              E-Mail Address
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your email..."
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
+              className="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          {/* Password Field with Show/Hide Toggle */}
+          <div className="relative">
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"} // Toggle between text and password types
+              placeholder="Password"
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
+              className="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <div
+              className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+              onClick={togglePasswordVisibility}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13.875 18.825L9 12m4.875 6.825l4.875-6.825M9 12L4.125 5.175M9 12l4.875-6.825"
+              {showPassword ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13.875 18.825L9 12m4.875 6.825l4.875-6.825M9 12L4.125 5.175M9 12l4.875-6.825"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9.75 15.825l4.5-6.45m0 0l4.5 6.45M14.25 9.375H9.75m9 5.625a8.25 8.25 0 11-9-13.875"
+                  />
+                </svg>
+              )}
+            </div>
+          </div>
+
+          {/* Remember Me and Forgot Password */}
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                type="checkbox"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+              <label htmlFor="remember-me" className="ml-2 block text-gray-500">
+                Remember me
+              </label>
+            </div>
+            <div>
+              <Link
+                to="/forgot-password"
+                className="text-sm text-blue-500 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+          </div>
+
+          {/* Sign In Button */}
+          <div>
+            <button
+              type="submit"
+              className="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9.75 15.825l4.5-6.45m0 0l4.5 6.45M14.25 9.375H9.75m9 5.625a8.25 8.25 0 11-9-13.875"
-              />
-            </svg>
-          )}
-        </div>
-      </div>
-
-      {/* Remember Me and Forgot Password */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center">
-          <input
-            id="remember-me"
-            type="checkbox"
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-          />
-          <label htmlFor="remember-me" className="ml-2 block text-gray-500">
-            Remember me
-          </label>
-        </div>
-        <div>
-          <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">
-            Forgot password?
-          </Link>
-        </div>
-      </div>
-
-      {/* Sign In Button */}
-      <div>
-        <button
-          type="submit"
-          className="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800"
-        >
-          Sign in
-        </button>
-      </div>
-    </form>
+              Sign in
+            </button>
+          </div>
+        </form>
 
         {/* Sign Up Link */}
         <div className="text-center mt-6 text-gray-500">
