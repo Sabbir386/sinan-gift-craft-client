@@ -48,7 +48,7 @@ function RootLayout() {
     }
     const handleScroll = () => {
       if (window.scrollY > 100) {
-        setBgColor("bg-secondaryColor"); // Change color when scrolled
+        setBgColor("bg-black"); // Change color when scrolled
       } else {
         setBgColor("bg-transparent"); // Default color
       }
@@ -96,7 +96,7 @@ function RootLayout() {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="min-h-screen ml-0 md:ml-[16rem] flex-1 mx-auto py-4 w-5 md:w-[100% - 16rem] bg-primaryColor px-3 relative">
+      <main className="min-h-screen ml-0 md:ml-[16rem] flex-1 mx-auto py-4 w-5 md:w-[100% - 16rem] bg-black px-3 relative">
         <div
           className={`flex justify-end items-center space-x-4 fixed top-0 left-0 w-full h-16 px-4 z-[990] ${bgColor}`}
         >

@@ -81,34 +81,34 @@ const ViewCategory = () => {
           </tr>
         </thead>
         <tbody className="text-white">
-          {paginatedData.map((row, i) => (
-            <tr key={row._id}>
-              <td className="px-5 py-2 border-b border-gray-200 bg-secondaryColor text-sm">
-                {i + 1}
-              </td>
-              <td className="px-5 py-2 border-b border-gray-200 bg-secondaryColor text-sm">
-                {row.categoryName}
-              </td>
+  {paginatedData.map((row, i) => (
+    <tr key={row._id}>
+      <td className="px-5 py-2 border-b border-gray-200 bg-secondaryColor text-sm">
+        {offset + i + 1}
+      </td>
+      <td className="px-5 py-2 border-b border-gray-200 bg-secondaryColor text-sm">
+        {row.categoryName}
+      </td>
+      <td className="px-1 py-2 border-b border-gray-200 bg-secondaryColor text-sm">
+        <div className="flex flex-col md:flex-row gap-1 justify-center items-center">
+          <Link
+            to={`/dashboard/edit-category/${row._id}`}
+            className="w-7 h-7 grid justify-center items-center bg-blue-500 rounded text-white"
+          >
+            <FaEdit />
+          </Link>
+          <button
+            onClick={() => handleDelete(row._id)}
+            className="w-7 h-7 grid justify-center items-center bg-red-500 rounded text-white"
+          >
+            <FaRegTrashAlt />
+          </button>
+        </div>
+      </td>
+    </tr>
+  ))}
+</tbody>
 
-              <td className="px-1 py-2 border-b border-gray-200 bg-secondaryColor text-sm">
-                <div className="flex flex-col md:flex-row gap-1 justify-center items-center">
-                  <Link
-                    to={`/dashboard/edit-category/${row._id}`}
-                    className="w-7 h-7 grid justify-center items-center bg-blue-500 rounded text-white"
-                  >
-                    <FaEdit />
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(row._id)}
-                    className="w-7 h-7 grid justify-center items-center bg-red-500 rounded text-white "
-                  >
-                    <FaRegTrashAlt />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
       </table>
       <ReactPaginate
         className="flex mt-5 gap-3 text-white"

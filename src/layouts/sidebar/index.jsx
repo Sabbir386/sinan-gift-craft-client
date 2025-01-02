@@ -86,53 +86,8 @@ const Sidebar = () => {
           },
         ],
       },
-      // {
-      //   id: "admin-advertisers",
-      //   name: "Advertiser's",
-      //   icon: CiBullhorn,
-      //   menus: [
-      //     {
-      //       id: "admin-create-advertiser",
-      //       path: "create-advertiser",
-      //       name: "- Create Advertiser",
-      //     },
-      //     {
-      //       id: "admin-view-advertiser",
-      //       path: "view-advertiser",
-      //       name: "- All-Advertiser List",
-      //     },
-      //   ],
-      // },
-      {
-        id: "admin-users",
-        name: "User's",
-        icon: HiOutlineUsers,
-        menus: [
-          {
-            id: "admin-create-user",
-            path: "create-user",
-            name: "- Create User",
-          },
-          { id: "admin-view-user", path: "view-user", name: "- All-User List" },
-        ],
-      },
-      {
-        id: "admin-network",
-        name: "Network",
-        icon: HiOutlineUsers,
-        menus: [
-          {
-            id: "admin-create-network",
-            path: "create-network",
-            name: "- Create New Network",
-          },
-          {
-            id: "admin-view-network",
-            path: "view-network",
-            name: "- All Network List",
-          },
-        ],
-      },
+    
+     
       {
         id: "admin-category",
         name: "Category",
@@ -249,74 +204,7 @@ const Sidebar = () => {
           },
         ],
       },
-      {
-        id: "superadmin-admins",
-        name: "Admin's",
-        icon: BsPerson,
-        menus: [
-          {
-            id: "superadmin-create-admin",
-            path: "create-admin",
-            name: "- Create Admin",
-          },
-          {
-            id: "superadmin-view-admin",
-            path: "view-admin",
-            name: "- All-Admin List",
-          },
-        ],
-      },
-      {
-        id: "superadmin-advertisers",
-        name: "Advertiser's",
-        icon: CiBullhorn,
-        menus: [
-          // {
-          //   id: "superadmin-create-advertiser",
-          //   path: "create-advertiser",
-          //   name: "- Create Advertiser",
-          // },
-          {
-            id: "superadmin-view-advertiser",
-            path: "view-advertiser",
-            name: "- All-Advertiser List",
-          },
-        ],
-      },
-      {
-        id: "superadmin-users",
-        name: "User's",
-        icon: HiOutlineUsers,
-        menus: [
-          // {
-          //   id: "superadmin-create-user",
-          //   path: "create-user",
-          //   name: "- Create User",
-          // },
-          {
-            id: "superadmin-view-user",
-            path: "view-user",
-            name: "- All-User List",
-          },
-        ],
-      },
-      {
-        id: "superadmin-network",
-        name: "Network",
-        icon: HiOutlineUsers,
-        menus: [
-          {
-            id: "superadmin-create-network",
-            path: "create-network",
-            name: "- Create New Network",
-          },
-          {
-            id: "superadmin-view-network",
-            path: "view-network",
-            name: "- All Network List",
-          },
-        ],
-      },
+   
       {
         id: "superadmin-category",
         name: "Category",
@@ -335,14 +223,31 @@ const Sidebar = () => {
         ],
       },
       {
-        id: "Withdrawl",
-        name: "withdrawl",
+        id: "superadmin-subcategory",
+        name: "Subcategory",
         icon: HiOutlineUsers,
         menus: [
           {
-            id: "superadmin-withdrawl-list",
-            path: "withdrawl-list",
-            name: "Withdrawl History",
+            id: "superadmin-create-subcategory",
+            path: "create-subcategory",
+            name: "- Create New subcategory",
+          },
+          {
+            id: "superadmin-view-subcategory",
+            path: "view-subcategory",
+            name: "- All subcategory List",
+          },
+        ],
+      },
+      {
+        id: "Orders",
+        name: "Orders",
+        icon: HiOutlineUsers,
+        menus: [
+          {
+            id: "superadmin-orders-list",
+            path: "orders-list",
+            name: "orders History",
           },
         
         ],
@@ -398,13 +303,13 @@ const Sidebar = () => {
         variants={Nav_animation}
         initial={{ x: isTabletMid ? -250 : 0 }}
         animate={open ? "open" : "closed"}
-        className="bg-secondaryColor text-gray shadow-xl z-[999] max-w-[16rem] w-[16rem] 
+        className="bg-black text-gray shadow-xl z-[999] max-w-[16rem] w-[16rem] 
             overflow-hidden md:relative fixed
          h-screen "
       >
         <div className="flex items-center gap-2.5 font-medium border-b py-3 border-slate-300 mx-3">
-          <span className="text-buttonBackground font-bold text-4xl whitespace-pre">
-            CASHOOZ
+          <span className="text-white font-bold text-4xl whitespace-pre">
+            SINAN
           </span>
         </div>
 
@@ -415,8 +320,8 @@ const Sidebar = () => {
                 to={"/dashboard"}
                 className={`p-2.5 flex rounded-md gap-6 items-center md:cursor-pointer cursor-default duration-300 font-medium ${
                   location.pathname === "/dashboard"
-                    ? "text-grayColor hover:text-buttonBackground"
-                    : "text-grayColor hover:text-buttonBackground"
+                    ? "text-white hover:text-buttonBackground"
+                    : "text-white hover:text-buttonBackground"
                 }`}
                 onClick={() => setOpen(false)}
               >
@@ -433,12 +338,12 @@ const Sidebar = () => {
               ) : (
                 <li
                   key={menu.id}
-                  className="mb-1 text-grayColor hover:text-buttonBackground"
+                  className="mb-1 text-white hover:text-buttonBackground"
                 >
                   <Link
                   onClick={() => setOpen(false)}
                     to={`/dashboard/${menu.path}`}
-                    className={`p-2.5 flex rounded-md gap-6 items-center md:cursor-pointer cursor-default duration-300 font-medium hover:text-buttonBackground hover:bg-hoverBgColor`}
+                    className={`p-2.5 flex rounded-md gap-6 items-center md:cursor-pointer cursor-default duration-300 font-medium text-white hover:text-buttonBackground hover:bg-hoverBgColor`}
                   >
                     <menu.icon size={23} className="min-w-max" />
                     {menu.name}
@@ -448,19 +353,7 @@ const Sidebar = () => {
             )}
           </ul>
 
-          {open && (
-            <div className="flex-1 text-sm z-50 max-h-48 my-auto whitespace-pre w-full font-medium">
-              <div className="flex border-y border-slate-300 p-4 items-center justify-between">
-                <div className="text-grayColor">
-                  <p>Cashooz</p>
-                  <small>No-cost $0/month</small>
-                </div>
-                <p className="text-white py-1.5 px-3 text-xs bg-buttonBackground rounded-xl">
-                  Upgrade
-                </p>
-              </div>
-            </div>
-          )}
+          
         </div>
         {/* <motion.div
           onClick={() => {

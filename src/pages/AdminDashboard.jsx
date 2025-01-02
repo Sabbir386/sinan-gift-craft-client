@@ -385,7 +385,7 @@ const AdminDashboard = () => {
 
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-cardBackground text-white px-4 py-6 rounded shadow-sm">
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
             <h4 className="font-bold text-xl">Total Offer</h4>
             {isLoadingOffer && <p>Loading...</p>}
             {errorOffer && <p>Error loading offer data</p>}
@@ -394,7 +394,7 @@ const AdminDashboard = () => {
         )}
 
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-secondaryColor text-white px-4 py-6 rounded shadow-sm">
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
             <h4 className="font-bold text-">All Completed Offer</h4>
             {isLoadingCompleted && <p>Loading...</p>}
             {errorCompleted && <p>Error loading offer data</p>}
@@ -403,7 +403,7 @@ const AdminDashboard = () => {
         )}
 
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-secondaryColor text-white px-4 py-6 rounded shadow-sm">
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
             <h4 className="font-bold text-xl">Total Admin</h4>
             {isLoadingAdmins && <p>Loading...</p>}
             {errorAdmins && <p>Error loading offer data</p>}
@@ -412,7 +412,7 @@ const AdminDashboard = () => {
         )}
 
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-secondaryColor text-white px-4 py-6 rounded shadow-sm">
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
             <h4 className="font-bold text-">Total User</h4>
             {isLoadingUsers && <p>Loading...</p>}
             {errorUsers && <p>Error loading offer data</p>}
@@ -421,7 +421,7 @@ const AdminDashboard = () => {
         )}
 
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-secondaryColor text-white px-4 py-6 rounded shadow-sm">
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
             <h4 className="font-bold text-xl">Total Advertiser</h4>
             {isLoadingAdvertisers && <p>Loading...</p>}
             {errorAdvertisers && <p>Error loading offer data</p>}
@@ -432,7 +432,7 @@ const AdminDashboard = () => {
         )}
 
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-secondaryColor text-white px-4 py-6 rounded shadow-sm">
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
             <h4 className="font-bold text-xl">Today Completed Offer</h4>
             <h5 className="font-semibold text-base">
               {regularCompletedOffer?.data[0]?.TotalCount}
@@ -442,20 +442,20 @@ const AdminDashboard = () => {
       </div>
       <div className="grid gap-4 mt-5 grid-cols-1 md:grid-cols-2">
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-cardBackground px-4 py-6 rounded shadow-sm">
+          <div className="bg-black px-4 py-6 rounded shadow-white shadow-sm">
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={data}>
-                <XAxis dataKey="id" stroke="#8884d8" />
+                <XAxis dataKey="id" stroke="#ffffff" />
                 <YAxis />
                 <Tooltip
-                  wrapperStyle={{ width: 100, backgroundColor: "#ccc" }}
+                  wrapperStyle={{ width: 100, backgroundColor: "#fff" }}
                 />
                 <Legend
                   width={100}
                   wrapperStyle={{
                     top: 40,
                     right: 20,
-                    backgroundColor: "#f5f5f5",
+                    backgroundColor: "#000000",
                     border: "1px solid #d5d5d5",
                     borderRadius: 3,
                     lineHeight: "40px",
@@ -469,7 +469,7 @@ const AdminDashboard = () => {
         )}
 
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-secondaryColor px-4 py-6 rounded shadow-sm">
+          <div className="bg-black px-4 py-6 rounded shadow-white shadow-sm">
             <ResponsiveContainer width="100%" height={250}>
               <PieChart width={400} height={400}>
                 <Pie
@@ -499,7 +499,7 @@ const AdminDashboard = () => {
         {(userRole === "admin" || userRole === "superAdmin") && (
           <div
             style={{ width: "100%", height: 300 }}
-            className="bg-secondaryColor px-4 py-6 rounded shadow-sm mt-5"
+            className="bg-black px-4 py-6 rounded shadow-sm mt-5"
           >
             <ResponsiveContainer>
               <AreaChart
@@ -526,20 +526,20 @@ const AdminDashboard = () => {
           </div>
         )}
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-secondaryColor px-4 py-6 rounded shadow-sm mt-5 overflow-x-auto">
+          <div className="bg-black px-4 py-6 rounded shadow-white shadow-sm mt-5 overflow-x-auto">
             <table className="min-w-full bg-white border-collapse border border-gray-300 rounded-lg overflow-hidden">
-              <thead className="bg-secondaryColor text-white">
+              <thead className="bg-black text-white">
                 <tr className="text-left">
-                  <th className="py-3 px-4 uppercase font-semibold text-sm bg-secondaryColor border-b border-gray-300">
+                  <th className="py-3 px-4 uppercase font-semibold text-sm bg-black border-b border-gray-300">
                     No.
                   </th>
-                  <th className="py-3 px-4 uppercase font-semibold text-sm bg-secondaryColor border-b border-gray-300">
+                  <th className="py-3 px-4 uppercase font-semibold text-sm bg-black border-b border-gray-300">
                     Offer
                   </th>
-                  <th className="py-3 px-4 uppercase font-semibold text-sm bg-secondaryColor border-b border-gray-300">
+                  <th className="py-3 px-4 uppercase font-semibold text-sm bg-black border-b border-gray-300">
                     Completed
                   </th>
-                  <th className="py-3 px-4 uppercase font-semibold text-sm bg-secondaryColor border-b border-gray-300">
+                  <th className="py-3 px-4 uppercase font-semibold text-sm bg-black border-b border-gray-300">
                     Date
                   </th>
                 </tr>

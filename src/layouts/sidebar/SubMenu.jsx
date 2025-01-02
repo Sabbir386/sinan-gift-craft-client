@@ -13,7 +13,7 @@ const SubMenu = ({ data, setOpen }) => {
         onClick={() => setSubMenuOpen(!subMenuOpen)}
       >
         <data.icon size={23} className="min-w-max text-grayColor" />
-        <p className="flex-1 capitalize text-grayColor">{data.name}</p>
+        <p className="flex-1 capitalize text-white">{data.name}</p>
         <IoIosArrowDown
           className={` ${
             subMenuOpen && "rotate-180"
@@ -37,7 +37,7 @@ const SubMenu = ({ data, setOpen }) => {
             <NavLink
               onClick={() => setOpen(false)}
               to={`/dashboard/${menu.path}`}
-              className=" bg-transparent capitalize text-grayColor "
+              className=" bg-transparent capitalize text-white "
             >
               {menu.name}
             </NavLink>

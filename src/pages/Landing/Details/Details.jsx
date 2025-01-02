@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,13 +26,13 @@ const Details = () => {
 
   const handleAddToCart = () => {
     dispatch(addToCart({ ...product, quantity: cartQuantity }));
-    Swal.fire({
-      icon: "success",
-      title: "Added to Cart!",
-      text: `You have added ${cartQuantity} "${product?.name}" to your cart.`,
-      timer: 2000,
-      showConfirmButton: false,
-    });
+    // Swal.fire({
+    //   icon: "success",
+    //   title: "Added to Cart!",
+    //   text: `You have added ${cartQuantity} "${product?.name}" to your cart.`,
+    //   timer: 2000,
+    //   showConfirmButton: false,
+    // });
   };
 
   // Animation variants for the slide-in effect
@@ -40,6 +40,34 @@ const Details = () => {
     enter: { opacity: 0, x: 100 },
     center: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: -100 },
+  };
+  const cartIconRef = useRef(null);
+
+  const handleFlyToCart = (e) => {
+    const button = e.target.getBoundingClientRect();
+  
+    if (!cartIconRef.current) {
+      console.error("Cart icon ref is not available.");
+      return;
+    }
+  
+    const cartIcon = cartIconRef.current.getBoundingClientRect();
+  
+    const flyingItem = document.createElement("div");
+    flyingItem.className = "flying-item";
+    flyingItem.style.position = "absolute";
+    flyingItem.style.left = `${button.left + button.width / 2}px`;
+    flyingItem.style.top = `${button.top}px`;
+    document.body.appendChild(flyingItem);
+  
+    flyingItem.style.transition = "all 0.6s ease-in-out";
+    flyingItem.style.transform = `translate(${cartIcon.left - button.left}px, ${
+      cartIcon.top - button.top
+    }px) scale(0)`;
+  
+    flyingItem.addEventListener("transitionend", () => {
+      flyingItem.remove();
+    });
   };
 
   return (
@@ -154,7 +182,10 @@ const Details = () => {
           {/* Action Buttons */}
           <div className="mt-6 flex space-x-4">
             <button
-              onClick={handleAddToCart}
+              onClick={(e) => {
+                handleAddToCart();
+                handleFlyToCart(e);
+              }}
               className="w-full text-center py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
             >
               Add To Cart

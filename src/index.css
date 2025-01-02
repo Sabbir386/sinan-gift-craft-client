@@ -34,3 +34,12 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.flying-item {
+  width: 20px;
+  height: 20px;
+  background-color: #f00; /* Color to match your design */
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1000;
+}

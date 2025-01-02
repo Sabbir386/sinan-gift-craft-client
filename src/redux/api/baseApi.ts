@@ -87,6 +87,7 @@ export const baseApi = createApi({
     'Withdrawal',
     'order',
     'product',
+    'subCategory',
 
 
   ],

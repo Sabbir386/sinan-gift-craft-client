@@ -50,6 +50,8 @@ import Checkout from "../pages/Landing/Checkout/Checkout";
 import MyAccount from "../pages/Landing/MyAccount/MyAccount";
 import Categories from "../pages/Landing/Categories/Categories";
 import Login from "../pages/Landing/Login/Login";
+import CreateSubCategory from "../pages/SubCategory/CreateSubCategory";
+import ViewAllSubCategory from "../pages/SubCategory/ViewAllSubCategory";
 
 export const router = createBrowserRouter([
   {
@@ -164,6 +166,22 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoutes>
             <ViewCategory></ViewCategory>
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: "/dashboard/create-subcategory",
+        element: (
+          <ProtectedRoutes>
+            <CreateSubCategory></CreateSubCategory>
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: "/dashboard/view-subcategory",
+        element: (
+          <ProtectedRoutes>
+            <ViewAllSubCategory></ViewAllSubCategory>
           </ProtectedRoutes>
         ),
       },
