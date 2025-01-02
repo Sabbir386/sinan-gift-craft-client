@@ -52,6 +52,7 @@ import Categories from "../pages/Landing/Categories/Categories";
 import Login from "../pages/Landing/Login/Login";
 import CreateSubCategory from "../pages/SubCategory/CreateSubCategory";
 import ViewAllSubCategory from "../pages/SubCategory/ViewAllSubCategory";
+import OrderList from "../pages/OrderList/OrderList";
 
 export const router = createBrowserRouter([
   {
@@ -235,10 +236,11 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/withdrawl-list",
+        path: "/dashboard/orders-list",
         element: (
           <ProtectedRoutes>
-            <WithdrawlHistory></WithdrawlHistory>
+            {/* <WithdrawlHistory></WithdrawlHistory> */}
+            <OrderList></OrderList>
           </ProtectedRoutes>
         ),
       },
