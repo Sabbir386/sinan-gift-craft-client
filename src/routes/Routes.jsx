@@ -53,6 +53,8 @@ import Login from "../pages/Landing/Login/Login";
 import CreateSubCategory from "../pages/SubCategory/CreateSubCategory";
 import ViewAllSubCategory from "../pages/SubCategory/ViewAllSubCategory";
 import OrderList from "../pages/OrderList/OrderList";
+import ViewAllProduct from "../pages/Landing/Product/ViewAllProduct";
+import CreateProduct from "../pages/Landing/Product/CreateProduct";
 
 export const router = createBrowserRouter([
   {
@@ -139,10 +141,11 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/create-offer",
+        path: "/dashboard/create-product",
         element: (
           <ProtectedRoutes>
-            <CreateOffer></CreateOffer>
+            {/* <CreateOffer></CreateOffer> */}
+            <CreateProduct></CreateProduct>
           </ProtectedRoutes>
         ),
       },
@@ -343,12 +346,12 @@ export const router = createBrowserRouter([
           </ProtectedRoutes>
         ),
       },
-
       {
-        path: "/dashboard/offer-list",
+        path: "/dashboard/product-list",
         element: (
           <ProtectedRoutes>
-            <OfferList></OfferList>
+            {/* <OfferList></OfferList> */}
+            <ViewAllProduct></ViewAllProduct>
           </ProtectedRoutes>
         ),
       },

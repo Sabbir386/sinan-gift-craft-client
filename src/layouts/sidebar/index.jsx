@@ -189,18 +189,18 @@ const Sidebar = () => {
     menulist = [
       {
         id: "superadmin-offers",
-        name: "Offer's",
+        name: "Product's",
         icon: HiOutlineUsers,
         menus: [
           {
             id: "superadmin-create-offer",
-            path: "create-offer",
-            name: "- Create New Offer",
+            path: "create-product",
+            name: "- Create New Product",
           },
           {
             id: "superadmin-offer-list",
-            path: "offer-list",
-            name: "- All Offer List",
+            path: "product-list",
+            name: "- All Product List",
           },
         ],
       },
