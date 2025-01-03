@@ -37,9 +37,9 @@ function RootLayout() {
     error,
     isLoading,
   } = useUserTotalRewardsQuery(user?.objectId, {
-    skip: user?.role !== 'user', 
+    skip: user?.role !== "user",
   });
-  
+
   console.log(totalRewards);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ function RootLayout() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [token,dispatch]);
+  }, [token, dispatch]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -101,27 +101,27 @@ function RootLayout() {
           className={`flex justify-end items-center space-x-4 fixed top-0 left-0 w-full h-16 px-4 z-[990] ${bgColor}`}
         >
           {/* Balance Display */}
-          <div
-  className="flex items-center space-x-2 p-2 rounded-md"
-  style={{ backgroundColor: "#141523" }}
->
-  <FaCommentsDollar className="text-white text-2xl font-bold" />
-  {user?.role === 'user' && (
-    <>
-      {isLoading ? (
-        <div className="flex justify-center items-center">
-        <div className="border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-5 h-5 animate-spin"></div>
-      </div>
-      ) : error ? (
-        <span className="text-white">Error</span>
-      ) : (
-        <span className="text-buttonBackground animate-pulse font-bold text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">
-        {totalRewards?.userTotalRewards || "0"} CZ
-      </span>
-      )}
-    </>
-  )}
-</div>
+          {/* <div
+            className="flex items-center space-x-2 p-2 rounded-md"
+            style={{ backgroundColor: "#141523" }}
+          >
+            <FaCommentsDollar className="text-white text-2xl font-bold" />
+            {user?.role === "user" && (
+              <>
+                {isLoading ? (
+                  <div className="flex justify-center items-center">
+                    <div className="border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-5 h-5 animate-spin"></div>
+                  </div>
+                ) : error ? (
+                  <span className="text-white">Error</span>
+                ) : (
+                  <span className="text-buttonBackground animate-pulse font-bold text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">
+                    {totalRewards?.userTotalRewards || "0"} CZ
+                  </span>
+                )}
+              </>
+            )}
+          </div> */}
 
           {/* Profile and Dropdown */}
           <div className="relative inline-block text-left" ref={dropdownRef}>

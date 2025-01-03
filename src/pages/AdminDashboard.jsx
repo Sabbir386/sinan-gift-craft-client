@@ -341,77 +341,12 @@ const AdminDashboard = () => {
     <div className="container mx-auto">
       <div className="overflow-hidden mt-4 mb-6 z-[97]">
         <div className="text-white p-2 rounded shadow-sm inline-flex flex-nowrap gap-5 overflow-hidden animate-infinite-scroll">
-          {paymentsData.map((payment, index) => (
-            <div
-              key={payment._id}
-              className="w-[200px] flex gap-3 justify-center items-center border-r-2"
-            >
-              {/* Conditionally render icons based on paymentType */}
-              <div>
-                <div className="w-8 h-8 grid justify-center items-center rounded bg-secondaryColor">
-                  {
-                    payment.paymentType === "paypal" ? (
-                      <FaCcPaypal />
-                    ) : payment.paymentType === "stripe" ? (
-                      <FaCcStripe />
-                    ) : payment.name ? (
-                      payment.name.charAt(0)
-                    ) : (
-                      "C"
-                    ) // Default to initials if no match
-                  }
-                </div>
-              </div>
-
-              {/* Display first name */}
-              <div>
-                <h5 className="text-sm">
-                  {payment.name ? payment.name.split(" ")[0] : "Unknown"}
-                </h5>
-                <h6 className="text-xs mt-1">{payment.paymentType}</h6>
-              </div>
-
-              {/* Display payment amount */}
-              <div>
-                <span className="px-4 py-2 bg-secondaryColor rounded text-buttonBackground">
-                  ${parseFloat(payment.amount / 100).toFixed(2)}{" "}
-                  {/* Convert amount to dollars */}
-                </span>
-              </div>
-            </div>
-          ))}
+         
         </div>
       </div>
 
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-        {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
-            <h4 className="font-bold text-xl">Total Offer</h4>
-            {isLoadingOffer && <p>Loading...</p>}
-            {errorOffer && <p>Error loading offer data</p>}
-            <h5 className="font-semibold text-base">{countTotalOffer}</h5>
-          </div>
-        )}
-
-        {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
-            <h4 className="font-bold text-">All Completed Offer</h4>
-            {isLoadingCompleted && <p>Loading...</p>}
-            {errorCompleted && <p>Error loading offer data</p>}
-            <h5 className="font-semibold text-base">{countCompletedOffer}</h5>
-          </div>
-        )}
-
-        {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
-            <h4 className="font-bold text-xl">Total Admin</h4>
-            {isLoadingAdmins && <p>Loading...</p>}
-            {errorAdmins && <p>Error loading offer data</p>}
-            <h5 className="font-semibold text-base">{countTotalAdmin}</h5>
-          </div>
-        )}
-
-        {(userRole === "admin" || userRole === "superAdmin") && (
+      {(userRole === "admin" || userRole === "superAdmin") && (
           <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
             <h4 className="font-bold text-">Total User</h4>
             {isLoadingUsers && <p>Loading...</p>}
@@ -419,8 +354,36 @@ const AdminDashboard = () => {
             <h5 className="font-semibold text-base">{countTotalUser}</h5>
           </div>
         )}
-
         {(userRole === "admin" || userRole === "superAdmin") && (
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
+            <h4 className="font-bold text-xl">Total Product</h4>
+            {isLoadingOffer && <p>Loading...</p>}
+            {errorOffer && <p>Error loading offer data</p>}
+            <h5 className="font-semibold text-base">{countTotalOffer}</h5>
+          </div>
+        )}
+       
+        {(userRole === "admin" || userRole === "superAdmin") && (
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
+            <h4 className="font-bold text-">Total Product Delivered</h4>
+            {isLoadingCompleted && <p>Loading...</p>}
+            {errorCompleted && <p>Error loading offer data</p>}
+            <h5 className="font-semibold text-base">{countCompletedOffer}</h5>
+          </div>
+        )}
+
+        {/* {(userRole === "admin" || userRole === "superAdmin") && (
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
+            <h4 className="font-bold text-xl">Total Admin</h4>
+            {isLoadingAdmins && <p>Loading...</p>}
+            {errorAdmins && <p>Error loading offer data</p>}
+            <h5 className="font-semibold text-base">{countTotalAdmin}</h5>
+          </div>
+        )} */}
+
+        
+
+        {/* {(userRole === "admin" || userRole === "superAdmin") && (
           <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
             <h4 className="font-bold text-xl">Total Advertiser</h4>
             {isLoadingAdvertisers && <p>Loading...</p>}
@@ -429,18 +392,26 @@ const AdminDashboard = () => {
               {countTotalAdvertiser ? countTotalAdvertiser : "0"}
             </h5>
           </div>
-        )}
+        )} */}
 
         {(userRole === "admin" || userRole === "superAdmin") && (
           <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
-            <h4 className="font-bold text-xl">Today Completed Offer</h4>
+            <h4 className="font-bold text-xl">Today Product Delivered</h4>
+            <h5 className="font-semibold text-base">
+              {regularCompletedOffer?.data[0]?.TotalCount}
+            </h5>
+          </div>
+        )}
+        {(userRole === "admin" || userRole === "superAdmin") && (
+          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
+            <h4 className="font-bold text-xl">Total Pending</h4>
             <h5 className="font-semibold text-base">
               {regularCompletedOffer?.data[0]?.TotalCount}
             </h5>
           </div>
         )}
       </div>
-      <div className="grid gap-4 mt-5 grid-cols-1 md:grid-cols-2">
+      {/* <div className="grid gap-4 mt-5 grid-cols-1 md:grid-cols-2">
         {(userRole === "admin" || userRole === "superAdmin") && (
           <div className="bg-black px-4 py-6 rounded shadow-white shadow-sm">
             <ResponsiveContainer width="100%" height={200}>
@@ -567,11 +538,11 @@ const AdminDashboard = () => {
             </table>
           </div>
         )}
-      </div>
+      </div> */}
 
-      <OfferView></OfferView>
+      
 
-      <div className="hidden w-full bg-white px-4 py-6 rounded shadow-sm my-5">
+      {/* <div className="hidden w-full bg-white px-4 py-6 rounded shadow-sm my-5">
         <Swiper
           className="w-full"
           spaceBetween={50}
@@ -608,7 +579,7 @@ const AdminDashboard = () => {
               </SwiperSlide>
             ))}
         </Swiper>
-      </div>
+      </div> */}
     </div>
   );
 };

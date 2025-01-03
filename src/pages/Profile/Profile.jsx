@@ -318,7 +318,7 @@ const Profile = () => {
               Details Information
             </h3>
           </div>
-          <div className="flex flex-col items-center lg:flex-row gap-3">
+          {/* <div className="flex flex-col items-center lg:flex-row gap-3">
             <div
               className="flex justify-center items-center gap-2 text-white cursor-pointer"
               onClick={() => toggleModal()}
@@ -338,7 +338,7 @@ const Profile = () => {
               {" "}
               <span>Download Info</span> <FaArrowAltCircleDown />
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="py-4 flex flex-col lg:flex-row gap-3">
           <div>
@@ -439,7 +439,7 @@ const Profile = () => {
 
       <UserDashboard />
 
-      <div className="bg-cardBackground p-4 rounded-md my-4">
+      {/* <div className="bg-cardBackground p-4 rounded-md my-4">
         <div className="py-4 flex flex-col md:flex-row gap-3 justify-between">
           <div>
             <h3 className="text-xl font-bold text-white border-l-4 border-buttonBackground pl-3 ">
@@ -469,7 +469,7 @@ const Profile = () => {
         </div>
 
         <div className="p-4 mt-4">{tabComponents[activeTab]}</div>
-      </div>
+      </div> */}
       {isModalOpen && (
         <div
           className={`w-full min-h-screen fixed inset-0 bg-black bg-opacity-75 z-[99999] p-0 md:p-6 overflow-y-scroll transition-opacity duration-700 ${

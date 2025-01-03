@@ -390,24 +390,7 @@ const CreateOffer = () => {
                 {...register("name", { required: "Name is required" })}
               />
             </div>
-            {/* <div>
-              <label
-                htmlFor="offerStatus"
-                className="block mb-2 text-sm font-medium text-white"
-              >
-                Offer Status
-              </label>
-              <input
-                type="text"
-                id="offerStatus"
-                className="border border-gray-400 outline-none p-2.5 rounded-md w-full focus:border-blue-700 text-sm"
-                placeholder="Offer Status"
-                required
-                {...register("offerStatus", {
-                  required: "Offer Status is required",
-                })}
-              />
-            </div> */}
+           
             <div>
               <label
                 htmlFor="category"
@@ -539,14 +522,7 @@ const CreateOffer = () => {
                   />
                 )}
               />
-              {/* <Select
-                defaultValue={[tags[0], tags[1]]}
-                isMulti
-                options={tags}
-                className="basic-multi-select"
-                classNamePrefix="select"
-                {...register("country")}
-              /> */}
+             
                         
             </div>
             <div className="mb-6">
@@ -570,14 +546,7 @@ const CreateOffer = () => {
                   />
                 )}
               />
-              {/* <Select
-                defaultValue={[tags[0], tags[1]]}
-                isMulti
-                options={tags}
-                className="basic-multi-select"
-                classNamePrefix="select"
-                {...register("country")}
-              /> */}
+             
                         
             </div>
             <div className="mb-6">
