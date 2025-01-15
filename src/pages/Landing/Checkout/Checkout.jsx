@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { Link } from "react-router-dom";
 import { useCreateOrderMutation } from "../OrderApi/orderApi";
 import { clearCart } from "../../../redux/features/cart/cartSlice";
@@ -11,18 +10,17 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cart.items);
   const subtotal = useSelector((state) => state.cart.totalPrice);
-  console.log(products)
+
   const [registration] = useRegistrationMutation();
-  console.log(products);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     city: "",
-    country: "",
     address: "",
     email: "",
     phone: "",
   });
+  const [uniqueEmail, setUniqueEmail] = useState("");
 
   const [createOrder, { isLoading, isSuccess, isError }] =
     useCreateOrderMutation();
@@ -31,12 +29,27 @@ const Checkout = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   const handleClearCart = () => {
-    dispatch(clearCart()); // Assumes `clearCart` is an action in your Redux store
+    dispatch(clearCart());
   };
+
+  const generateUniqueEmail = () => {
+    const randomNumber = Math.floor(10000 + Math.random() * 90000); // Generates a 5-digit random number
+    return `sinanUser${randomNumber}@gmail.com`;
+  };
+  useEffect(() => {
+    setUniqueEmail(generateUniqueEmail());
+  }, []);
   const handleCreateOrder = async () => {
+    // Set the email to formData.email if available, else use uniqueEmail
+    const userEmail = formData.email || uniqueEmail;
+  
     const orderData = {
-      userInfo: formData,
+      userInfo: {
+        ...formData,
+        email: userEmail, 
+      },
       items: products.map((product) => ({
         productId: product.id,
         quantity: product.quantity,
@@ -45,13 +58,13 @@ const Checkout = () => {
       totalAmount: subtotal,
       status: "Pending",
     };
+  
     const normalUser = {
       password: "user12345",
       normalUser: {
         name: formData?.firstName,
-        email: formData?.email,
-        // ip: ip,
-        // country: country,
+        email: userEmail, // Use userEmail here
+        country: "Bangladesh",
         designation: "Client",
         username: "sharukh Khan",
         gender: "male",
@@ -65,61 +78,49 @@ const Checkout = () => {
         isDeleted: false,
       },
     };
+  
     try {
-      // Show a loading modal while processing the order
       Swal.fire({
         title: "Signing in...",
         text: "Please wait a moment while we take your order...",
         allowOutsideClick: false,
         didOpen: () => {
-          Swal.showLoading(); // Show loading spinner
+          Swal.showLoading();
         },
       });
-
+      if (!userEmail){
+        return;
+      }
       const user = await registration(normalUser);
       const response = await createOrder(orderData).unwrap();
-
-     
-
+  
       if (response.statusCode === 201) {
-        console.log("Order created successfully:", response.message);
-
-        // Clear the cart after successful order creation
         handleClearCart();
-
-        // Show success message with the login URL
         Swal.fire({
           icon: "success",
           title: "Order Created Successfully!",
           html: `
             <p>Your order has been created successfully.</p>
             <p>You can log in to your account to track your order status:</p>
-            <a href="https://sinangiftcorner.web.app/login" target="_blank" style="color: #007BFF; font-weight: bold;">
-            <p>To manage your order and track its progress, you need to log in to your SINAN SHOP account using the credentials provided below:</p>
-            <p><strong>Email:</strong> ${formData?.email}</p>
+            <p><strong>Email:</strong> ${userEmail}</p>
             <p><strong>Password:</strong> user12345</p>
-              View My Order
-            </a>
           `,
           confirmButtonText: "Close",
         });
       }
-      if (user?.error?.status == 409) {
-        // Handle specific error messages
+  
+      if (user?.error?.status === 409) {
         const errorMessage =
           user?.error?.data?.errorSources[0]?.message || "Conflict error.";
         Swal.fire({
-          icon: "success",
-          title: "Succeffully Take Your Order",
-          text: isSuccess,
+          icon: "error",
+          title: "Conflict Error",
+          text: errorMessage,
         });
-        console.error("Error:", errorMessage);
-        return; // Exit the function here to avoid further processing
+        return;
       }
     } catch (error) {
       console.error("Failed to create order:", error);
-
-      // Show error message
       Swal.fire({
         icon: "error",
         title: "Order Creation Failed",
@@ -127,7 +128,7 @@ const Checkout = () => {
       });
     }
   };
-
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 mx-auto w-full max-w-7xl">
       {/* Left Section */}
@@ -172,29 +173,7 @@ const Checkout = () => {
             </div>
           </div>
 
-          {/* Country/Region */}
-          <div>
-            <label
-              htmlFor="country"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Country/Region<span className="text-red-500">*</span>
-            </label>
-            <select
-              id="country"
-              name="country"
-              value={formData.country}
-              onChange={handleInputChange}
-              className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
-              required
-            >
-              <option value="">---</option>
-              <option value="USA">USA</option>
-              <option value="Canada">Canada</option>
-              <option value="UK">UK</option>
-              {/* Add more country options */}
-            </select>
-          </div>
+          
 
           {/* Town/City */}
           <div>
@@ -259,7 +238,8 @@ const Checkout = () => {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-              Email<span className="text-red-500">*</span>
+              Email *(Optional)
+              {/* <span className="text-red-500">*</span> */}
             </label>
             <input
               type="email"

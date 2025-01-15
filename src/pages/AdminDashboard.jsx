@@ -347,7 +347,7 @@ const AdminDashboard = () => {
 
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
       {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
+          <div className="bg-white text-black px-4 py-6 rounded shadow-md">
             <h4 className="font-bold text-">Total User</h4>
             {isLoadingUsers && <p>Loading...</p>}
             {errorUsers && <p>Error loading offer data</p>}
@@ -355,7 +355,7 @@ const AdminDashboard = () => {
           </div>
         )}
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
+          <div className="bg-white text-black px-4 py-6 rounded shadow-md">
             <h4 className="font-bold text-xl">Total Product</h4>
             {isLoadingOffer && <p>Loading...</p>}
             {errorOffer && <p>Error loading offer data</p>}
@@ -364,7 +364,7 @@ const AdminDashboard = () => {
         )}
        
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
+          <div className="bg-white text-black px-4 py-6 rounded shadow-md">
             <h4 className="font-bold text-">Total Product Delivered</h4>
             {isLoadingCompleted && <p>Loading...</p>}
             {errorCompleted && <p>Error loading offer data</p>}
@@ -395,7 +395,7 @@ const AdminDashboard = () => {
         )} */}
 
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
+          <div className="bg-white text-black px-4 py-6 rounded shadow-md">
             <h4 className="font-bold text-xl">Today Product Delivered</h4>
             <h5 className="font-semibold text-base">
               {regularCompletedOffer?.data[0]?.TotalCount}
@@ -403,7 +403,7 @@ const AdminDashboard = () => {
           </div>
         )}
         {(userRole === "admin" || userRole === "superAdmin") && (
-          <div className="bg-black text-white px-4 py-6 rounded shadow-white shadow-sm">
+          <div className="bg-white text-black px-4 py-6 rounded shadow-md">
             <h4 className="font-bold text-xl">Total Pending</h4>
             <h5 className="font-semibold text-base">
               {regularCompletedOffer?.data[0]?.TotalCount}

@@ -134,8 +134,8 @@ const ViewAllSubCategory = () => {
         </div>
       ) : null}
 
-      <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-        <thead className="text-white">
+      <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden shadow-md">
+        <thead className="text-black">
           <tr className="text-left">
             <th className="py-3 px-4 uppercase font-semibold text-sm border-b border-gray-300">
               SL.
@@ -148,7 +148,7 @@ const ViewAllSubCategory = () => {
             </th>
           </tr>
         </thead>
-        <tbody className="text-white">
+        <tbody className="text-black">
           {paginatedData.map((row, i) => (
             <tr key={row._id}>
               <td className="px-5 py-2 border-b border-gray-200 text-sm">

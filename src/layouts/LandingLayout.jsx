@@ -5,9 +5,12 @@ import { motion } from "framer-motion";
 import {
   FaBars,
   FaCheck,
+  FaFacebookMessenger,
   FaHeart,
+  FaPhone,
   FaSearch,
   FaUser,
+  FaWhatsapp,
   FaWindowClose,
 } from "react-icons/fa";
 import Sinan from "../assets/img/sinan.png";
@@ -15,6 +18,7 @@ import { CiShoppingCart } from "react-icons/ci";
 import DashboardFooter from "./sidebar/DashboardFooter";
 import ScrollToTop from "./ScrollToTop";
 import { useSelector } from "react-redux";
+import { useGetAllCategoriesWithProductsQuery } from "../pages/Landing/Product/productApi";
 
 const LandingLayout = () => {
   const [open, setOpen] = useState(false);
@@ -40,6 +44,8 @@ const LandingLayout = () => {
     { name: "brands", path: "/category/1" },
     { name: "sale 24", path: "/category/1" },
   ];
+    const { data: categoriesWithProducts, isLoading } =
+      useGetAllCategoriesWithProductsQuery();
   const containerVariants = {
     hidden: { opacity: 1 },
     visible: {
@@ -61,7 +67,6 @@ const LandingLayout = () => {
   const handleMouseLeave = () => {
     setIsHovered(false); // Resume the loop
   };
-
 
   useEffect(() => {
     if (isHovered) return; // Stop looping when hovered
@@ -105,6 +110,34 @@ const LandingLayout = () => {
   return (
     <div className="">
       <ScrollToTop />
+      <div className="fixed bottom-4 right-4 flex flex-col gap-3 z-50">
+        {/* WhatsApp Button */}
+        <a
+          href="https://wa.me/+8801902766289" // Replace with your WhatsApp number
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition"
+        >
+          <FaWhatsapp size={24} />
+        </a>
+
+        {/* Phone Button */}
+        <a
+          href="tel:+8801902766289" // Replace with your phone number
+          className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition"
+        >
+          <FaPhone size={24} />
+        </a>
+        {/* Messenger Button */}
+        <a
+          href="https://m.me/SinanGiftandCraft" // Replace 'yourpage' with your Facebook page username
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition"
+        >
+          <FaFacebookMessenger size={24} />
+        </a>
+      </div>
       {/* main container */}
       <div className="mx-auto bg-white">
         {/* header section  */}
@@ -198,19 +231,19 @@ const LandingLayout = () => {
                 open ? "absolute right-0" : "absolute -right-[100%]"
               } md:relative md:right-0 transition-all duration-500`}
             >
-              {menuArray.map((item, index) => (
+              {categoriesWithProducts?.data?.map((category, categoryIndex) => (
                 <Link
-                  key={index}
+                  key={categoryIndex}
                   className={`uppercase text-headingColor border text-sm border-gray-300 px-5 py-1 rounded-full transform transition-transform duration-500 ${
-                    activeIndex === index
+                    activeIndex === categoryIndex
                       ? "scale-125 bg-secondaryColor text-white"
                       : ""
                   }`}
-                  to={item.path}
-                  onMouseEnter={() => handleMouseEnter(index)}
+                  to={`/view-all-category-products/${category._id}`}
+                  onMouseEnter={() => handleMouseEnter(categoryIndex)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  {item.name}
+                  {category.categoryName}
                 </Link>
               ))}
             </div>

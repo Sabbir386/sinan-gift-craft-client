@@ -12,6 +12,8 @@ import {
   HiAdjustments,
   HiClipboardList,
   HiSparkles,
+  HiOutlineAdjustments,
+  HiOutlineClipboardList,
 } from "react-icons/hi";
 import { CiBullhorn } from "react-icons/ci";
 import { AiOutlineAppstore } from "react-icons/ai";
@@ -208,7 +210,7 @@ const Sidebar = () => {
       {
         id: "superadmin-category",
         name: "Category",
-        icon: HiOutlineUsers,
+        icon: HiOutlineAdjustments,
         menus: [
           {
             id: "superadmin-create-category",
@@ -225,7 +227,7 @@ const Sidebar = () => {
       {
         id: "superadmin-subcategory",
         name: "Subcategory",
-        icon: HiOutlineUsers,
+        icon: HiChartBar,
         menus: [
           {
             id: "superadmin-create-subcategory",
@@ -242,7 +244,7 @@ const Sidebar = () => {
       {
         id: "Orders",
         name: "Orders",
-        icon: HiOutlineUsers,
+        icon: HiOutlineClipboardList,
         menus: [
           {
             id: "superadmin-orders-list",
@@ -303,12 +305,12 @@ const Sidebar = () => {
         variants={Nav_animation}
         initial={{ x: isTabletMid ? -250 : 0 }}
         animate={open ? "open" : "closed"}
-        className="bg-black text-gray shadow-xl z-[999] max-w-[16rem] w-[16rem] 
+        className="bg-white  text-gray shadow-xl z-[999] max-w-[16rem] w-[16rem] 
             overflow-hidden md:relative fixed
          h-screen "
       >
         <div className="flex items-center gap-2.5 font-medium border-b py-3 border-slate-300 mx-3">
-          <span className="text-white font-bold text-4xl whitespace-pre">
+          <span className="text-secondaryColor font-bold text-4xl whitespace-pre">
             SINAN
           </span>
         </div>
@@ -320,8 +322,8 @@ const Sidebar = () => {
                 to={"/dashboard"}
                 className={`p-2.5 flex rounded-md gap-6 items-center md:cursor-pointer cursor-default duration-300 font-medium ${
                   location.pathname === "/dashboard"
-                    ? "text-white hover:text-buttonBackground"
-                    : "text-white hover:text-buttonBackground"
+                    ? "text-black hover:text-buttonBackground"
+                    : "text-black hover:text-buttonBackground"
                 }`}
                 onClick={() => setOpen(false)}
               >
@@ -338,7 +340,7 @@ const Sidebar = () => {
               ) : (
                 <li
                   key={menu.id}
-                  className="mb-1 text-white hover:text-buttonBackground"
+                  className="mb-1 text-black hover:text-buttonBackground"
                 >
                   <Link
                   onClick={() => setOpen(false)}
@@ -378,7 +380,7 @@ const Sidebar = () => {
           <IoIosArrowBack size={25} />
         </motion.div> */}
       </motion.div>
-      <div className="m-3 md:hidden text-white" onClick={() => setOpen(true)}>
+      <div className="m-3 md:hidden text-black" onClick={() => setOpen(true)}>
         <MdMenu size={25} />
       </div>
     </div>

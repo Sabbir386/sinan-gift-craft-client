@@ -40,7 +40,7 @@ const CreateSubCategory = () => {
   return (
     <div className="min-h-screen">
       <form
-        className="p-6 rounded-md"
+        className="p-6 rounded-md shadow-md"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="grid gap-6 mb-6 md:grid-cols-2">
@@ -48,7 +48,7 @@ const CreateSubCategory = () => {
           <div>
             <label
               htmlFor="category"
-              className="block mb-2 text-sm font-medium text-white"
+              className="block mb-2 text-sm font-medium text-black"
             >
               Select Category
             </label>
@@ -82,7 +82,7 @@ const CreateSubCategory = () => {
           <div>
             <label
               htmlFor="subCategoryName"
-              className="block mb-2 text-sm font-medium text-white"
+              className="block mb-2 text-sm font-medium text-black"
             >
               SubCategory Name
             </label>

@@ -37,14 +37,14 @@ const CreateCategory = () => {
     <>
       <div className="min-h-screen">
         <form
-          className="bg-secondaryColor p-6 rounded-md"
+          className="bg-white shadow-md p-6 rounded-md"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
                 htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-white"
+                className="block mb-2 text-sm font-medium text-black"
               >
                 Category Name
               </label>
@@ -63,7 +63,7 @@ const CreateCategory = () => {
           {/* Closing the grid gap div */}
           <button
             type="submit"
-            className="ml-auto text-white bg-buttonBackground hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-24 px-5 py-2.5 text-center dark:bg-buttonBackground dark:hover:bg-green-500 dark:focus:ring-blue-800"
+            className="ml-auto text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-24 px-5 py-2.5 text-center dark:bg-buttonBackground dark:hover:bg-green-500 dark:focus:ring-blue-800"
           >
             Submit
           </button>

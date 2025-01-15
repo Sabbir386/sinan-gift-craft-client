@@ -52,7 +52,7 @@ const OrderList = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className="container mx-auto text-white">
+    <div className="container mx-auto text-black shadow-md">
       <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
         <thead>
           <tr>

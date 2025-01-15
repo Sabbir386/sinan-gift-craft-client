@@ -91,14 +91,14 @@ const CreateProduct = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-8 bg-gray-800 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-white mb-6">Create New Product</h2>
+    <div className="max-w-full mx-auto mt-10 p-8 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-Black mb-6">Create New Product</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Product Name
             </label>
@@ -106,7 +106,7 @@ const CreateProduct = () => {
               type="text"
               id="name"
               name="name"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border   text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter product name"
               value={formData.name}
               onChange={handleChange}
@@ -116,14 +116,14 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="images"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Images (comma-separated URLs)
             </label>
             <input
               type="text"
               id="images"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., https://example.com/image1.jpg, https://example.com/image2.jpg"
               onChange={(e) => handleArrayChange(e, "images")}
               value={formData.images.join(", ")}
@@ -134,7 +134,7 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="quantity"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Quantity
             </label>
@@ -142,7 +142,7 @@ const CreateProduct = () => {
               type="number"
               id="quantity"
               name="quantity"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter quantity"
               value={formData.quantity}
               onChange={handleChange}
@@ -152,7 +152,7 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="price"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Price
             </label>
@@ -160,7 +160,7 @@ const CreateProduct = () => {
               type="number"
               id="price"
               name="price"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter price"
               value={formData.price}
               onChange={handleChange}
@@ -170,7 +170,7 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="salePrice"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Sale Price
             </label>
@@ -178,7 +178,7 @@ const CreateProduct = () => {
               type="number"
               id="salePrice"
               name="salePrice"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter sale price"
               value={formData.salePrice}
               onChange={handleChange}
@@ -187,14 +187,14 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="colours"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Colours (comma-separated)
             </label>
             <input
               type="text"
               id="colours"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., Red, Blue, Green"
               onChange={(e) => handleArrayChange(e, "colours")}
             />
@@ -202,14 +202,14 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="sizes"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Sizes (comma-separated)
             </label>
             <input
               type="text"
               id="sizes"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., S, M, L"
               onChange={(e) => handleArrayChange(e, "sizes")}
             />
@@ -217,7 +217,7 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="sku"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               SKU
             </label>
@@ -225,7 +225,7 @@ const CreateProduct = () => {
               type="text"
               id="sku"
               name="sku"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter SKU"
               value={formData.sku}
               onChange={handleChange}
@@ -235,19 +235,19 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="category"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Category
             </label>
             <select
               id="category"
               name="category"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-50 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.category}
               onChange={handleChange}
               required
             >
-              <option value="" className="text-gray-500 bg-gray-50">
+              <option value="" className="text-black">
                 Select Category
               </option>
               {!categoriesLoading &&
@@ -257,7 +257,7 @@ const CreateProduct = () => {
                   <option
                     key={cat._id}
                     value={cat._id}
-                    className=" bg-gray-500 text-white"
+                    className="text-black"
                   >
                     {cat.name}
                   </option>
@@ -268,19 +268,19 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="subCategory"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               SubCategory
             </label>
             <select
               id="subCategory"
               name="subCategory"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-50 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.subCategory}
               onChange={handleChange}
               required
             >
-              <option value="" className="text-gray-500 bg-gray-50">
+              <option value="" className="text-black">
                 Select SubCategory
               </option>
               {!subCategoriesLoading &&
@@ -290,7 +290,7 @@ const CreateProduct = () => {
                   <option
                     key={sub._id}
                     value={sub._id}
-                    className="text-gray-800 bg-gray-200"
+                    className="text-black bg-white"
                   >
                     {sub.name}
                   </option>
@@ -301,14 +301,14 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-200 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Description
             </label>
             <textarea
               id="description"
               name="description"
-              className="w-full p-3 rounded-md border border-gray-600 bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter product description"
               value={formData.description}
               onChange={handleChange}

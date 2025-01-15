@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 import { useGetAllProductsQuery, useDeleteProductMutation, useUpdateProductMutation } from "./productApi"; // Adjust import path
+import { MdDelete,MdEdit  } from "react-icons/md";
 
 const ViewAllProduct = () => {
   const { data: productsData, isLoading, error } = useGetAllProductsQuery();
+  console.log(productsData)
   const [deleteProduct] = useDeleteProductMutation();
   const [updateProduct] = useUpdateProductMutation();
 
@@ -77,7 +79,7 @@ const ViewAllProduct = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className="container mx-auto text-white">
+    <div className="container mx-auto text-black shadow-md p-6">
       <h1 className="text-2xl font-bold mb-4">All Products</h1>
       <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
         <thead>
@@ -108,7 +110,7 @@ const ViewAllProduct = () => {
               <td className="px-5 py-2 border-b">{product.category.categoryName}</td>
               <td className="px-5 py-2 border-b">{product.slug || "N/A"}</td>
               <td className="px-5 py-2 border-b">
-                {product.subCategory?.categoryName || "N/A"}
+                {product.subCategory?.subCategory || "N/A"}
               </td>
               <td className="px-5 py-2 border-b">
                 <div className="flex gap-4 justify-center">
@@ -116,13 +118,13 @@ const ViewAllProduct = () => {
                     className="bg-green-500 text-white px-3 py-1 rounded"
                     onClick={() => handleUpdate(product._id)}
                   >
-                    Update
+                    <MdEdit />
                   </button>
                   <button
                     className="bg-red-500 text-white px-3 py-1 rounded"
                     onClick={() => handleDelete(product._id)}
                   >
-                    Delete
+                    <MdDelete />
                   </button>
                 </div>
               </td>

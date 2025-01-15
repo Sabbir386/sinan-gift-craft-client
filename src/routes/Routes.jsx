@@ -55,6 +55,7 @@ import ViewAllSubCategory from "../pages/SubCategory/ViewAllSubCategory";
 import OrderList from "../pages/OrderList/OrderList";
 import ViewAllProduct from "../pages/Landing/Product/ViewAllProduct";
 import CreateProduct from "../pages/Landing/Product/CreateProduct";
+import ViewAllCategoryProduct from "../pages/Landing/ViewAllCategoryProduct";
 
 export const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ export const router = createBrowserRouter([
       {
         path: "/category/:id",
         element: <Categories></Categories>,
+      },
+      {
+         path:"/view-all-category-products/:categoryId",
+          element:<ViewAllCategoryProduct />
       },
       {
         path: "/cart",

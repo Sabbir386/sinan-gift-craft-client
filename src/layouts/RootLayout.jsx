@@ -48,9 +48,9 @@ function RootLayout() {
     }
     const handleScroll = () => {
       if (window.scrollY > 100) {
-        setBgColor("bg-black"); // Change color when scrolled
+        setBgColor("shadow-md"); // Change color when scrolled
       } else {
-        setBgColor("bg-transparent"); // Default color
+        setBgColor("shadow-none"); // Default color
       }
     };
 
@@ -96,9 +96,9 @@ function RootLayout() {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="min-h-screen ml-0 md:ml-[16rem] flex-1 mx-auto py-4 w-5 md:w-[100% - 16rem] bg-black px-3 relative">
+      <main className="min-h-screen ml-0 md:ml-[16rem] flex-1 mx-auto py-4 w-5 md:w-[100% - 16rem] bg-white px-3 relative">
         <div
-          className={`flex justify-end items-center space-x-4 fixed top-0 left-0 w-full h-16 px-4 z-[990] ${bgColor}`}
+          className={`flex justify-end items-center space-x-4 fixed top-0 left-0 w-full h-16 px-4 z-[990] bg-white ${bgColor}`}
         >
           {/* Balance Display */}
           {/* <div
@@ -145,7 +145,7 @@ function RootLayout() {
             {/* Dropdown Menu */}
             {isOpen && (
               <div
-                className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-cardBackground ring-1 ring-black ring-opacity-5 z-50"
+                className="bg-white origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-cardBackground ring-1 ring-black ring-opacity-5 z-50"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="options-menu"
@@ -153,7 +153,7 @@ function RootLayout() {
                 <div className="py-2" role="none">
                   <Link
                     to="/dashboard/user-profile"
-                    className="flex gap-4 items-center px-4 py-2 text-sm text-white hover:text-buttonBackground border-b-[0.5px] border-b-buttonBackground"
+                    className="flex gap-4 items-center px-4 py-2 text-sm text-black hover:text-buttonBackground border-b-[0.5px] border-b-buttonBackground"
                     role="menuitem"
                   >
                     <FaRegUser />

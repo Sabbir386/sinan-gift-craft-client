@@ -22,42 +22,53 @@ import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { useGetAllCategoriesWithProductsQuery } from "./Product/productApi";
+import { addToCart } from "../../redux/features/cart/cartSlice";
 
 const Landing = () => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: categoriesWithProducts, isLoading } = useGetAllCategoriesWithProductsQuery();
-  console.log('categoriesWithProducts',categoriesWithProducts);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const dispatch = useDispatch();
+  const { data: categoriesWithProducts, isLoading } =
+    useGetAllCategoriesWithProductsQuery();
+  console.log("categoriesWithProducts", categoriesWithProducts);
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
   const prevButtonRef = useRef(null);
   const nextButtonRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const sizes = ["S", "M", "L"];
+  const sizes = [41, 42, 43, 44];
 
-  // cart added functionality
+  // Cart added functionality
   const [cartQuantity, setCartQuantity] = useState(1);
-  const dispatch = useDispatch();
   const cartTotalQuantity = useSelector((state) => state.cart.totalQuantity);
 
+  // Handle quantity change
   const handleQuantityChange = (action) => {
     setCartQuantity((prevQuantity) =>
       action === "increase" ? prevQuantity + 1 : Math.max(prevQuantity - 1, 1)
     );
   };
 
+  // Toggle modal and set selected product
+  const toggleModal = (product = null) => {
+    setSelectedProduct(product);
+    setCartQuantity(1); // Reset quantity when modal opens
+    setIsModalOpen(!isModalOpen);
+  };
+
+  // Add to cart functionality
   const handleAddToCart = () => {
-    dispatch(addItem({ ...product, quantity: cartQuantity }));
-    console.log("okey");
+    if (!selectedProduct) return;
+    console.log("selectedProduct", selectedProduct);
+    dispatch(addToCart({ ...selectedProduct, quantity: cartQuantity })); // Use cartQuantity here
     Swal.fire({
       icon: "success",
       title: "Added to Cart!",
-      text: `You have added ${cartQuantity} "${product.name}" to your cart.`,
+      text: `You have added "${selectedProduct.name}" to your cart.`,
       timer: 2000,
       showConfirmButton: false,
     });
+    setIsModalOpen(false); // Close modal after adding to cart
   };
 
   const sliderItems = [
@@ -84,75 +95,6 @@ const Landing = () => {
       title: `Fashionable Islamic Clothing for Girls`,
       description: "Get 20% off on all products in our store",
       buttonText: { text: "Shop Now", url: "/" },
-    },
-  ];
-  const categoriesItem = [
-    {
-      id: 1,
-      image: "https://i.ibb.co.com/nsvL20H/product-one.png",
-      title: "Graceful Abaya",
-    },
-    {
-      id: 2,
-      image: "https://i.ibb.co.com/p4gjJJp/product-two.png",
-      title: "Elegant Jilbab",
-    },
-    {
-      id: 3,
-      image: "https://i.ibb.co.com/9wKtYHt/product-three.png",
-      title: "Modest Kaftan",
-    },
-    {
-      id: 4,
-      image: "https://i.ibb.co.com/d7R3x70/product-four.png",
-      title: "Chic Hijab Set",
-    },
-    {
-      id: 5,
-      image: "https://i.ibb.co.com/sm3gqmn/product-five.png",
-      title: "Stylish Kurti",
-    },
-  ];
-  const trendingProducts = [
-    {
-      id: 1,
-      image: "https://i.ibb.co.com/frMddxX/image-178.png",
-      title: "Modest Kaftan",
-      price: 25.99,
-      discountedPrice: 15.99,
-      rating: 4.5,
-    },
-    {
-      id: 2,
-      image: "https://i.ibb.co.com/n8ts3g7/image-179.png",
-      title: "Modest Kaftan",
-      price: 145.99,
-      discountedPrice: 125.99,
-      rating: 5,
-    },
-    {
-      id: 3,
-      image: "https://i.ibb.co.com/7rM0q9f/image-180.png",
-      title: "Modest Kaftan",
-      price: 578.99,
-      discountedPrice: 400.5,
-      rating: 5,
-    },
-    {
-      id: 4,
-      image: "https://i.ibb.co.com/p4gjJJp/product-two.png",
-      title: "Modest Kaftan",
-      price: 325.99,
-      discountedPrice: 259.52,
-      rating: 3.5,
-    },
-    {
-      id: 5,
-      image: "https://i.ibb.co.com/nsvL20H/product-one.png",
-      title: "Modest Kaftan",
-      price: 5.99,
-      discountedPrice: 3.25,
-      rating: 5,
     },
   ];
   // Animation for the entire container
@@ -255,7 +197,7 @@ const Landing = () => {
           >
             {sliderItems.map((item, index) => (
               <SwiperSlide key={item.id}>
-                <div className="rounded-lg w-full relative h-[300px] md:h-[600px] overflow-hidden">
+                <div className="rounded-lg w-full relative h-[400px] md:h-[600px] overflow-hidden">
                   <motion.img
                     src={item.backgroundImage}
                     alt=""
@@ -334,7 +276,7 @@ const Landing = () => {
             </button>
           </div>
         </div>
-        <div className="w-full md:w-1/6 rounded-md">
+        <div className="w-full hidden md:block md:w-1/6 rounded-md">
           <Swiper
             autoplay={{
               delay: 2500,
@@ -425,27 +367,27 @@ const Landing = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-7 py-4">
-          {categoriesItem.map((category, index) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-7 py-4">
+          {categoriesWithProducts?.data?.map((category, categoryIndex) => (
             <Link
-              key={index}
+              key={categoryIndex}
               to={"/"}
               className="rounded-lg relative h-[180px] md:h-[420px] group"
             >
               <img
-                src={category.image}
+                src={"https://i.ibb.co.com/3MDc6dG/banner-three.jpg"}
                 alt=""
                 className="absolute top-0 left-0 z-10 object-cover rounded-lg w-full h-full group-hover:blur-[2px] duration-300"
               />
               <div className="w-5/6 md:w-auto absolute bottom-10 rounded-full left-1/2 -translate-x-1/2 z-10 px-2 md:px-5 py-3 bg-white hover:bg-secondaryColor hover:text-white duration-300 group-hover:bottom-1/2 group-hover:translate-y-1/2">
-                <p className="text-center text-sm ">{category.title}</p>
+                <p className="text-center text-sm ">{category.categoryName}</p>
               </div>
             </Link>
           ))}
         </div>
       </div>
       {/* new arrival */}
-      <div className="px-6">
+      {/* <div className="px-6">
         <div className="flex flex-col items-center md:flex-row gap-10 bg-gradient-to-r from-primaryColor to-secondaryColor animate-floatingBackground py-10 md:py-20 px-12 rounded-md">
           <div className="flex justify-between items-baseline gap-7 relative">
             <img
@@ -476,99 +418,106 @@ const Landing = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Trending Products  */}
       <div className="px-6 py-5">
-  {categoriesWithProducts?.data?.map((category, categoryIndex) => (
-    <div key={categoryIndex} className="mb-10">
-      {/* Category Title */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-gray-800">
-          {category.categoryName}
-        </h2>
-        <Link
-          to="/"
-          className="flex items-center gap-1 text-sm font-normal text-headingColor hover:text-secondaryColor duration-300"
-        >
-          <span>View All</span> <FaArrowRight />
-        </Link>
-      </div>
-
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-7 py-4">
-        {category.products.map((product, productIndex) => (
-          <div
-            key={`${categoryIndex}-${productIndex}`}
-            className="rounded-xl relative h-[420px] md:h-[510px] group overflow-hidden"
-          >
-            {/* Product Image */}
-            <div className="absolute top-0 left-0 z-10 object-cover rounded-xl w-full h-[320px] md:h-[420px] duration-300 overflow-hidden">
-              <img
-                src={product.images[0]} // Display the first image
-                alt={product.name}
-                className="w-full h-full group-hover:scale-125 duration-500"
-              />
+        {categoriesWithProducts?.data?.map((category, categoryIndex) => (
+          <div key={categoryIndex} className="mb-10">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-gray-800">
+                {category.categoryName}
+              </h2>
+              <Link
+                to={`/view-all-category-products/${category._id}`}
+                className="flex items-center gap-1 text-sm font-normal text-headingColor hover:text-secondaryColor duration-300"
+              >
+                <span>View All</span> <FaArrowRight />
+              </Link>
             </div>
 
-            {/* Favorite Icon */}
-            <div className="absolute -right-8 group-hover:right-4 top-4 rounded-full w-7 h-7 text-secondaryColor z-10 bg-white hover:bg-secondaryColor hover:text-white duration-300 flex justify-center items-center">
-              <p className="text-center text-sm opacity-50 group-hover:opacity-100 cursor-pointer">
-                <FaHeart />
-              </p>
-            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-7 py-4">
+              {category.products.map((product, productIndex) => (
+                <div
+                  key={`${categoryIndex}-${productIndex}`}
+                  className="rounded-xl relative h-[550px] md:h-[550px] group overflow-hidden bg-white shadow-md"
+                >
+                  <div className="absolute top-0 left-0 z-10 object-cover rounded-xl w-full h-[420px] md:h-[420px] duration-300 overflow-hidden">
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-full group-hover:scale-125 duration-500"
+                    />
+                  </div>
 
-            {/* Eye Icon */}
-            <div
-              className="absolute -right-8 group-hover:right-4 top-12 rounded-full w-7 h-7 text-secondaryColor z-10 bg-white hover:bg-secondaryColor hover:text-white duration-300 flex justify-center items-center cursor-pointer"
-              onClick={toggleModal}
-            >
-              <p className="text-center text-sm opacity-50 group-hover:opacity-100">
-                <FaEye />
-              </p>
-            </div>
-
-            {/* Product Details */}
-            <Link
-              to={{
-                pathname: `/product/${product._id}`,
-              }}
-              state={{ product }}
-              className="absolute bottom-2 w-full"
-            >
-              <h4 className="text-headingColor font-medium text-base">
-                {product.name}
-              </h4>
-              <div className="flex gap-1 justify-start items-center text-yellow-400">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <div>
-                  (<span>{product.rating || 0}</span>)
+                  <Link
+                    to={{
+                      pathname: `/product/${product._id}`,
+                    }}
+                    state={{ product }}
+                    className="absolute bottom-12 w-full"
+                  >
+                    <h4 className="text-headingColor font-medium text-base">
+                      {product.name}
+                    </h4>
+                    <div className="flex gap-3 justify-start items-center">
+                      <h3 className="font-extrabold text-lg ">
+                        ${product.salePrice || product.price}
+                      </h3>
+                      {product.salePrice && (
+                        <h5 className="line-through text-sm text-gray-500">
+                          ${product.price}
+                        </h5>
+                      )}
+                    </div>
+                  </Link>
+                  <div className="absolute bottom-2 w-full grid grid-cols-2 gap-2">
+                    <button
+                      className="text-white bg-secondaryColor rounded-full px-4 py-1"
+                      onClick={() => toggleModal(product)}
+                    >
+                      Add to Cart
+                    </button>
+                    <button
+                      className="text-white bg-secondaryColor rounded-full px-4 py-1"
+                      onClick={() => toggleModal(product)}
+                    >
+                      Buy Now
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-3 justify-start items-center">
-                <h3 className="font-extrabold text-lg ">
-                  ${product.salePrice || product.price}
-                </h3>
-                {product.salePrice && (
-                  <h5 className="line-through text-sm text-gray-500">
-                    ${product.price}
-                  </h5>
-                )}
-              </div>
-            </Link>
+              ))}
+            </div>
           </div>
         ))}
+
+        {/* Modal */}
+        {isModalOpen && selectedProduct && (
+          <div className="modal">
+            <div className="modal-content">
+              <h3>{selectedProduct.name}</h3>
+              <img src={selectedProduct.images[0]} alt={selectedProduct.name} />
+              <p>
+                Price: ${selectedProduct.salePrice || selectedProduct.price}
+              </p>
+              <div className="quantity-control">
+                <button onClick={() => handleQuantityChange("decrease")}>
+                  -
+                </button>
+                <span>{quantity}</span>
+                <button onClick={() => handleQuantityChange("increase")}>
+                  +
+                </button>
+              </div>
+              <button onClick={handleAddToCart}>Add to Cart</button>
+              <button onClick={() => setIsModalOpen(false)}>Close</button>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
-  ))}
-</div>
 
       {/* new arrival two  */}
-      <div className="px-6 flex flex-col md:flex-row justify-between items-center gap-5">
-        {/* <h1>543543543254235</h1> */}
+      {/* <div className="px-6 flex flex-col md:flex-row justify-between items-center gap-5">
+      
         <div className="w-full lg:w-4/6 bg-gradient-to-r from-primaryColor to-secondaryColor animate-floatingBackground py-12 px-12 rounded-md flex flex-col md:flex-row items-center gap-4">
           <img
             src="https://i.ibb.co.com/Vt993n6/new-arrival-one.png"
@@ -599,9 +548,9 @@ const Landing = () => {
             className="rounded-xl w-full h-60 md:h-88 object-cover hover:scale-105 duration-500"
           />
         </div>
-      </div>
+      </div> */}
       {/* Amazing Deals  */}
-      <div className="px-6 py-5">
+      {/* <div className="px-6 py-5">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-800">Amazing Deals</h2>
           <Link
@@ -665,9 +614,9 @@ const Landing = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
       {/* News latter  */}
-      <div className="px-6 flex flex-col md:flex-row justify-center items-center gap-5">
+      {/* <div className="px-6 flex flex-col md:flex-row justify-center items-center gap-5">
         <div className="w-full bg-gradient-to-r from-primaryColor to-secondaryColor animate-floatingBackground py-12 px-12 rounded-md flex flex-col md:flex-row justify-center items-center gap-4">
           <div className="text-center">
             <p className="text-sm">Stay Informed with Our</p>
@@ -693,31 +642,33 @@ const Landing = () => {
             </form>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* modal  */}
-      {isModalOpen && (
-        <div className="p-4 fixed top-0 left-0 z-50 bg-black bg-opacity-75 w-full h-screen flex items-center justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full md:w-3/4 h-4/5 overflow-y-auto md:h-auto mx-auto bg-white p-7 rounded-xl relative">
+      {isModalOpen && selectedProduct && (
+        <div
+          className="p-4 fixed top-0 left-0 z-[9999999] bg-black bg-opacity-75 w-full h-screen flex items-center justify-center"
+          onClick={() => toggleModal(null)}
+        >
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full md:w-3/4 h-4/5 overflow-y-auto md:h-auto mx-auto bg-white p-7 rounded-xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
-              className="absolute right-0 top-0 m-4"
-              onClick={toggleModal}
+              className="absolute right-0 top-0 m-4 w-10 h-10 flex items-center justify-center text-white rounded-full bg-red-400"
+              onClick={() => toggleModal(null)}
             >
-              X
+              <IoMdClose />
             </button>
+
             {/* Left Section: Image Gallery */}
             <div className="flex flex-col items-center space-y-4">
-              {/* Large Image Container */}
               <div className="relative overflow-hidden rounded-lg w-4/6 h-84">
-                {" "}
-                {/* Ensure a fixed height */}
                 <AnimatePresence mode="wait">
-                  {" "}
-                  {/* Smoothly handle the transition */}
                   <motion.img
-                    key={imageIndex} // Ensures Framer Motion tracks image changes
-                    src={images[imageIndex]}
-                    alt="Product Image"
+                    key={imageIndex}
+                    src={selectedProduct.images[imageIndex]}
+                    alt={selectedProduct.name}
                     variants={imageVariants}
                     initial="enter"
                     animate="center"
@@ -726,15 +677,14 @@ const Landing = () => {
                     className="w-full h-full object-cover rounded-lg"
                     whileHover={{
                       scale: 1.1,
-                      transition: { duration: 0.3 }, // Defines the hover-specific transition
+                      transition: { duration: 0.3 },
                     }}
                   />
                 </AnimatePresence>
               </div>
 
-              {/* Thumbnail Container */}
               <div className="flex overflow-x-auto space-x-4 mt-4">
-                {images.map((image, index) => (
+                {selectedProduct.images.map((image, index) => (
                   <img
                     key={index}
                     src={image}
@@ -751,16 +701,15 @@ const Landing = () => {
             {/* Right Section: Product Info */}
             <div>
               <h2 className="text-3xl font-semibold mb-4">
-                Boho Floral Maxi Dress
+                {selectedProduct.name}
               </h2>
-              <p className="text-xl font-semibold text-gray-800">$25.00</p>
+              <p className="text-xl font-semibold text-gray-800">
+                ${selectedProduct.salePrice || selectedProduct.price}
+              </p>
               <p className="text-gray-600 mt-2">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took...
+                {selectedProduct.description}
               </p>
 
-              {/* Size Selection */}
               <div className="mt-4">
                 <span className="font-medium">Size: </span>
                 <div className="flex flex-wrap space-x-2 mt-2">
@@ -780,35 +729,6 @@ const Landing = () => {
                 </div>
               </div>
 
-              {/* Color Options */}
-              <div className="mt-6">
-                <p className="text-lg font-medium">Color</p>
-                <div className="flex flex-wrap space-x-4 mt-2">
-                  {colors.map((c, index) => (
-                    <button
-                      key={index}
-                      className={`p-2 rounded-full ${
-                        color === c ? "border-2 border-gray-700" : "border"
-                      }`}
-                      onClick={() => setColor(c)}
-                    >
-                      <div
-                        className="w-8 h-8 rounded-full border"
-                        style={{ backgroundColor: c }}
-                      ></div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Size Guide Link */}
-              <div className="mt-2">
-                <button className="text-sm text-blue-500 hover:underline">
-                  Size Guide
-                </button>
-              </div>
-
-              {/* Quantity Selector */}
               <div className="mt-4 flex items-center">
                 <button
                   onClick={() => handleQuantityChange("decrease")}
@@ -830,7 +750,6 @@ const Landing = () => {
                 </button>
               </div>
 
-              {/* Action Buttons */}
               <div className="mt-6 flex space-x-4">
                 <button
                   onClick={handleAddToCart}
@@ -846,24 +765,31 @@ const Landing = () => {
                 </Link>
               </div>
 
-              {/* Cart Summary */}
               <div className="mt-6">
                 <p className="text-gray-700">
                   Total Items in Cart:{" "}
                   <span className="font-bold">{cartTotalQuantity}</span>
                 </p>
               </div>
-
               {/* Additional Information */}
               <div className="mt-6 text-sm text-gray-600">
                 <p>
-                  Vendor: <span className="font-semibold">Bohemian Bliss</span>
+                  Vendor:{" "}
+                  <span className="font-semibold">
+                    {selectedProduct.categoryName || "Unknown Vendor"}
+                  </span>
                 </p>
                 <p>
-                  Type: <span className="font-semibold">Dress</span>
+                  Type:{" "}
+                  <span className="font-semibold">
+                    {selectedProduct.slug || "Unknown Type"}
+                  </span>
                 </p>
                 <p>
-                  Sku: <span className="font-semibold">null</span>
+                  Sku:{" "}
+                  <span className="font-semibold">
+                    {selectedProduct.sku || "N/A"}
+                  </span>
                 </p>
               </div>
             </div>
