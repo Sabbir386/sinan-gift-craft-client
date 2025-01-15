@@ -44,21 +44,23 @@ const Checkout = () => {
   const handleCreateOrder = async () => {
     // Set the email to formData.email if available, else use uniqueEmail
     const userEmail = formData.email || uniqueEmail;
-  
+    console.log(products);
     const orderData = {
       userInfo: {
         ...formData,
-        email: userEmail, 
+        email: userEmail,
       },
       items: products.map((product) => ({
         productId: product.id,
+        name: product.name,
         quantity: product.quantity,
         price: product.price,
+        size: parseInt(product.selectedSize),
       })),
       totalAmount: subtotal,
       status: "Pending",
     };
-  
+
     const normalUser = {
       password: "user12345",
       normalUser: {
@@ -78,7 +80,7 @@ const Checkout = () => {
         isDeleted: false,
       },
     };
-  
+
     try {
       Swal.fire({
         title: "Signing in...",
@@ -88,12 +90,12 @@ const Checkout = () => {
           Swal.showLoading();
         },
       });
-      if (!userEmail){
+      if (!userEmail) {
         return;
       }
       const user = await registration(normalUser);
       const response = await createOrder(orderData).unwrap();
-  
+
       if (response.statusCode === 201) {
         handleClearCart();
         Swal.fire({
@@ -108,7 +110,7 @@ const Checkout = () => {
           confirmButtonText: "Close",
         });
       }
-  
+
       if (user?.error?.status === 409) {
         const errorMessage =
           user?.error?.data?.errorSources[0]?.message || "Conflict error.";
@@ -128,7 +130,7 @@ const Checkout = () => {
       });
     }
   };
-  
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 mx-auto w-full max-w-7xl">
       {/* Left Section */}
@@ -172,8 +174,6 @@ const Checkout = () => {
               />
             </div>
           </div>
-
-          
 
           {/* Town/City */}
           <div>
@@ -273,7 +273,9 @@ const Checkout = () => {
                   </p>
                 </div>
               </div>
-              <p className="text-sm font-medium">${product.price.toFixed(2)}</p>
+              <p className="text-sm font-medium">
+                ${(product.price * product.quantity).toFixed(2)}
+              </p>
             </div>
           ))}
         </div>

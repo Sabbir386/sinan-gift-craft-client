@@ -80,79 +80,82 @@ const ViewAllProduct = () => {
 
   return (
     <div className="container mx-auto text-black shadow-md p-6">
-      <h1 className="text-2xl font-bold mb-4">All Products</h1>
-      <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-        <thead>
-          <tr>
-            <th className="py-3 px-4 border-b border-gray-300">SL.</th>
-            <th className="py-3 px-4 border-b border-gray-300">Name</th>
-            <th className="py-3 px-4 border-b border-gray-300">Description</th>
-            <th className="py-3 px-4 border-b border-gray-300">Price</th>
-            <th className="py-3 px-4 border-b border-gray-300">Sale Price</th>
-            <th className="py-3 px-4 border-b border-gray-300">Quantity</th>
-            <th className="py-3 px-4 border-b border-gray-300">Category</th>
-            <th className="py-3 px-4 border-b border-gray-300">Slug</th>
-            <th className="py-3 px-4 border-b border-gray-300">SubCategory</th>
-            <th className="py-3 px-4 border-b border-gray-300">Actions</th>
+  <h1 className="text-2xl font-bold mb-4">All Products</h1>
+  <div className="overflow-x-auto">
+    <table className="w-full border-collapse border border-gray-300 rounded-lg">
+      <thead>
+        <tr>
+          <th className="py-3 px-4 border-b border-gray-300">SL.</th>
+          <th className="py-3 px-4 border-b border-gray-300">Name</th>
+          <th className="py-3 px-4 border-b border-gray-300">Description</th>
+          <th className="py-3 px-4 border-b border-gray-300">Price</th>
+          <th className="py-3 px-4 border-b border-gray-300">Sale Price</th>
+          <th className="py-3 px-4 border-b border-gray-300">Quantity</th>
+          <th className="py-3 px-4 border-b border-gray-300">Category</th>
+          <th className="py-3 px-4 border-b border-gray-300">Slug</th>
+          <th className="py-3 px-4 border-b border-gray-300">SubCategory</th>
+          <th className="py-3 px-4 border-b border-gray-300">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {paginatedItems?.map((product, index) => (
+          <tr key={product._id} className="text-center">
+            <td className="px-5 py-2 border-b">
+              {(currentPage - 1) * itemsPerPage + index + 1}
+            </td>
+            <td className="px-5 py-2 border-b">{product.name}</td>
+            <td className="px-5 py-2 border-b">{product.description}</td>
+            <td className="px-5 py-2 border-b">${product.price.toFixed(2)}</td>
+            <td className="px-5 py-2 border-b">${product.salePrice.toFixed(2)}</td>
+            <td className="px-5 py-2 border-b">{product.quantity}</td>
+            <td className="px-5 py-2 border-b">{product.category.categoryName}</td>
+            <td className="px-5 py-2 border-b">{product.slug || "N/A"}</td>
+            <td className="px-5 py-2 border-b">
+              {product.subCategory?.subCategory || "N/A"}
+            </td>
+            <td className="px-5 py-2 border-b">
+              <div className="flex gap-4 justify-center">
+                <button
+                  className="bg-green-500 text-white px-3 py-1 rounded"
+                  onClick={() => handleUpdate(product._id)}
+                >
+                  <MdEdit />
+                </button>
+                <button
+                  className="bg-red-500 text-white px-3 py-1 rounded"
+                  onClick={() => handleDelete(product._id)}
+                >
+                  <MdDelete />
+                </button>
+              </div>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {paginatedItems?.map((product, index) => (
-            <tr key={product._id} className="text-center">
-              <td className="px-5 py-2 border-b">
-                {(currentPage - 1) * itemsPerPage + index + 1}
-              </td>
-              <td className="px-5 py-2 border-b">{product.name}</td>
-              <td className="px-5 py-2 border-b">{product.description}</td>
-              <td className="px-5 py-2 border-b">${product.price.toFixed(2)}</td>
-              <td className="px-5 py-2 border-b">${product.salePrice.toFixed(2)}</td>
-              <td className="px-5 py-2 border-b">{product.quantity}</td>
-              <td className="px-5 py-2 border-b">{product.category.categoryName}</td>
-              <td className="px-5 py-2 border-b">{product.slug || "N/A"}</td>
-              <td className="px-5 py-2 border-b">
-                {product.subCategory?.subCategory || "N/A"}
-              </td>
-              <td className="px-5 py-2 border-b">
-                <div className="flex gap-4 justify-center">
-                  <button
-                    className="bg-green-500 text-white px-3 py-1 rounded"
-                    onClick={() => handleUpdate(product._id)}
-                  >
-                    <MdEdit />
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                    onClick={() => handleDelete(product._id)}
-                  >
-                    <MdDelete />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-4 gap-2">
-        <button
-          className="bg-gray-500 text-white px-3 py-1 rounded"
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          className="bg-gray-500 text-white px-3 py-1 rounded"
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
-    </div>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  {/* Pagination Controls */}
+  <div className="flex justify-center items-center mt-4 gap-2">
+    <button
+      className="bg-gray-500 text-white px-3 py-1 rounded"
+      onClick={() => handlePageChange(currentPage - 1)}
+      disabled={currentPage === 1}
+    >
+      Previous
+    </button>
+    <span>
+      Page {currentPage} of {totalPages}
+    </span>
+    <button
+      className="bg-gray-500 text-white px-3 py-1 rounded"
+      onClick={() => handlePageChange(currentPage + 1)}
+      disabled={currentPage === totalPages}
+    >
+      Next
+    </button>
+  </div>
+</div>
+
   );
 };
 

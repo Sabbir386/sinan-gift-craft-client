@@ -13,7 +13,13 @@ const OrderList = () => {
   const [updateOrder] = useUpdateOrderMutation();
   const [deleteOrder] = useDeleteOrderMutation();
 
-  const statuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
+  const statuses = [
+    "Pending",
+    "Processing",
+    "Shipped",
+    "Delivered",
+    "Cancelled",
+  ];
 
   // Handle delete
   const handleDelete = async (id) => {
@@ -53,59 +59,65 @@ const OrderList = () => {
 
   return (
     <div className="container mx-auto text-black shadow-md">
-      <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-        <thead>
-          <tr>
-            <th className="py-3 px-4 border-b border-gray-300">SL.</th>
-            <th className="py-3 px-4 border-b border-gray-300">Order ID</th>
-            <th className="py-3 px-4 border-b border-gray-300">Customer</th>
-            <th className="py-3 px-4 border-b border-gray-300">Total Amount</th>
-            <th className="py-3 px-4 border-b border-gray-300">Status</th>
-            <th className="py-3 px-4 border-b border-gray-300 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ordersData?.data.map((order, index) => (
-            <tr className="text-center" key={order._id}>
-              <td className="px-5 py-2 border-b">{index + 1}</td>
-              <td className="px-5 py-2 border-b">{order.orderId}</td>
-              <td className="px-5 py-2 border-b">
-                {order.userInfo.firstName} {order.userInfo.lastName}
-              </td>
-              <td className="px-5 py-2 border-b">${order.totalAmount}</td>
-              <td className="px-5 py-2 border-b">
-                <select
-                  className="bg-gray-800 text-white px-2 py-1 rounded"
-                  value={order.status}
-                  onChange={(e) => handleUpdate(order._id, e.target.value)}
-                >
-                  {statuses.map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
-              </td>
-              <td className="px-5 py-2 border-b">
-                <div className="flex flex-row gap-5 justify-center">
-                  <button
-                    className="w-7 h-7 grid place-content-center bg-blue-500 text-white rounded"
-                    onClick={() => console.log("View Details", order._id)}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className="w-7 h-7 grid place-content-center bg-red-500 text-white rounded"
-                    onClick={() => handleDelete(order._id)}
-                  >
-                    <FaRegTrashAlt />
-                  </button>
-                </div>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+          <thead>
+            <tr>
+              <th className="py-3 px-4 border-b border-gray-300">SL.</th>
+              <th className="py-3 px-4 border-b border-gray-300">Order ID</th>
+              <th className="py-3 px-4 border-b border-gray-300">Customer</th>
+              <th className="py-3 px-4 border-b border-gray-300">
+                Total Amount
+              </th>
+              <th className="py-3 px-4 border-b border-gray-300">Status</th>
+              <th className="py-3 px-4 border-b border-gray-300 text-center">
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {ordersData?.data.map((order, index) => (
+              <tr className="text-center" key={order._id}>
+                <td className="px-5 py-2 border-b">{index + 1}</td>
+                <td className="px-5 py-2 border-b">{order.orderId}</td>
+                <td className="px-5 py-2 border-b">
+                  {order.userInfo.firstName} {order.userInfo.lastName}
+                </td>
+                <td className="px-5 py-2 border-b">${order.totalAmount}</td>
+                <td className="px-5 py-2 border-b">
+                  <select
+                    className="bg-gray-800 text-white px-2 py-1 rounded"
+                    value={order.status}
+                    onChange={(e) => handleUpdate(order._id, e.target.value)}
+                  >
+                    {statuses.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td className="px-5 py-2 border-b">
+                  <div className="flex flex-row gap-5 justify-center">
+                    <button
+                      className="w-7 h-7 grid place-content-center bg-blue-500 text-white rounded"
+                      onClick={() => console.log("View Details", order._id)}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      className="w-7 h-7 grid place-content-center bg-red-500 text-white rounded"
+                      onClick={() => handleDelete(order._id)}
+                    >
+                      <FaRegTrashAlt />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

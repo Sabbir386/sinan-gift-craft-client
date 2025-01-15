@@ -73,6 +73,7 @@ const MyAccount = () => {
   }
 
   const orders = ordersData?.data || []; // Assuming `data` contains the orders list
+  console.log(orders);
 
   console.log(orders);
   const handleViewOrder = (order) => {
@@ -180,16 +181,17 @@ const MyAccount = () => {
             </p>
             <p>
               <strong>User Info:</strong>{" "}
-              {`${selectedOrder.userInfo.firstName} ${selectedOrder.userInfo.lastName}, ${selectedOrder.userInfo.address}, ${selectedOrder.userInfo.city}, ${selectedOrder.userInfo.country}`}
+              {`${selectedOrder.userInfo.firstName} ${selectedOrder.userInfo.lastName}, ${selectedOrder.userInfo.address}, ${selectedOrder.userInfo.city}`}
             </p>
             <h3 className="mt-4 font-semibold">Items:</h3>
             <ul className="list-disc ml-5">
               {selectedOrder.items.map((item, idx) => (
                 <li key={idx}>
                   <p>
-                    <strong>Product ID:</strong> {item.productId},{" "}
+                    <strong>Product Name:</strong> {item.name},{" "}
                     <strong>Price:</strong> ${item.price},{" "}
-                    <strong>Quantity:</strong> {item.quantity}
+                    <strong>Quantity:</strong> {item.quantity}{" "}
+                    <strong>Size:</strong>{item.size}{" "} {" "}
                   </p>
                 </li>
               ))}

@@ -51,18 +51,8 @@ const CreateProduct = () => {
       price: Number(formData.price),
       salePrice: Number(formData.salePrice),
       sizes: formData.sizes.map((size) => {
-        const validSizes = ["Small", "Medium", "Large", "X-Large"];
-        if (validSizes.includes(size)) {
-          return size;
-        }
-        // Map abbreviations to full size names if necessary
-        const sizeMapping = {
-          S: "Small",
-          M: "Medium",
-          L: "Large",
-          XL: "X-Large",
-        };
-        return sizeMapping[size] || size; // Use mapping or keep as is
+        // Sizes are numbers, no mapping needed now
+        return parseInt(size);
       }),
     };
 

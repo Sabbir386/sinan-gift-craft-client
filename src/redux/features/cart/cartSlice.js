@@ -12,24 +12,29 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const existingItemIndex = state.items.findIndex(
-        (item) => item._id === action.payload._id
+        (item) => item._id === action.payload._id && item.selectedSize === action.payload.selectedSize // Ensure same size
       );
-    
+
       if (existingItemIndex >= 0) {
         // Product already exists, update its quantity
         state.items[existingItemIndex].quantity += action.payload.quantity;
       } else {
-        // Add new product
-        state.items.push(action.payload);
+        // Add new product with selected size
+        state.items.push({
+          ...action.payload,
+          selectedSize: action.payload.selectedSize || null,
+        });
       }
-    
+
       // Update totals
       state.totalQuantity += action.payload.quantity;
       state.totalPrice += action.payload.price * action.payload.quantity;
     },
-    
+
     removeFromCart: (state, action) => {
-      const itemIndex = state.items.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.items.findIndex(
+        (item) => item._id === action.payload._id && item.selectedSize === action.payload.selectedSize
+      );
       if (itemIndex >= 0) {
         const item = state.items[itemIndex];
         state.totalQuantity -= item.quantity;
@@ -37,9 +42,12 @@ const cartSlice = createSlice({
         state.items.splice(itemIndex, 1);
       }
     },
+
     updateQuantity: (state, action) => {
-      const { id, quantity } = action.payload;
-      const item = state.items.find((item) => item.id === id);
+      const { id, size, quantity } = action.payload;
+      const item = state.items.find(
+        (item) => item._id === id && item.selectedSize === size // Ensure correct size
+      );
 
       if (item) {
         state.totalQuantity += quantity - item.quantity;
@@ -47,6 +55,7 @@ const cartSlice = createSlice({
         item.quantity = quantity;
       }
     },
+
     clearCart: (state) => {
       state.items = [];
       state.totalQuantity = 0;

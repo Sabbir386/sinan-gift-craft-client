@@ -58,18 +58,36 @@ const Landing = () => {
 
   // Add to cart functionality
   const handleAddToCart = () => {
-    if (!selectedProduct) return;
+    if (!selectedProduct || !size) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please select a size before adding to cart.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      return;
+    }
+  
+    // Include selected size in the dispatched payload
     console.log("selectedProduct", selectedProduct);
-    dispatch(addToCart({ ...selectedProduct, quantity: cartQuantity })); // Use cartQuantity here
+    dispatch(addToCart({
+      ...selectedProduct,
+      quantity: cartQuantity,
+      selectedSize: size, // Add selected size to the cart item
+    }));
+  
     Swal.fire({
       icon: "success",
       title: "Added to Cart!",
-      text: `You have added "${selectedProduct.name}" to your cart.`,
+      text: `You have added "${selectedProduct.name}" (Size: ${size}) to your cart.`,
       timer: 2000,
       showConfirmButton: false,
     });
+  
     setIsModalOpen(false); // Close modal after adding to cart
   };
+  
 
   const sliderItems = [
     {
@@ -118,7 +136,8 @@ const Landing = () => {
     center: { opacity: 1, x: 0 }, // Center position
     exit: { opacity: 0, x: -100 }, // Slides out
   };
-  const [size, setSize] = useState("41");
+  const [size, setSize] = useState();
+
   const [color, setColor] = useState("White");
   const [imageIndex, setImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -371,7 +390,7 @@ const Landing = () => {
           {categoriesWithProducts?.data?.map((category, categoryIndex) => (
             <Link
               key={categoryIndex}
-              to={"/"}
+              to={"/view-all-category-products/" + category._id}
               className="rounded-lg relative h-[180px] md:h-[420px] group"
             >
               <img
@@ -713,7 +732,7 @@ const Landing = () => {
               <div className="mt-4">
                 <span className="font-medium">Size: </span>
                 <div className="flex flex-wrap space-x-2 mt-2">
-                  {sizes.map((s) => (
+                  {selectedProduct.sizes.map((s) => (
                     <button
                       key={s}
                       onClick={() => setSize(s)}
