@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { useGetAllProductsQuery, useDeleteProductMutation, useUpdateProductMutation } from "./productApi"; // Adjust import path
 import { MdDelete,MdEdit  } from "react-icons/md";
 
-const ViewAllProduct = () => {
+const  ViewAllProduct = () => {
   const { data: productsData, isLoading, error } = useGetAllProductsQuery();
   console.log(productsData)
   const [deleteProduct] = useDeleteProductMutation();
@@ -108,7 +108,7 @@ const ViewAllProduct = () => {
             <td className="px-5 py-2 border-b">${product.price.toFixed(2)}</td>
             <td className="px-5 py-2 border-b">${product.salePrice.toFixed(2)}</td>
             <td className="px-5 py-2 border-b">{product.quantity}</td>
-            <td className="px-5 py-2 border-b">{product.category.categoryName}</td>
+            <td className="px-5 py-2 border-b">{product?.category?.categoryName}</td>
             <td className="px-5 py-2 border-b">{product.slug || "N/A"}</td>
             <td className="px-5 py-2 border-b">
               {product.subCategory?.subCategory || "N/A"}

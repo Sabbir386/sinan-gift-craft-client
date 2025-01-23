@@ -59,7 +59,7 @@ const Cart = () => {
 
   // Calculate the total price of items (without gift wrap)
   const totalPrice = products.reduce(
-    (sum, product) => sum + product.price * product.quantity,
+    (sum, product) => sum + product.salePrice * product.quantity,
     0
   );
 
@@ -67,23 +67,23 @@ const Cart = () => {
   const discountAmount = 0;
 
   return (
-    <div className="grid grid-cols-1 gap-4 px-6 mx-auto w-full max-w-7xl">
+    <div className="grid grid-cols-1 gap-4 px-2 md:px-6 mx-auto w-full max-w-7xl">
       {/* Left section: Cart items */}
-      <div className="p-4 w-full mx-auto">
+      <div className="p-1 md:p-4 w-full mx-auto">
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
           <table className="min-w-full table-auto border-collapse border">
             <thead>
               <tr className="bg-gray-100 border-b">
-                <th className="text-left p-4 text-sm font-semibold text-gray-600">
-                  Product
+                <th className="text-left p-1 md:p-4 text-xs md:text-sm font-semibold text-gray-600">
+                  Product Name
                 </th>
-                <th className="text-center p-4 text-sm font-semibold text-gray-600">
+                <th className="text-center p-1 md:p-4 text-xs md:text-sm font-semibold text-gray-600">
                   Price
                 </th>
-                <th className="text-center p-4 text-sm font-semibold text-gray-600">
+                <th className="text-center p-1 md:p-4 text-xs md:text-sm font-semibold text-gray-600">
                   Quantity
                 </th>
-                <th className="text-center p-4 text-sm font-semibold text-gray-600">
+                <th className="text-center p-1 md:p-4 text-xs md:text-sm font-semibold text-gray-600">
                   Total
                 </th>
               </tr>
@@ -95,35 +95,37 @@ const Cart = () => {
                     key={product._id + product.selectedSize}
                     className="border-b hover:bg-gray-50 transition-colors"
                   >
-                    <td className="p-4 flex items-center space-x-4">
+                    <td className="p-1 md:p-4 flex flex-col md:flex-row items-start md:items-center justify-start space-x-0 md:space-x-4">
                       <img
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-16 h-16 object-cover rounded-md"
+                        className="w-10 h-10 md:w-16 md:h-16 object-cover rounded-md"
                       />
                       <div>
-                        <p className="text-sm font-medium">{product.title}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-xs md:text-sm font-medium">{product.title}</p>
+                        <p className="text-xs md:text-sm text-gray-500">
                           Size: {product.selectedSize}
                         </p>{" "}
                         {/* Display selected size */}
-                        <button
+                        <div>
+                          <button
                           onClick={() =>
                             handleRemoveProduct(
                               product._id,
                               product.selectedSize
                             )
                           }
-                          className="text-sm text-red-500 mt-1 hover:underline"
+                          className="text-xs md:text-sm text-red-500 mt-1 hover:underline"
                         >
                           Remove
                         </button>
+                        </div>
                       </div>
                     </td>
-                    <td className="text-center p-4 text-sm font-semibold">
-                      ${product.price?.toFixed(2)}
+                    <td className="text-center p-1 md:p-4 text-xs md:text-sm font-semibold">
+                      {product.salePrice?.toFixed(2)} ট
                     </td>
-                    <td className="text-center p-4">
+                    <td className="text-center p-1 md:p-4">
                       <div className="inline-flex items-center border rounded">
                         <button
                           onClick={() =>
@@ -138,7 +140,7 @@ const Cart = () => {
                         >
                           -
                         </button>
-                        <span className="px-4">{product.quantity}</span>
+                        <span className="px-2 md:px-4">{product.quantity}</span>
                         <button
                           onClick={() =>
                             handleQuantityChange(
@@ -153,8 +155,8 @@ const Cart = () => {
                         </button>
                       </div>
                     </td>
-                    <td className="text-center p-4 text-sm font-bold">
-                      ${(product.price * product.quantity).toFixed(2)}
+                    <td className="text-center p-1 md:p-4 text-xs md:text-sm font-bold">
+                      ${(product.salePrice * product.quantity).toFixed(2)}
                     </td>
                   </tr>
                 ))
@@ -172,7 +174,7 @@ const Cart = () => {
           </table>
         </div>
       </div>
-      <div>
+      <div className="text-right">
         <button
           onClick={handleClearCart}
           className="mt-4 py-2 px-4 bg-red-600 text-white rounded hover:bg-red-500"

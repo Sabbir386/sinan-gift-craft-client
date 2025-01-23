@@ -27,6 +27,7 @@ import { addToCart } from "../../redux/features/cart/cartSlice";
 const Landing = () => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sizeError, setSizeError] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const dispatch = useDispatch();
   const { data: categoriesWithProducts, isLoading } =
@@ -59,13 +60,15 @@ const Landing = () => {
   // Add to cart functionality
   const handleAddToCart = () => {
     if (!selectedProduct || !size) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Please select a size before adding to cart.",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Error",
+      //   text: "Please select a size before adding to cart.",
+      //   timer: 2000,
+      //   showConfirmButton: false,
+      // });
+      setSizeError(true);
+
       return;
     }
   
@@ -79,12 +82,12 @@ const Landing = () => {
   
     Swal.fire({
       icon: "success",
-      title: "Added to Cart!",
+      title: "কার্টে যুক্ত হয়েছে!",
       text: `You have added "${selectedProduct.name}" (Size: ${size}) to your cart.`,
       timer: 2000,
       showConfirmButton: false,
     });
-  
+    setSizeError(false);
     setIsModalOpen(false); // Close modal after adding to cart
   };
   
@@ -113,6 +116,44 @@ const Landing = () => {
       title: `Fashionable Islamic Clothing for Girls`,
       description: "Get 20% off on all products in our store",
       buttonText: { text: "Shop Now", url: "/" },
+    },
+  ];
+  const testimonials = [
+    {
+      name: "Ali Ahmed",
+      position: "Founder, Islamic Store",
+      image: "https://i.pravatar.cc/150?img=1",
+      quote: "Absolutely love the quality and service. Highly recommend!",
+    },
+    {
+      name: "Fatima Noor",
+      position: "Entrepreneur",
+      image: "https://i.pravatar.cc/150?img=2",
+      quote: "Best experience shopping for Islamic dresses. Will buy again!",
+    },
+    {
+      name: "Omar Hassan",
+      position: "Customer",
+      image: "https://i.pravatar.cc/150?img=3",
+      quote: "The craftsmanship in their Islamic crafts is truly amazing.",
+    },
+    {
+      name: "Ali Ahmed",
+      position: "Founder, Islamic Store",
+      image: "https://i.pravatar.cc/150?img=1",
+      quote: "Absolutely love the quality and service. Highly recommend!",
+    },
+    {
+      name: "Fatima Noor",
+      position: "Entrepreneur",
+      image: "https://i.pravatar.cc/150?img=2",
+      quote: "Best experience shopping for Islamic dresses. Will buy again!",
+    },
+    {
+      name: "Omar Hassan",
+      position: "Customer",
+      image: "https://i.pravatar.cc/150?img=3",
+      quote: "The craftsmanship in their Islamic crafts is truly amazing.",
     },
   ];
   // Animation for the entire container
@@ -216,7 +257,7 @@ const Landing = () => {
           >
             {sliderItems.map((item, index) => (
               <SwiperSlide key={item.id}>
-                <div className="rounded-lg w-full relative h-[400px] md:h-[600px] overflow-hidden">
+                <div className="rounded-lg w-full relative h-[170px] md:[300px] overflow-hidden">
                   <motion.img
                     src={item.backgroundImage}
                     alt=""
@@ -234,12 +275,12 @@ const Landing = () => {
                       animate={activeIndex === index ? "visible" : "hidden"}
                       variants={containerVariants}
                     >
-                      <motion.span
+                      {/* <motion.span
                         className="px-4 py-2 text-sm text-white bg-primaryColor bg-opacity-50 rounded-full inline-block"
                         variants={textVariants}
                       >
                         {item.badge}
-                      </motion.span>
+                      </motion.span> */}
 
                       {/* Text Reveal Animation for Title */}
                       <motion.h1
@@ -306,7 +347,7 @@ const Landing = () => {
             modules={[Autoplay]}
           >
             <SwiperSlide>
-              <div className="rounded-lg w-full relative h-[300px] md:h-[600px] overflow-hidden group">
+              <div className="rounded-lg w-full relative h-[170px] md:[300px] overflow-hidden group">
                 <img
                   src={"https://i.ibb.co.com/XXC60c1/banner-right.png"}
                   alt=""
@@ -328,7 +369,7 @@ const Landing = () => {
               </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="rounded-lg w-full relative h-[300px] md:h-[600px] overflow-hidden group">
+              <div className="rounded-lg w-full relative h-[170px] md:[300px] overflow-hidden group">
                 <img
                   src={"https://i.ibb.co.com/frMddxX/image-178.png"}
                   alt=""
@@ -350,7 +391,7 @@ const Landing = () => {
               </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="rounded-lg w-full relative h-[300px] md:h-[600px] overflow-hidden group">
+              <div className="rounded-lg w-full relative h-[170px] md:[300px] overflow-hidden group">
                 <img
                   src={"https://i.ibb.co.com/XXC60c1/banner-right.png"}
                   alt=""
@@ -375,6 +416,7 @@ const Landing = () => {
         </div>
       </div>
       {/* top categories  */}
+      {/*
       <div className="px-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-800">Top Categories</h2>
@@ -391,7 +433,7 @@ const Landing = () => {
             <Link
               key={categoryIndex}
               to={"/view-all-category-products/" + category._id}
-              className="rounded-lg relative h-[180px] md:h-[420px] group"
+              className="rounded-lg relative h-[180px] group"
             >
               <img
                 src={"https://i.ibb.co.com/3MDc6dG/banner-three.jpg"}
@@ -404,7 +446,7 @@ const Landing = () => {
             </Link>
           ))}
         </div>
-      </div>
+      </div>*/}
       {/* new arrival */}
       {/* <div className="px-6">
         <div className="flex flex-col items-center md:flex-row gap-10 bg-gradient-to-r from-primaryColor to-secondaryColor animate-floatingBackground py-10 md:py-20 px-12 rounded-md">
@@ -439,68 +481,75 @@ const Landing = () => {
         </div>
       </div> */}
       {/* Trending Products  */}
-      <div className="px-6 py-5">
+      <div className="container mx-auto px-6 py-5">
         {categoriesWithProducts?.data?.map((category, categoryIndex) => (
           <div key={categoryIndex} className="mb-10">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold text-gray-800">
                 {category.categoryName}
               </h2>
-              <Link
+              {/* <Link
                 to={`/view-all-category-products/${category._id}`}
                 className="flex items-center gap-1 text-sm font-normal text-headingColor hover:text-secondaryColor duration-300"
               >
                 <span>View All</span> <FaArrowRight />
-              </Link>
+              </Link> */}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-7 py-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-7 py-4">
               {category.products.map((product, productIndex) => (
                 <div
                   key={`${categoryIndex}-${productIndex}`}
-                  className="rounded-xl relative h-[550px] md:h-[550px] group overflow-hidden bg-white shadow-md"
+                  className="rounded-xl relative h-[420px] md:h-[390px] group overflow-hidden bg-white shadow-md"
                 >
-                  <div className="absolute top-0 left-0 z-10 object-cover rounded-xl w-full h-[420px] md:h-[420px] duration-300 overflow-hidden">
+                  <div className="px-3 py-1 bg-red-600 text-white text-center absolute top-5 right-5 z-20 rounded-lg">
+                  
+                  {(((product.price - product.salePrice) / product.price) * 100).toFixed(0)}%
+                  </div>
+                  <div className="absolute top-0 left-0 z-10 object-cover rounded-xl w-full h-[244px] duration-300 overflow-hidden">
                     <img
                       src={product.images[0]}
                       alt={product.name}
-                      className="w-full h-full group-hover:scale-125 duration-500"
+                      className="w-full h-full object-scale-down group-hover:scale-125 duration-500"
                     />
                   </div>
 
-                  <Link
-                    to={{
-                      pathname: `/product/${product._id}`,
-                    }}
+                  <div
+                    // to={{
+                    //   pathname: `/product/${product._id}`,
+                    // }}
                     state={{ product }}
-                    className="absolute bottom-12 w-full"
+                    className="absolute bottom-20 md:bottom-16 w-full px-3"
                   >
                     <h4 className="text-headingColor font-medium text-base">
                       {product.name}
                     </h4>
+                    <p>
+                    {product.description.slice(0, 18)+"..." }
+                    </p>
                     <div className="flex gap-3 justify-start items-center">
                       <h3 className="font-extrabold text-lg ">
-                        ${product.salePrice || product.price}
+                      {product.salePrice} ট
                       </h3>
                       {product.salePrice && (
                         <h5 className="line-through text-sm text-gray-500">
-                          ${product.price}
+                          {product.price} ট
                         </h5>
                       )}
                     </div>
-                  </Link>
-                  <div className="absolute bottom-2 w-full grid grid-cols-2 gap-2">
+                  </div>
+                  <div className="absolute bottom-2 w-full grid grid-cols-1 md:grid-cols-2 gap-2 px-3">
                     <button
-                      className="text-white bg-secondaryColor rounded-full px-4 py-1"
+                      className="text-white bg-secondaryColor rounded-full px-4 py-1 text-xs"
                       onClick={() => toggleModal(product)}
                     >
-                      Add to Cart
+                      কার্টে যোগ করুন
                     </button>
                     <button
-                      className="text-white bg-secondaryColor rounded-full px-4 py-1"
+                      className="text-white bg-secondaryColor rounded-full px-4 py-2 text-xs"
                       onClick={() => toggleModal(product)}
                     >
-                      Buy Now
+                      এখনি কিনুন
                     </button>
                   </div>
                 </div>
@@ -516,7 +565,7 @@ const Landing = () => {
               <h3>{selectedProduct.name}</h3>
               <img src={selectedProduct.images[0]} alt={selectedProduct.name} />
               <p>
-                Price: ${selectedProduct.salePrice || selectedProduct.price}
+                Price: {selectedProduct.salePrice || selectedProduct.price}
               </p>
               <div className="quantity-control">
                 <button onClick={() => handleQuantityChange("decrease")}>
@@ -534,134 +583,42 @@ const Landing = () => {
         )}
       </div>
 
-      {/* new arrival two  */}
-      {/* <div className="px-6 flex flex-col md:flex-row justify-between items-center gap-5">
-      
-        <div className="w-full lg:w-4/6 bg-gradient-to-r from-primaryColor to-secondaryColor animate-floatingBackground py-12 px-12 rounded-md flex flex-col md:flex-row items-center gap-4">
-          <img
-            src="https://i.ibb.co.com/Vt993n6/new-arrival-one.png"
-            alt=""
-            className="h-84 object-cover rounded-xl hidden lg:block"
-          />
-          <div>
-            <h2 className="text-5xl font-bold text-headingColor">
-              New Arrival <br /> Collection 24
-            </h2>
-            <p className="text-sm">
-              The brand took its name from Van Gogh’s iconic painting,
-              'Sunflower', symbolizing warmth, happiness, loyalty, and
-              long-lasting connections
-            </p>
-            <Link
-              className="px-5 py-2 rounded-full bg-white mt-1 inline-block text-sm text-secondaryColor capitalize hover:bg-secondaryColor hover:text-white hover:translate-y-1 hover:scale-110 duration-300 shadow-md"
-              to=""
-            >
-              Discover More
-            </Link>
-          </div>
-        </div>
-        <div className="w-full lg:w-2/6 overflow-hidden rounded-xl">
-          <img
-            src="https://i.ibb.co.com/0qmGPNx/image-186.png"
-            alt=""
-            className="rounded-xl w-full h-60 md:h-88 object-cover hover:scale-105 duration-500"
-          />
-        </div>
-      </div> */}
-      {/* Amazing Deals  */}
-      {/* <div className="px-6 py-5">
-        <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-800">Amazing Deals</h2>
-          <Link
-            to="/"
-            className="flex items-center gap-1 text-sm font-normal text-headingColor hover:text-secondaryColor duration-300"
-          >
-            <span>View All</span> <FaArrowRight />
-          </Link>
-        </div>
+      <div className="bg-gray-100 py-16 px-6 md:px-12">
+      <div className="max-w-4xl mx-auto text-center">
+        <h2 className="text-3xl font-bold text-gray-800">What Our Customers Say</h2>
+        <p className="text-gray-600 mt-2">Real testimonials from happy customers.</p>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-7 py-4">
-          {trendingProducts.map((product, index) => (
-            <div
-              key={index}
-              className="rounded-xl relative h-[420px] md:h-[510px] group overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 z-10 object-cover rounded-xl w-full h-[320px] md:h-[420px] duration-300 overflow-hidden">
-                <img
-                  src={product.image}
-                  alt=""
-                  className="w-full h-full group-hover:scale-125 duration-500"
-                />
-              </div>
-
-              <div className="absolute  -right-8 group-hover:right-4 top-4 rounded-full w-7 h-7 text-secondaryColor  z-10  bg-white hover:bg-secondaryColor hover:text-white duration-300 flex justify-center items-center cursor-pointer">
-                <p className="text-center text-sm opacity-50 group-hover:opacity-100">
-                  <FaHeart />
-                </p>
-              </div>
-              <div
-                className="absolute -right-8 group-hover:right-4 top-12 rounded-full w-7 h-7 text-secondaryColor  z-10  bg-white hover:bg-secondaryColor hover:text-white duration-300 flex justify-center items-center cursor-pointer"
-                onClick={toggleModal}
-              >
-                <p className="text-center text-sm opacity-50 group-hover:opacity-100">
-                  <FaEye />
-                </p>
-              </div>
-              <Link to={"/product/1"} className="absolute bottom-2 w-full">
-                <h4 className="text-headingColor font-medium text-base">
-                  {product.title}
-                </h4>
-                <div className="flex gap-1 justify-start items-center text-yellow-400">
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <div>
-                    (<span>{product.rating}</span>)
-                  </div>
-                </div>
-                <div className="flex gap-3 justify-start items-center">
-                  <h3 className="font-extrabold text-lg ">
-                    ${product.discountedPrice}
-                  </h3>
-                  <h5 className="line-through text-sm text-gray-500">
-                    ${product.price}
-                  </h5>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div> */}
-      {/* News latter  */}
-      {/* <div className="px-6 flex flex-col md:flex-row justify-center items-center gap-5">
-        <div className="w-full bg-gradient-to-r from-primaryColor to-secondaryColor animate-floatingBackground py-12 px-12 rounded-md flex flex-col md:flex-row justify-center items-center gap-4">
-          <div className="text-center">
-            <p className="text-sm">Stay Informed with Our</p>
-            <h2 className="text-4xl font-bold text-headingColor">
-              Latest News and Updates!
-            </h2>
-
-            <form
-              action=""
-              className="pl-5 pr-2 py-2 bg-white rounded-full mt-5 flex"
-            >
-              <input
-                type="email"
-                className="block w-[90%] border-none outline-none text-sm rounded-full pr-2"
-                placeholder="Enter your email"
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={30}
+        pagination={{ clickable: true }}
+        breakpoints={{
+          640: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
+        
+        className="mt-10"
+      >
+        {testimonials.map((testimonial, index) => (
+          <SwiperSlide key={index}>
+            <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+              <img
+                src={testimonial.image}
+                alt={testimonial.name}
+                className="w-20 h-20 mx-auto rounded-full"
               />
-              <button
-                type="submit"
-                className="px-5 py-2 rounded-full bg-secondaryColor inline-block text-sm text-white capitalize hover:bg- hover:text-white duration-300 shadow-md"
-              >
-                subscribe
-              </button>
-            </form>
-          </div>
-        </div>
-      </div> */}
+              <p className="text-gray-700 mt-4">"{testimonial.quote}"</p>
+              <h3 className="text-lg font-semibold mt-3">{testimonial.name}</h3>
+              <p className="text-sm text-gray-500">{testimonial.position}</p>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+
+   
 
       {/* modal  */}
       {isModalOpen && selectedProduct && (
@@ -723,7 +680,7 @@ const Landing = () => {
                 {selectedProduct.name}
               </h2>
               <p className="text-xl font-semibold text-gray-800">
-                ${selectedProduct.salePrice || selectedProduct.price}
+                {selectedProduct.salePrice || selectedProduct.price} ট
               </p>
               <p className="text-gray-600 mt-2">
                 {selectedProduct.description}
@@ -746,6 +703,9 @@ const Landing = () => {
                     </button>
                   ))}
                 </div>
+                {sizeError && (
+                  <small className="text-red-500">Please Select a size</small>
+                )}
               </div>
 
               <div className="mt-4 flex items-center">
@@ -774,13 +734,13 @@ const Landing = () => {
                   onClick={handleAddToCart}
                   className="w-full text-center py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
                 >
-                  Add To Cart
+                  কার্টে যোগ করুন
                 </button>
                 <Link
                   to="/cart"
                   className="w-full text-center py-3 bg-black text-white rounded-lg hover:bg-gray-700"
                 >
-                  Buy It Now
+                   এখনি কিনুন
                 </Link>
               </div>
 

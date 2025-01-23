@@ -28,7 +28,7 @@ const cartSlice = createSlice({
 
       // Update totals
       state.totalQuantity += action.payload.quantity;
-      state.totalPrice += action.payload.price * action.payload.quantity;
+      state.totalPrice += action.payload.salePrice * action.payload.quantity;
     },
 
     removeFromCart: (state, action) => {
@@ -38,7 +38,7 @@ const cartSlice = createSlice({
       if (itemIndex >= 0) {
         const item = state.items[itemIndex];
         state.totalQuantity -= item.quantity;
-        state.totalPrice -= item.price * item.quantity;
+        state.totalPrice -= item.salePrice * item.quantity;
         state.items.splice(itemIndex, 1);
       }
     },
@@ -51,7 +51,7 @@ const cartSlice = createSlice({
 
       if (item) {
         state.totalQuantity += quantity - item.quantity;
-        state.totalPrice += (quantity - item.quantity) * item.price;
+        state.totalPrice += (quantity - item.quantity) * item.salePrice;
         item.quantity = quantity;
       }
     },

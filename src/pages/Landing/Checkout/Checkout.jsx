@@ -10,7 +10,6 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cart.items);
   const subtotal = useSelector((state) => state.cart.totalPrice);
-
   const [registration] = useRegistrationMutation();
   const [formData, setFormData] = useState({
     firstName: "",
@@ -44,7 +43,6 @@ const Checkout = () => {
   const handleCreateOrder = async () => {
     // Set the email to formData.email if available, else use uniqueEmail
     const userEmail = formData.email || uniqueEmail;
-    console.log(products);
     const orderData = {
       userInfo: {
         ...formData,
@@ -54,18 +52,18 @@ const Checkout = () => {
         productId: product.id,
         name: product.name,
         quantity: product.quantity,
-        price: product.price,
+        price: product.salePrice,
         size: parseInt(product.selectedSize),
       })),
       totalAmount: subtotal,
       status: "Pending",
     };
-
+    console.log(orderData);
     const normalUser = {
       password: "user12345",
       normalUser: {
         name: formData?.firstName,
-        email: userEmail, // Use userEmail here
+        email: userEmail,
         country: "Bangladesh",
         designation: "Client",
         username: "sharukh Khan",
@@ -100,9 +98,9 @@ const Checkout = () => {
         handleClearCart();
         Swal.fire({
           icon: "success",
-          title: "Order Created Successfully!",
+          title: "অর্ডার সম্পন্য হয়েছে!",
           html: `
-            <p>Your order has been created successfully.</p>
+            <p>আপনার অর্ডার সম্পন্য হয়েছে.</p>
             <p>You can log in to your account to track your order status:</p>
             <p><strong>Email:</strong> ${userEmail}</p>
             <p><strong>Password:</strong> user12345</p>
@@ -135,7 +133,8 @@ const Checkout = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 mx-auto w-full max-w-7xl">
       {/* Left Section */}
       <div className="p-4 w-full mx-auto">
-        <h2 className="text-xl font-bold mb-6">Billing details</h2>
+        <h3 className="text-base font-bold text-red-400 mb-2">অর্ডার টি সম্পূর্ন করতে আপনার নাম, ঠিকানা নিচে লিখুনঃ-</h3>
+        <h2 className="text-xl font-bold mb-6">বিলিংয়ের বিবরণ</h2>
         <form className="space-y-6">
           {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -144,7 +143,7 @@ const Checkout = () => {
                 htmlFor="firstName"
                 className="block text-sm font-medium text-gray-700"
               >
-                First Name<span className="text-red-500">*</span>
+               নাম<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -156,7 +155,7 @@ const Checkout = () => {
                 required
               />
             </div>
-            <div>
+            {/* <div>
               <label
                 htmlFor="lastName"
                 className="block text-sm font-medium text-gray-700"
@@ -172,7 +171,7 @@ const Checkout = () => {
                 className="mt-1 block w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
                 required
               />
-            </div>
+            </div> */}
           </div>
 
           {/* Town/City */}
@@ -181,7 +180,7 @@ const Checkout = () => {
               htmlFor="city"
               className="block text-sm font-medium text-gray-700"
             >
-              Town/City<span className="text-red-500">*</span>
+              থানা/উপজেলা<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -200,7 +199,7 @@ const Checkout = () => {
               htmlFor="address"
               className="block text-sm font-medium text-gray-700"
             >
-              Address<span className="text-red-500">*</span>
+              পূর্ণ ঠিকানা<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -219,7 +218,7 @@ const Checkout = () => {
               htmlFor="phone"
               className="block text-sm font-medium text-gray-700"
             >
-              Phone Number<span className="text-red-500">*</span>
+            মোবাইল নাম্বার<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -238,7 +237,7 @@ const Checkout = () => {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-              Email *(Optional)
+              ইমেইল *(Optional)
               {/* <span className="text-red-500">*</span> */}
             </label>
             <input
@@ -256,7 +255,7 @@ const Checkout = () => {
 
       {/* Right Section */}
       <div className="p-4 w-full mx-auto">
-        <h2 className="text-xl font-bold mb-4">Your order</h2>
+        <h2 className="text-xl font-bold mb-4">আপনার অর্ডার</h2>
         <div className="space-y-4">
           {products.map((product, index) => (
             <div key={index} className="flex justify-between items-center">
@@ -274,7 +273,7 @@ const Checkout = () => {
                 </div>
               </div>
               <p className="text-sm font-medium">
-                ${(product.price * product.quantity).toFixed(2)}
+                {(product.salePrice * product.quantity).toFixed(2)} ট
               </p>
             </div>
           ))}
@@ -283,7 +282,7 @@ const Checkout = () => {
         <div className="border-t mt-4 pt-4">
           <div className="flex justify-between items-center">
             <p className="text-sm font-medium">Total</p>
-            <p className="text-lg font-bold">${subtotal.toFixed(2)}</p>
+            <p className="text-lg font-bold">ট {subtotal.toFixed(2)}</p>
           </div>
         </div>
 
@@ -293,7 +292,7 @@ const Checkout = () => {
             disabled={isLoading}
             className="w-full bg-black text-white py-2 text-sm font-medium rounded hover:bg-gray-800"
           >
-            {isLoading ? "Placing Order..." : "Place Order"}
+            {isLoading ? "অর্ডার তৈরি হচ্ছে..." : "অর্ডার দিন"}
           </button>
           {isSuccess && (
             <p className="text-green-500">Order created successfully!</p>

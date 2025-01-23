@@ -28,6 +28,44 @@ const CreateProduct = () => {
   const [createProduct, { isLoading: creatingProduct }] =
     useCreateProductMutation();
 
+  const [uploading, setUploading] = useState(false);
+  const handleImageUpload = async (event) => {
+    const files = Array.from(event.target.files);
+    const uploadedImages = [];
+    setUploading(true);
+
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "cashooz");
+      formData.append("cloud_name", "dmnl8yjw9");
+
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dmnl8yjw9/image/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const data = await response.json();
+        if (data.url) {
+          uploadedImages.push(data.url);
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        toast.error("Failed to upload image.");
+      }
+    }
+
+    setUploading(false);
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...uploadedImages],
+    }));
+    toast.success("Images uploaded successfully!");
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -108,17 +146,27 @@ const CreateProduct = () => {
               htmlFor="images"
               className="block text-sm font-medium text-black mb-1"
             >
-              Images (comma-separated URLs)
+              Upload Images
             </label>
             <input
-              type="text"
+              type="file"
               id="images"
-              className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g., https://example.com/image1.jpg, https://example.com/image2.jpg"
-              onChange={(e) => handleArrayChange(e, "images")}
-              value={formData.images.join(", ")}
-              required
+              className="w-full p-3 rounded-md border text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              multiple
+              onChange={handleImageUpload}
             />
+            {uploading && <p className="text-sm text-gray-500">Uploading...</p>}
+
+            <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+              {formData.images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Uploaded ${index + 1}`}
+                  className="w-full h-16 object-cover rounded-md"
+                />
+              ))}
+            </div>
           </div>
 
           <div>
@@ -200,7 +248,7 @@ const CreateProduct = () => {
               type="text"
               id="sizes"
               className="w-full p-3 rounded-md border  text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g., S, M, L"
+              placeholder="e.g., 36, 40, 43"
               onChange={(e) => handleArrayChange(e, "sizes")}
             />
           </div>
@@ -244,12 +292,8 @@ const CreateProduct = () => {
                 categories?.data &&
                 categories.data.length > 0 &&
                 categories.data.map((cat) => (
-                  <option
-                    key={cat._id}
-                    value={cat._id}
-                    className="text-black"
-                  >
-                    {cat.name}
+                  <option key={cat._id} value={cat._id}>
+                    {cat.categoryName}
                   </option>
                 ))}
             </select>
@@ -282,7 +326,7 @@ const CreateProduct = () => {
                     value={sub._id}
                     className="text-black bg-white"
                   >
-                    {sub.name}
+                    {sub.subCategory}
                   </option>
                 ))}
             </select>
@@ -309,7 +353,7 @@ const CreateProduct = () => {
         <div className="mt-6">
           <button
             type="submit"
-            disabled={creatingProduct}
+            disabled={creatingProduct || uploading}
             className="w-full bg-blue-600 text-white py-3 rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             {creatingProduct ? "Creating..." : "Create Product"}
