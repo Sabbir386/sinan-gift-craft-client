@@ -301,9 +301,9 @@ const CreateOffer = () => {
       const image = data.image[0];
       const formData = new FormData();
       formData.append("file", image);
-      formData.append("upload_preset", "cashooz");
-      formData.append("cloud_name", "dmnl8yjw9");
-      const url = `https://api.cloudinary.com/v1_1/dmnl8yjw9/image/upload`;
+      formData.append("upload_preset", "sinangift");
+      formData.append("cloud_name", "djkk46gdh");
+      const url = `https://api.cloudinary.com/v1_1/djkk46gdh/image/upload`;
 
       fetch(url, {
         method: "POST",

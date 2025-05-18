@@ -7,6 +7,7 @@ import {
   updateQuantity,
 } from "../../../redux/features/cart/cartSlice";
 import Checkout from "../Checkout/Checkout";
+import { FaTrash } from "react-icons/fa";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -67,7 +68,7 @@ const Cart = () => {
   const discountAmount = 0;
 
   return (
-    <div className="grid grid-cols-1 gap-4 px-2 md:px-6 mx-auto w-full max-w-7xl">
+    <div className="grid grid-cols-1 gap-4 px-2 md:px-6 mx-auto w-full max-w-7xl py-20 md:py-16">
       {/* Left section: Cart items */}
       <div className="p-1 md:p-4 w-full mx-auto">
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
@@ -117,7 +118,7 @@ const Cart = () => {
                           }
                           className="text-xs md:text-sm text-red-500 mt-1 hover:underline"
                         >
-                          Remove
+                          <FaTrash />
                         </button>
                         </div>
                       </div>
@@ -156,7 +157,7 @@ const Cart = () => {
                       </div>
                     </td>
                     <td className="text-center p-1 md:p-4 text-xs md:text-sm font-bold">
-                      ${(product.salePrice * product.quantity).toFixed(2)}
+                      ট{(product.salePrice * product.quantity).toFixed(2)}
                     </td>
                   </tr>
                 ))

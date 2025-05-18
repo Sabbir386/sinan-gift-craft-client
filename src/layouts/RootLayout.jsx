@@ -151,14 +151,14 @@ function RootLayout() {
                 aria-labelledby="options-menu"
               >
                 <div className="py-2" role="none">
-                  <Link
+                  {/* <Link
                     to="/dashboard/user-profile"
                     className="flex gap-4 items-center px-4 py-2 text-sm text-black hover:text-buttonBackground border-b-[0.5px] border-b-buttonBackground"
                     role="menuitem"
                   >
                     <FaRegUser />
                     <span>Profile</span>
-                  </Link>
+                  </Link> */}
                   <button
                     onClick={setLogout}
                     className="w-full flex gap-3 items-center mx-auto px-4 py-2 text-sm text-red-400 text-left cursor-pointer duration-200 "

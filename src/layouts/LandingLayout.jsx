@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   FaBars,
+  FaCartArrowDown,
   FaCheck,
   FaFacebookMessenger,
   FaHeart,
@@ -44,8 +45,33 @@ const LandingLayout = () => {
     { name: "brands", path: "/category/1" },
     { name: "sale 24", path: "/category/1" },
   ];
-    const { data: categoriesWithProducts, isLoading } =
-      useGetAllCategoriesWithProductsQuery();
+  const maniMenuArray = [
+    { name: "হোম", path: "/" },
+    { name: "পণ্য", path: "/shop" },
+    { name: "গ্যালারি", path: "/gallery" },
+    { name: "রিভিউ", path: "/review" },
+    { name: "জিজ্ঞাসা", path: "/faq" },
+  ];
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true); // Add class when scrolled
+      } else {
+        setIsScrolled(false); // Remove class when at the top
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  const { data: categoriesWithProducts, isLoading } =
+    useGetAllCategoriesWithProductsQuery();
   const containerVariants = {
     hidden: { opacity: 1 },
     visible: {
@@ -110,8 +136,8 @@ const LandingLayout = () => {
   return (
     <div className="">
       <ScrollToTop />
-      <div className="fixed bottom-4 right-4 flex flex-col gap-3 z-50">
-        {/* WhatsApp Button */}
+      {/* <div className="fixed bottom-4 right-4 flex flex-col gap-3 z-50">
+       
         <a
           href="https://wa.me/+8801902766289" // Replace with your WhatsApp number
           target="_blank"
@@ -121,14 +147,14 @@ const LandingLayout = () => {
           <FaWhatsapp size={24} />
         </a>
 
-        {/* Phone Button */}
+       
         <a
           href="tel:+8801902766289" // Replace with your phone number
           className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition"
         >
           <FaPhone size={24} />
         </a>
-        {/* Messenger Button */}
+       
         <a
           href="https://m.me/SinanGiftandCraft" // Replace 'yourpage' with your Facebook page username
           target="_blank"
@@ -137,122 +163,123 @@ const LandingLayout = () => {
         >
           <FaFacebookMessenger size={24} />
         </a>
-      </div>
+      </div> */}
       {/* main container */}
       <div className="mx-auto bg-white">
         {/* header section  */}
-        <div className="fixed w-full top-0 z-[99999]">
+        <div
+          className={`fixed w-full top-0 z-[99999] ${
+            isScrolled ? "bg-white" : "bg-white"
+          }`}
+        >
           {/* naver section  */}
-          <header className="z-[999] bg-white w-full left-0 top-0">
-            <div className="flex flex-row gap-4 md:gap-0 justify-between items-center py-5 px-6">
-              <div>
-                <Link to="/">
-                  <img
-                    src={Sinan}
-                    alt=""
-                    className="w-[100px] md:w-full object-cover"
-                  />
-                </Link>
-              </div>
-              <div className="hidden md:block">
-                <form action="" className="flex border-[1px] rounded-full">
-                  <select
-                    name=""
-                    id=""
-                    className="border-none outline-none px-2 bg-gray-100 rounded-none rounded-l-full"
-                    defaultValue={"Categories"}
+          <header className="z-[999]  w-full max-w-7xl mx-auto left-0 top-0">
+            <nav className="bg-white px-4 md:px-0 py-5">
+              <div className="flex justify-between items-center">
+                {/* Logo */}
+                <div className="flex items-center space-x-2 text-green-600 font-bold text-xl">
+                  <Link to="/">সিনান গিফট কর্ণার</Link>
+                </div>
+
+                {/* Desktop Menu */}
+                <ul className="hidden md:flex space-x-6 text-gray-700">
+                  {maniMenuArray.map((item, index) => (
+                    <li
+                      key={index}
+                      className="hover:text-green-600 cursor-pointer font-bold"
+                    >
+                      <Link to={item.path}>{item.name}</Link>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Order Button */}
+                <div className="flex justify-center md:justify-end items-center gap-3 -translate-x-4 md:translate-x-0">
+                  <Link
+                    to={"/login"}
+                    className={`border-[1px] flex items-center justify-center w-8 h-8 rounded-full ${
+                      isScrolled
+                        ? "text-black border-black hover:border-green-600"
+                        : "text-green-500 border-green-600"
+                    } hover:text-white hover:bg-green-500 duration-300`}
                   >
-                    {menuArray.map((item, index) => (
-                      <option key={index} value={item.name}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    type="text"
-                    className="border-none outline-none text-xs px-4 h-10"
-                    placeholder={currentText}
-                  />
+                    <FaUser className="text-xs" />
+                  </Link>
+                  <Link
+                    to={"/cart"}
+                    className={`border-[1px] flex items-center justify-center w-8 h-8 rounded-full ${
+                      isScrolled
+                        ? "text-black border-black hover:border-green-600"
+                        : "text-green-500 border-green-600"
+                    } hover:text-white hover:bg-green-500 duration-300`}
+                  >
+                    <FaHeart className="text-xs" />
+                  </Link>
+
+                  <Link
+                    to="/cart"
+                    className={`group border-[1px] flex items-center justify-center w-8 h-8 rounded-full ${
+                      isScrolled
+                        ? "text-black border-black hover:border-green-600"
+                        : "text-green-500 border-green-600"
+                    } hover:text-white hover:bg-green-500 duration-300`}
+                  >
+                    <FaCartArrowDown
+                      className={`text-xs group-hover:text-white ${
+                        isScrolled ? "text-black" : "text-green-500"
+                      }`}
+                    />
+                    {cartTotalQuantity > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                        {cartTotalQuantity}
+                      </span>
+                    )}
+                  </Link>
+                </div>
+
+                {/* Mobile Menu Button */}
+                <div className="block md:hidden">
                   <button
-                    type="submit"
-                    className="w-10 h-10 flex justify-center items-center bg-secondaryColor rounded-full"
+                    onClick={() => setOpen(!open)}
+                    className="relative w-10 h-10 flex items-center justify-center"
                   >
-                    <FaSearch className="text-white text-xs" />
+                    {/* Top bar */}
+                    <span
+                      className={`absolute w-6 h-[1px] bg-black transform transition-transform duration-300 ${
+                        open ? "rotate-45 translate-y-0" : "-translate-y-1.5"
+                      }`}
+                    ></span>
+                    {/* Bottom bar */}
+                    <span
+                      className={`absolute w-6 h-[1px] bg-black transform transition-transform duration-300 ${
+                        open ? "-rotate-45 -translate-y-0" : "translate-y-1.5"
+                      }`}
+                    ></span>
                   </button>
-                </form>
+                </div>
               </div>
-              <div className="flex justify-center md:justify-end items-center gap-3 -translate-x-4 md:translate-x-0">
-                <Link
-                  to={"/cart"}
-                  className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300"
-                >
-                  <FaHeart className="text-xs" />
-                </Link>
-                <Link
-                  to="/cart"
-                  className="relative border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300"
-                >
-                  <CiShoppingCart className="text-xs" />
-                  {cartTotalQuantity > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                      {cartTotalQuantity}
-                    </span>
-                  )}
-                </Link>
-                <Link
-                  to={"/login"}
-                  className="border-[1px] flex items-center justify-center w-8 h-8 rounded-full hover:text-white hover:bg-secondaryColor duration-300"
-                >
-                  <FaUser className="text-xs" />
-                </Link>
-              </div>
-              <div className="block md:hidden">
-                <button
-                  onClick={() => setOpen(!open)}
-                  className="relative w-10 h-10 flex items-center justify-center"
-                >
-                  {/* Top bar */}
-                  <span
-                    className={`absolute w-6 h-[1px] bg-black transform transition-transform duration-300 ${
-                      open ? "rotate-45 translate-y-0" : "-translate-y-1.5"
-                    }`}
-                  ></span>
-                  {/* Bottom bar */}
-                  <span
-                    className={`absolute w-6 h-[1px] bg-black transform transition-transform duration-300 ${
-                      open ? "-rotate-45 -translate-y-0" : "translate-y-1.5"
-                    }`}
-                  ></span>
-                </button>
-              </div>
-            </div>
-            <div
-              className={`py-5 px-2 w-full flex flex-wrap flex-row gap-4 justify-center items-center bg-primaryColor ${
-                open ? "absolute right-0" : "absolute -right-[100%]"
-              } md:relative md:right-0 transition-all duration-500`}
-            >
-              {categoriesWithProducts?.data?.map((category, categoryIndex) => (
-                <Link
-                  key={categoryIndex}
-                  className={`uppercase text-headingColor border text-sm border-gray-300 px-5 py-1 rounded-full transform transition-transform duration-500 ${
-                    activeIndex === categoryIndex
-                      ? "scale-125 bg-secondaryColor text-white"
-                      : ""
-                  }`}
-                  to={`/view-all-category-products/${category._id}`}
-                  onMouseEnter={() => handleMouseEnter(categoryIndex)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {category.categoryName}
-                </Link>
-              ))}
-            </div>
+
+              {/* Mobile Menu */}
+              {open && (
+                <ul className="md:hidden flex flex-col items-center space-y-4 mt-4 text-gray-700 shadow-sm py-4 rounded-md">
+                  {maniMenuArray.map((item, index) => (
+                    <li
+                      key={index}
+                      className="hover:text-green-600 cursor-pointer font-bold"
+                    >
+                      <Link to={item.path}>{item.name}</Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </nav>
           </header>
+
           {/* naver section  */}
         </div>
         {/* header section  */}
         {/* page sections */}
-        <div className="mt-36">
+        <div>
           <Outlet></Outlet>
         </div>
         {/* page sections */}

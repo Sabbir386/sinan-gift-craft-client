@@ -6,6 +6,7 @@ import { useLoginMutation } from "../../../redux/features/auth/authApi";
 import { verifyToken } from "../../../utils/verifyToken";
 import { setUser } from "../../../redux/features/auth/authSlice";
 import { toast } from "sonner";
+import Sinan from "../../../assets/img/sinan.png";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -53,9 +54,9 @@ export default function Login() {
       <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-lg">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="p-1 w-28 h-28 rounded-full bg-gray-100">
-            <img src="/logo.png" alt="Logo" className="w-full h-full" />
-          </div>
+         <div className="flex items-center space-x-2 text-green-600 font-bold text-xl">
+                           <Link to="/">সিনান গিফট কর্ণার</Link>
+                         </div>
         </div>
 
         {/* Welcome Back Text */}
@@ -163,7 +164,7 @@ export default function Login() {
           <div>
             <button
               type="submit"
-              className="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800"
+              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-gray-800"
             >
               Sign in
             </button>

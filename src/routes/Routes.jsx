@@ -56,6 +56,11 @@ import OrderList from "../pages/OrderList/OrderList";
 import ViewAllProduct from "../pages/Landing/Product/ViewAllProduct";
 import CreateProduct from "../pages/Landing/Product/CreateProduct";
 import ViewAllCategoryProduct from "../pages/Landing/ViewAllCategoryProduct";
+import BackupLanding from "../pages/Landing/BackupLanding";
+import Shop from "../pages/Shop/Shop";
+import ImageGallery from "../pages/Landing/ImageGallery/ImageGallery";
+import Testimonial from "../pages/Landing/Testimonial/Testimonial";
+import FAQSection from "../pages/Landing/Faq/FAQSection";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +70,11 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Landing></Landing>,
+        // element: <BackupLanding></BackupLanding>,
+      },
+      {
+        path: "/shop",
+        element: <Shop></Shop>,
       },
       {
         path: "/product/:id",
@@ -89,6 +99,18 @@ export const router = createBrowserRouter([
       {
         path: "/my-account",
         element: <MyAccount></MyAccount>,
+      },
+      {
+        path: "/gallery",
+        element: <ImageGallery></ImageGallery>,
+      },
+      {
+        path: "/review",
+        element: <Testimonial></Testimonial>,
+      },
+      {
+        path: "/faq",
+        element: <FAQSection></FAQSection>,
       },
       {
         path: "/login",

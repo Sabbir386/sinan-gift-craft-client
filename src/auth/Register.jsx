@@ -186,29 +186,25 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-secondaryColor h-screen w-full flex justify-center items-center">
+    <div className="bg-white h-screen w-full flex justify-center items-center">
       <div className="bg-cardBackground w-full sm:w-1/2 md:w-9/12 lg:w-1/2 shadow-md flex flex-col md:flex-row items-center mx-5 sm:m-0 rounded-md">
-        <div className="w-full md:w-1/2 hidden md:flex flex-col justify-center items-center text-white">
-          <h1 className="text-3xl">Hello</h1>
+        <div className="w-full md:w-1/2 hidden md:flex flex-col justify-center items-center text-black">
+        <div className="flex items-center space-x-2 text-green-600 font-bold text-xl">
+                          <Link to="/">সিনান গিফট কর্ণার</Link>
+                        </div>
+          <h1 className="text-3xl text-black">Hello</h1>
           <p className="text-5xl font-extrabold text-buttonBackground">
             Welcome!
           </p>
           <p className="text-5xl font-extrabold text-buttonBackground">
-            To Cashooz
+            To Sinan
           </p>
         </div>
         <div className="bg-white w-full md:w-1/2 flex flex-col items-center py-32 px-8 rounded-r-md">
           {/* <h3 className="text-3xl font-bold text-buttonBackground mb-4">
             REGISTER
           </h3> */}
-          <div className="flex flex-col items-start p-4  rounded-md bg-white w-80">
-            <div className="w-full flex justify-between">
-              <div className="text-xl font-semibold">Join for free!</div>
-              <div className="text-green-600 text-xl font-bold bg-green-200 px-3 py-1 rounded">
-                500 CZ Bonus
-              </div>
-            </div>
-          </div>
+         
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="w-full flex flex-col justify-center"
@@ -252,16 +248,8 @@ const Register = () => {
                 placeholder="Password"
                 {...register("password", {
                   required: "Password is required",
-                  minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters",
-                  },
-                  // pattern: {
-                  //   value:
-                  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                  //   message:
-                  //     "Password must contain an uppercase letter, a number, and a special character",
-                  // },
+                 
+                  
                 })}
                 className="w-full p-3 pr-10 rounded border placeholder-gray-400 focus:outline-none focus:border-cardBackground text-cardBackground"
               />
@@ -271,66 +259,21 @@ const Register = () => {
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
-              {errors.password && (
-                <p className="text-red-500 text-sm">
-                  {errors.password.message}
-                </p>
-              )}
-              <p className="text-sm mt-2 text-gray-500">
-                Password must be at least 8 characters long, contain an
-                uppercase letter, a number, and a special character.
-              </p>
-            </div>
-
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="refferal ID"
-                {...register("refId")}
-                defaultValue={refId}
-                className="w-full p-3 rounded border placeholder-gray-400 focus:outline-none focus:border-cardBackground text-cardBackground"
-              />
              
             </div>
 
-            <div className="mt-4 flex items-start my-4">
-              <div className="mr-2 text-green-500 text-2xl">➜</div>
-              <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-                className="mr-2 mt-1 h-5 w-5 border-gray-300 rounded"
-              />
-              <div className="text-xs text-gray-700">
-                I agree to the{" "}
-                <Link to="/termsncondition" className="text-blue-500 underline">
-                  Terms of Use
-                </Link>{" "}
-                and to receive marketing email messages from InboxDollars, and I
-                accept the{" "}
-                <Link
-                  to={"/privecy-policy"}
-                  className="text-blue-500 underline"
-                >
-                  Privacy Policy
-                </Link>
-                .
-              </div>
-            </div>
+         
+            
             <button
-              disabled={!isChecked}
-              className={`font-bold text-white uppercase focus:outline-none rounded p-3 ${
-                isChecked
-                  ? "bg-buttonBackground" // Button color when enabled
-                  : "bg-gray-400 cursor-not-allowed" // Button color when disabled
-              }`}
+            
+              className={`font-bold text-white uppercase focus:outline-none rounded p-3 bg-green-600`}
             >
               Register
             </button>
           </form>
 
           <div className="w-full flex justify-between my-5">
-            <Link to={"/"} className="text-primaryColor font-semibold text-sm">
+            <Link to={"/"} className="text-black font-semibold text-sm">
               Back to Home
             </Link>
             <div className="text-sm">

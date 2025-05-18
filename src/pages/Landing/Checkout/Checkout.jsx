@@ -110,14 +110,25 @@ const Checkout = () => {
       }
 
       if (user?.error?.status === 409) {
-        const errorMessage =
-          user?.error?.data?.errorSources[0]?.message || "Conflict error.";
+        // const errorMessage =
+        //   user?.error?.data?.errorSources[0]?.message || "Conflict error.";
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "Conflict Error",
+        //   text: errorMessage,
+        // });
+        // return;
         Swal.fire({
-          icon: "error",
-          title: "Conflict Error",
-          text: errorMessage,
+          icon: "success",
+          title: "অর্ডার সম্পন্য হয়েছে!",
+          html: `
+            <p>আপনার অর্ডার সম্পন্য হয়েছে.</p>
+            <p>You can log in to your account to track your order status:</p>
+            <p><strong>Email:</strong> ${userEmail}</p>
+            <p><strong>Password:</strong> user12345</p>
+          `,
+          confirmButtonText: "Close",
         });
-        return;
       }
     } catch (error) {
       console.error("Failed to create order:", error);
@@ -133,8 +144,10 @@ const Checkout = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 mx-auto w-full max-w-7xl">
       {/* Left Section */}
       <div className="p-4 w-full mx-auto">
-        <h3 className="text-base font-bold text-red-400 mb-2">অর্ডার টি সম্পূর্ন করতে আপনার নাম, ঠিকানা নিচে লিখুনঃ-</h3>
-        <h2 className="text-xl font-bold mb-6">বিলিংয়ের বিবরণ</h2>
+        <h3 className="text-base font-bold text-red-400 mb-2">
+          অর্ডার টি সম্পূর্ন করতে আপনার নাম, ঠিকানা নিচে লিখুনঃ-
+        </h3>
+        <h2 className="text-xl font-bold mb-6 text-green-600">বিলিংয়ের বিবরণ</h2>
         <form className="space-y-6">
           {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -143,7 +156,7 @@ const Checkout = () => {
                 htmlFor="firstName"
                 className="block text-sm font-medium text-gray-700"
               >
-               নাম<span className="text-red-500">*</span>
+                নাম<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -218,7 +231,7 @@ const Checkout = () => {
               htmlFor="phone"
               className="block text-sm font-medium text-gray-700"
             >
-            মোবাইল নাম্বার<span className="text-red-500">*</span>
+              মোবাইল নাম্বার<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -290,7 +303,7 @@ const Checkout = () => {
           <button
             onClick={handleCreateOrder}
             disabled={isLoading}
-            className="w-full bg-black text-white py-2 text-sm font-medium rounded hover:bg-gray-800"
+            className="w-full bg-green-600 text-white py-2 text-sm font-medium rounded hover:bg-gray-800"
           >
             {isLoading ? "অর্ডার তৈরি হচ্ছে..." : "অর্ডার দিন"}
           </button>
